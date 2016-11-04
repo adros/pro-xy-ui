@@ -1,0 +1,28 @@
+{
+  "indent" : {
+    "value" : "\t",
+    "SwitchStatement": 0,
+    "MemberExpression": 0,
+    "LineComment": -1,
+    "ParameterList" : 2
+  },
+  "lineBreak" : {
+    "before": {
+      "ArrayExpressionClosing" : 1
+    },
+    "after": {
+      "ArrayExpressionOpening" : 1,
+      "ArrayExpressionComma": 1
+    }
+  },
+  "whiteSpace" : {
+    "after": {
+      "PropertyName": 0,
+      "BlockComment": -1
+    },
+    "before": {
+      "BlockComment": -1,
+      "LineComment": -1
+    }
+  }
+}

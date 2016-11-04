@@ -1,0 +1,27 @@
+{
+  "name": "pro-xy-ui",
+  "version": "0.1.0",
+  "description": "User interface for pro-xy",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "bin": {
+    "pro-xy-ui": "./bin/pro-xy-ui"
+  },
+  "repository": "https://github.com/adros/pro-xy-ui.git",
+  "author": "adros1@gmail.com",
+  "dependencies": {
+    "nw": "^0.18.4-sdk",
+    "socket.io-client": "^1.5.1"
+  },
+  "window": {
+    "title": "PRO-XY",
+    "toolbar": true,
+    "frame": true,
+    "width": 1200,
+    "height": 800,
+    "position": "mouse"
+  }
+}

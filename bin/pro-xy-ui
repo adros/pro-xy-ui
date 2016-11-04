@@ -1,0 +1,5 @@
+#!/bin/bash
+
+current="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$current/../node_modules/.bin/nw "$current/.." &
