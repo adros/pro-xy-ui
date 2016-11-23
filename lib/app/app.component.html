@@ -1,0 +1,15 @@
+<div defaultOverlayTarget class="flexbox-parent">
+    <header class="flexbox-item header">
+        <nav>
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+            <a routerLink="/url-replace" routerLinkActive="active">Url replace</a>
+            <a routerLink="/config" routerLinkActive="active">Config</a>
+        </nav>
+    </header>
+    <div class="flexbox-item fill-area content flexbox-item-grow">
+        <div class="fill-area-content flexbox-item-grow">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <status class="flexbox-item footer"></status>
+</div>

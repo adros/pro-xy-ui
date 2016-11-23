@@ -1,0 +1,5 @@
+<div class="form-group">
+    <label for="config">Email address</label>
+    <textarea class="form-control" id="config" [value]="configObservable|async|json" (change)="hChange($event.target.value)" rows="20"></textarea>
+</div>
+<button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!updatedConfig">Submit</button>

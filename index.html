@@ -2,160 +2,26 @@
 
 <head>
 	<title>PRO-XY</title>
-	<style>
-		body,
-		td,
-		th {
-			font-family: sans-serif;
-			font-size: 13px;
-		}
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="./lib/style.css">
 
-		th {
-			text-align: left;
-		}
-
-		table {
-			border-collapse: collapse;
-		}
-
-		th,
-		td {
-			border: 1px solid #aaa;
-			padding: 3px 7px;
-		}
-
-		.killLink {
-			margin-left: 30px;
-		}
-
-		.optionsCfgLink {
-			display: inline-block;
-			margin: 5px;
-		}
-
-		a {
-			text-decoration: none;
-		}
-
-		.killLink,
-		.optionsCfgLink {
-			text-transform: uppercase;
-			font-weight: bold;
-			color: rgb(58, 58, 119);
-		}
-
-		.optionLink {
-			color: rgb(11, 139, 100);
-			font-weight: bold;
-			font-size: 11px;
-			display: block;
-			margin: -3px -7px;
-			padding: 3px 7px;
-		}
-
-		a:hover {
-			text-decoration: underline;
-		}
-	</style>
+	<!-- <script src="./node_modules/core-js/client/shim.min.js"></script> -->
+	<script src="./node_modules/zone.js/dist/zone.js"></script>
+	<script src="./node_modules/reflect-metadata/Reflect.js"></script>
+	<script src="./node_modules/systemjs/dist/system.src.js"></script>
+	<!-- 2. Configure SystemJS -->
+	<script src="./lib/systemjs.config.js"></script>
 </head>
 
 <body>
-	<h1>PRO-XY</h1>
-
-	<h2>Log</h2>
-	<div id="currentNode">Loading ...</div>
-
-	<a href="#" onclick="updateConfig(event, 8000)" class="optionsCfgLink">Set port to 8000</a>
-	<a href="#" onclick="updateConfig(event, 8002)" class="optionsCfgLink">Set port to 8002</a>
-	<a href="#" onclick="updateLogLevel()" class="optionsCfgLink">Set log level to TRACE</a>
-
+	<my-app>Loading...</my-app>
 	<script>
-		var socketClient = require("socket.io-client");
-		var path = require("path");
-		var url = require("url");
-		var fs = require("fs");
-		var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
-		var DEFAULT_PORT = 8000;
-
-
-		function getPort() {
-			if (!fs.existsSync(CONFIG_LOCATION)) {
-				return DEFAULT_PORT
-			}
-			//not using require becaus JSON may have changed
-			return JSON.parse(fs.readFileSync(CONFIG_LOCATION)).port || DEFAULT_PORT;
-		}
-
-		function getSocketPath() {
-			return url.format({
-				hostname: "localhost",
-				protocol: "http",
-				port: getPort()
-			});
-		}
-
-		var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
-
-		var cNode = document.getElementById("currentNode");
-
-		var socket = connect(getSocketPath());
-
-
-		function connect(socketPath) {
-			cNode.innerHTML = `Trying to connect to ${socketPath}`;
-			var _socket = socketClient(socketPath, {
-				reconnectionAttempts: 2
-			});
-
-			_socket.on("connect", () => {
-				cNode.innerHTML += `<br>Connected`;
-			});
-			_socket.on("config", (config) => {
-				cNode.innerHTML += `<br>New config received: <pre>${JSON.stringify(config,null,"\t")}</pre>`;
-			});
-			_socket.on("disconnect", (reason) => {
-				cNode.innerHTML += `<br>Disconnected: ${reason}`;
-			});
-			_socket.on("request", (data) => {
-				cNode.innerHTML += `<br>Req: ${data.method} ${data.url}`;
-			});
-			_socket.on("connect_error", (err) => {
-				cNode.innerHTML += `<br>connect_error: ${err}`;
-			});
-			_socket.on("connect_timeout", (err) => {
-				cNode.innerHTML += `<br>connect_timeout: ${err}`;
-			});
-			_socket.on("reconnect_error", (err) => {
-				cNode.innerHTML += `<br>reconnect_error: ${err}`;
-			});
-			_socket.on("reconnect_failed", (err) => {
-				cNode.innerHTML += `<br>reconnect_failed: ${err}`;
-				socket = connect(getSocketPath());
-			});
-			_socket.on("reconnecting", (err) => {
-				cNode.innerHTML += `<br>reconnecting: ${err}`;
-			})
-
-			return _socket;
-		}
-
-
-		function updateConfig(evt, port) {
-			evt.preventDefault();
-			cNode.innerHTML += `<br>Setting port to ${port}`;
-			socket.emit("configupdate", {
-				port: port
-			});
-		}
-
-		function updateLogLevel() {
-			socket.emit("configupdate", {
-				logLevel: "TRACE"
-			});
-		}
-
-		//configupdate
+		System.import('app').catch(function(err) {
+			console.error(err);
+		});
 	</script>
+
+	<!-- <script src="./lib/index.js"></script> -->
 </body>
 
 </html>

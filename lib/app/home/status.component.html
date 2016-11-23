@@ -1,0 +1,8 @@
+<div *ngIf="!logs">No logs</div>
+<div *ngIf="logs">
+    <div class="logs">
+        <div *ngFor="let log of logs | async">
+            {{log}}<br>
+        </div>
+    </div>
+</div>

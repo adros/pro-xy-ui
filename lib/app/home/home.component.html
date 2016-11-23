@@ -1,0 +1,18 @@
+<div class="checkbox">
+    <label>
+     <input type="checkbox" checked disabled> Replaced only
+   </label>
+</div>
+
+<table>
+    <tr>
+        <th>Method</th>
+        <th>Url</th>
+        <th>Orig url</th>
+    </tr>
+    <tr *ngFor="let req of requestsObservable | async">
+        <td>{{req.method}}</td>
+        <td>{{req.url}}</td>
+        <td>{{req.origUrl}}</td>
+    </tr>
+</table>
