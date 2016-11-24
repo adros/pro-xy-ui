@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SocketService } from '../service/socket.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -14,7 +13,7 @@ export class UrlReplaceComponent implements OnInit {
 
     configObservable: BehaviorSubject<Object>
 
-    constructor(private router: Router, private socketService: SocketService) { }
+    constructor(private socketService: SocketService) { }
 
     ngOnInit(): void {
         this.configObservable = this.socketService.getConfigObservable();

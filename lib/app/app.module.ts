@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { StatusComponent } from './home/status.component';
 import { ConfigComponent } from './config/config.component';
+import { LogsComponent } from './logs/logs.component';
 import { UrlReplaceComponent } from './url-replace/url-replace.component';
 //
 // import { ModalModule } from 'angular2-modal';
@@ -21,6 +22,7 @@ import { UrlReplaceComponent } from './url-replace/url-replace.component';
 // import { ChartModule } from 'angular2-highcharts';
 //
 import { SocketService } from './service/socket.service';
+import {ConfigService } from './service/config.service';
 
 @NgModule({
     imports: [
@@ -39,17 +41,16 @@ import { SocketService } from './service/socket.service';
         HomeComponent,
         StatusComponent,
         UrlReplaceComponent,
+        LogsComponent,
         //pipes:
         JsonPipe
     ],
     bootstrap: [AppComponent],
     providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        SocketService
-        // ErrorHandler,
-        // BookService,
-        // ChartService,
-        // ReadingService
+        SocketService,
+        ConfigService
+        // ErrorHandler
     ]
 })
 export class AppModule {

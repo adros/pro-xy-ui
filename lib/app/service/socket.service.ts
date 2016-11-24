@@ -1,15 +1,13 @@
 import { Injectable, NgZone } from "@angular/core";
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject }    from 'rxjs/BehaviorSubject';
-import { Subject }    from 'rxjs/Subject';
-import * as io        from "socket.io-client";
+import { Observable  } from 'rxjs/Observable';
+import {  BehaviorSubject, } from 'rxjs/BehaviorSubject';
+import {  Subject } from 'rxjs/Subject';
+import {  ReplaySubject } from 'rxjs/ReplaySubject';
+import {  ConfigService } from './config.service';
 
-var path = nw.require("path");
-var fs = nw.require("fs");
+import * as io from "socket.io-client";
+
 var url = nw.require("url");
-
-var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
-var DEFAULT_PORT = 8000;
 
 @Injectable()
 export class SocketService {
@@ -17,13 +15,16 @@ export class SocketService {
     socket: any
 
     _logsSubject: Subject<String>
-    _requestsSubject: Subject<any>
+    _requestsSubject: ReplaySubject<any>
     _configSubject: BehaviorSubject<any>
+    _connectStatusSubject: BehaviorSubject<any>
 
-    constructor(private zone: NgZone) {
+    constructor(private zone: NgZone, private configService: ConfigService) {
         this._logsSubject = new BehaviorSubject("");
         this._configSubject = new BehaviorSubject(null);
-        this._requestsSubject = new BehaviorSubject(null);
+        this._requestsSubject = new ReplaySubject(20);
+        this._connectStatusSubject = new BehaviorSubject(false);
+
         this.socket = this.connect(this.getSocketPath());
     }
 
@@ -39,8 +40,12 @@ export class SocketService {
         return this._configSubject;
     }
 
-    getRequestsObservable(): Subject<any> {
+    getRequestsObservable(): Observable<any> {
         return this._requestsSubject;
+    }
+
+    getConnectStatusObservable(): Observable<boolean> {
+        return this._connectStatusSubject;
     }
 
     connect(socketPath) {
@@ -50,8 +55,14 @@ export class SocketService {
             transports: ["websocket"]
         });
 
-        _socket.on("connect", () => this.log(`Connected`));
-        _socket.on("disconnect", (reason) => this.log(`disconnect: ${reason}`));
+        _socket.on("connect", () => {
+            this.updateConnectStatus(true);
+            this.log(`Connected`)
+        });
+        _socket.on("disconnect", (reason) => {
+            this.updateConnectStatus(false);
+            this.log(`disconnect: ${reason}`);
+        });
         _socket.on("connect_error", (err) => this.log(`connect_error: ${err}`));
         _socket.on("connect_timeout", (err) => this.log(`connect_timeout: ${err}`));
         _socket.on("reconnect_error", (err) => this.log(`reconnect_error: ${err}`));
@@ -71,12 +82,19 @@ export class SocketService {
         return _socket;
     }
 
+    updateConnectStatus(connected) {
+        this.zone.run(() => this._connectStatusSubject.next(connected));
+    }
+
     getPort() {
-        if (!fs.existsSync(CONFIG_LOCATION)) {
-            return DEFAULT_PORT;
+        var defPort = this.configService.DEFAULT_PORT;
+
+        try {
+            return this.configService.getConfig().port || defPort;
+        } catch (err) {
+            this.log(err.message);
+            return defPort;
         }
-        //not using require because JSON may have changed (and we need to read is again)
-        return JSON.parse(fs.readFileSync(CONFIG_LOCATION, "utf8")).port || DEFAULT_PORT;
     }
 
     getSocketPath() {
@@ -96,5 +114,9 @@ export class SocketService {
     replaceConfig(config) {
         this.log(`Sending config replace`);
         this.socket.emit("configreplace", config);
+    }
+
+    sendKillSignal() {
+        this.socket.emit("kill");
     }
 }

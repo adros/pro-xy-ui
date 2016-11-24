@@ -2,7 +2,7 @@
 
 <head>
 	<title>PRO-XY</title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="./lib/style.css">
 
 	<!-- <script src="./node_modules/core-js/client/shim.min.js"></script> -->
@@ -16,6 +16,14 @@
 <body>
 	<my-app>Loading...</my-app>
 	<script>
+		// Load native UI library
+		var ngui = require('nw.gui');
+		var nwin = ngui.Window.get();
+
+		onload = function() {
+			nwin.show();
+			nwin.maximize();
+		}
 		System.import('app').catch(function(err) {
 			console.error(err);
 		});
