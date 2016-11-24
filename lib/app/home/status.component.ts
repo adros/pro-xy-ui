@@ -16,14 +16,14 @@ export class StatusComponent implements OnInit {
     logs: Observable<String[]>
     _logs: String[] = []
 
-    maxSize = 10
+    bufferSize = 20
 
     ngOnInit(): void {
         this.logs = this.socketService.getLogsObservable()
             .map(logStr => {
                 var logs = this._logs
                 logs.push(logStr);
-                logs.length > this.maxSize && logs.shift();
+                logs.length > this.bufferSize && logs.shift();
                 return logs.slice(0);
             });
     }

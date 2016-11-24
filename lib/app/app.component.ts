@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
             var proxyProcess = cp.spawn(proxyPath, [], { detached: true, stdio: 'ignore' });
             proxyProcess.unref();
             console.log("PID", proxyProcess.pid);
-            alert("Pro-xy process spawned");
         } catch (e) {
             alert(`Error while starting proxy: ${e.message}`);
         }

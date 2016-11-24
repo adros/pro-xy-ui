@@ -1,5 +1,4 @@
-#!/bin/bash
-
-current="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$current/../node_modules/.bin/nw "$current/.." &
+#!/usr/bin/env node
+//this is for sure not the best way to start NW application, but working
+//TODO: find how to correctly build NW app
+require("child_process").spawn(require.resolve("nw/bin/nw"), [require("path").resolve(__dirname, "..")]);
