@@ -1,4 +1,14 @@
 #!/usr/bin/env node
 //this is for sure not the best way to start NW application, but working
 //TODO: find how to correctly build NW app
-require("child_process").spawn(require.resolve("nw/bin/nw"), [require("path").resolve(__dirname, "..")]);
+
+var path = require("path");
+var cp = require("child_process");
+
+cp.spawn(require.resolve("nw/bin/nw"), [
+	path.resolve(__dirname, "..")
+], {
+	env: Object.assign({
+		CHROME_LOG_FILE: path.join(process.env.HOME, "pro-xy-logs/pro-xy-ui.log")
+	}, process.env)
+});
