@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ConfigComponent implements OnInit {
 
-    configObservable: Observable<Object>
+    configObservable: Observable<any>
     updatedConfig: string
 
     constructor(private router: Router, private socketService: SocketService) { }

@@ -21,8 +21,7 @@ export class StatusComponent implements OnInit {
         this.logs = this.socketService.getLogsObservable()
             .scan((arr, logStr) => {
                 arr.push(logStr);
-                arr.length > this.bufferSize && arr.shift();
-                return arr.slice(0);
+                return arr.slice(-1 * this.bufferSize);
             }, []);
     }
 

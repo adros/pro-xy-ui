@@ -1,46 +1,54 @@
-import { Injectable, NgZone } from "@angular/core";
-import { Observable  } from 'rxjs/Observable';
-import {  BehaviorSubject, } from 'rxjs/BehaviorSubject';
-import {  Subject } from 'rxjs/Subject';
-import {  ReplaySubject } from 'rxjs/ReplaySubject';
-import {  ConfigService } from './config.service';
-
-import * as io from "socket.io-client";
+import { Injectable, NgZone, ApplicationRef }   from "@angular/core";
+import { Observable  }          from 'rxjs/Observable';
+import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
+import { Subject }              from 'rxjs/Subject';
+import { ReplaySubject }        from 'rxjs/ReplaySubject';
+import { ConfigService }        from './config.service';
+import * as io                  from "socket.io-client";
 
 var url = nw.require("url");
+
+
+class Req { url: string; origUrl: string; method: string }
+class Config { [key: string]: any; }
 
 @Injectable()
 export class SocketService {
 
     socket: any
 
-    _logsSubject: Subject<String>
-    _requestsSubject: ReplaySubject<any>
-    _configSubject: BehaviorSubject<any>
-    _connectStatusSubject: BehaviorSubject<any>
+    _logsSubject: Subject<string>
+    _requestsSubject: Observable<Req>
+    _configSubject: BehaviorSubject<Config>
+    _connectStatusSubject: BehaviorSubject<boolean>
 
-    constructor(private zone: NgZone, private configService: ConfigService) {
+    constructor(private zone: NgZone, private configService: ConfigService, private app: ApplicationRef) {
+
         this._logsSubject = new ReplaySubject(20);
         this._configSubject = new BehaviorSubject(null);
-        this._requestsSubject = new ReplaySubject(100);
+        // this._requestsSubject = new ReplaySubject(100);
         this._connectStatusSubject = new BehaviorSubject(false);
 
-        this.socket = this.connect(this.getSocketPath());
+        var socket = this.socket = this.connect(this.getSocketPath());
+
+        this._requestsSubject = Observable.fromEvent(socket, "request")
+            .replay(100)
+            .do(() => app.tick());
     }
 
     log(str) {
         this.zone.run(() => this._logsSubject.next(str));
     }
 
-    getLogsObservable(): Observable<String> {
+    getLogsObservable(): Observable<string> {
         return this._logsSubject;
     }
 
-    getConfigObservable(): BehaviorSubject<any> {
+    getConfigObservable(): BehaviorSubject<Config> {
         return this._configSubject;
     }
 
-    getRequestsObservable(): Observable<any> {
+    getRequestsObservable(): Observable<Req> {
         return this._requestsSubject;
     }
 
@@ -69,15 +77,17 @@ export class SocketService {
         _socket.on("reconnecting", (err) => this.log(`reconnecting: ${err}`));
         _socket.on("reconnect_failed", (err) => {
             this.log(`reconnect_failed: ${err}`);
-            this.socket = this.connect(this.getSocketPath());
+            _socket.io.uri = this.getSocketPath();
+            this.log(`Trying to connect to ${_socket.io.uri}`);
+            _socket.io.connect();
         });
         _socket.on("config", (config) => {
             this.log(`New config received`);
             this.zone.run(() => this._configSubject.next(config));
         });
-        _socket.on("request", (req) => {
-            this.zone.run(() => this._requestsSubject.next(req));
-        });
+        // _socket.on("request", (req) => {
+        //     this.zone.run(() => this._requestsSubject.next(req));
+        // });
 
         return _socket;
     }

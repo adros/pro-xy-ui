@@ -1,12 +1,13 @@
 td {
     word-break: break-word;
+    min-width: 60px; /*so OPTIONS method fits*/
 }
 
 table {
     font-size: 12px;
 }
 
-.table>tbody>tr>th,
-.table>thead>tr>td {
+.table th,
+.table td {
     padding: 2px;
 }

@@ -5,7 +5,7 @@ import { Pipe } from '@angular/core';
 })
 export class JsonHtmlPipe {
     transform(val) {
-        return JSON.stringify(val, null, 2)
+        return JSON.stringify(val, null, 4)
             .replace(' ', '&nbsp;')
             .replace('\n', '<br/>');
     }
@@ -16,6 +16,6 @@ export class JsonHtmlPipe {
 })
 export class JsonPipe {
     transform(val) {
-        return JSON.stringify(val, null, 2);
+        return JSON.stringify(val, null, "\t");
     }
 }

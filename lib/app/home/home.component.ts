@@ -14,20 +14,17 @@ export class HomeComponent implements OnInit {
     constructor(private socketService: SocketService) { }
 
     requestsObservable: Observable<any[]>
-    _requestsCache: any[] = []
 
     replacedOnly = true
     maxRows = 50
 
     ngOnInit(): void {
         this.requestsObservable = this.socketService.getRequestsObservable()
-            .filter(req => !this.replacedOnly || req.origUrl)
-            .map(req => {
-                var reqs = this._requestsCache
-                reqs.push(req);
-                reqs.length > this.maxRows && reqs.shift();
-                return reqs.slice(0);
-            });
+            .filter(req => !this.replacedOnly || !!req.origUrl)
+            .scan((arr, req) => {
+                arr.push(req);
+                return arr.slice(-1 * this.maxRows);
+            }, []);
     }
 
 }
