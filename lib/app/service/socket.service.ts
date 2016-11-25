@@ -20,9 +20,9 @@ export class SocketService {
     _connectStatusSubject: BehaviorSubject<any>
 
     constructor(private zone: NgZone, private configService: ConfigService) {
-        this._logsSubject = new BehaviorSubject("");
+        this._logsSubject = new ReplaySubject(20);
         this._configSubject = new BehaviorSubject(null);
-        this._requestsSubject = new ReplaySubject(20);
+        this._requestsSubject = new ReplaySubject(100);
         this._connectStatusSubject = new BehaviorSubject(false);
 
         this.socket = this.connect(this.getSocketPath());

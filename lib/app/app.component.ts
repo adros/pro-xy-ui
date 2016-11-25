@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SocketService } from './service/socket.service';
 import { ConfigService } from './service/config.service';
+import { StatusComponent } from './status/status.component';
 import { Observable } from 'rxjs/Observable';
 
 var cp = nw.require("child_process");
@@ -16,6 +17,8 @@ export class AppComponent implements OnInit {
     constructor(private socketService: SocketService, private configService: ConfigService) { }
 
     statusObservable: Observable<boolean>
+
+    @ViewChild('status') status: StatusComponent;
 
     ngOnInit(): void {
         this.statusObservable = this.socketService.getConnectStatusObservable();
@@ -47,5 +50,9 @@ export class AppComponent implements OnInit {
 
     killProxy() {
         this.socketService.sendKillSignal();
+    }
+
+    toggleStatus() {
+        this.status.toggle();
     }
 }

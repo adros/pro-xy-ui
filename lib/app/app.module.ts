@@ -12,7 +12,7 @@ import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { StatusComponent } from './home/status.component';
+import { StatusComponent } from './status/status.component';
 import { ConfigComponent } from './config/config.component';
 import { LogsComponent } from './logs/logs.component';
 import { UrlReplaceComponent } from './url-replace/url-replace.component';

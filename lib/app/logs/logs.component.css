@@ -1,3 +1,5 @@
-textarea {
-    resize: none;
+pre {
+    height: 100%;
+    width: 100%;
+    white-space: pre-wrap;
 }

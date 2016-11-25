@@ -1,3 +1,9 @@
-textarea {
-    resize: none;
+.replace-detail {
+    font-size: 11px;
+    color: #777;
+    padding-right: 20px;
+}
+
+.replace-name {
+    padding-right: 20px;
 }

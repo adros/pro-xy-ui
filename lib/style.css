@@ -12,57 +12,10 @@ body {
     padding: 0;
 }
 
-.flexbox-parent {
-    width: 100%;
-    height: 100%;
+.flex-grow {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: stretch;
-    align-content: stretch;
-    background: rgba(255, 255, 255, .1);
-}
-
-.flexbox-item {
-    padding: 8px;
-}
-
-.flexbox-item-grow {
-    flex: 1;
-}
-
-.flexbox-item.header {
-    background: #e8e8e8;
-}
-
-.flexbox-item.footer {
-    height: 130px;
-    font-size: 10px;
     overflow-y: auto;
-    background: #000;
-    color: #cccccc;
-}
-
-.flexbox-item.content {
-    background: #fff;
-}
-
-.fill-area {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
-}
-
-.fill-area-content {
-    overflow: auto;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }

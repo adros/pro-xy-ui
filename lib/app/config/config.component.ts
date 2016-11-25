@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
     moduleId: module.id,
     templateUrl: 'config.component.html',
     styleUrls: ['config.component.css'],
-    selector: 'config'
+    selector: 'config',
+    host: { class: 'flex-grow' }
 })
 export class ConfigComponent implements OnInit {
 
@@ -27,7 +28,7 @@ export class ConfigComponent implements OnInit {
         } catch (e) {
             alert("Config is not valid JSON");
         }
-        this.socketService.updateConfig(confObj);
+        this.socketService.replaceConfig(confObj);
     }
 
     hChange(value): void {

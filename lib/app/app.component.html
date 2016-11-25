@@ -1,5 +1,5 @@
-<div defaultOverlayTarget class="flexbox-parent">
-    <header class="flexbox-item header">
+<div defaultOverlayTarget class="app">
+    <header>
         <nav>
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="btn btn-default">Home</a>
             <a routerLink="/url-replace" routerLinkActive="active" class="btn btn-default">Url replace</a>
@@ -19,10 +19,8 @@
             </span>
         </div>
     </header>
-    <div class="flexbox-item fill-area content flexbox-item-grow">
-        <div class="fill-area-content flexbox-item-grow">
-            <router-outlet></router-outlet>
-        </div>
+    <div class="flex-grow">
+        <router-outlet></router-outlet>
     </div>
-    <status class="flexbox-item footer"></status>
+    <status #status class="footer" (click)="toggleStatus()"></status>
 </div>

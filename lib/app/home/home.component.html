@@ -1,18 +1,27 @@
-<div class="checkbox">
-    <label>
-     <input type="checkbox" checked disabled> Replaced only
-   </label>
-</div>
+<form class="form-inline">
 
-<table class="table table-striped">
-    <tr>
-        <th>Method</th>
-        <th>Url</th>
-        <th>Orig url</th>
-    </tr>
-    <tr *ngFor="let req of requestsObservable | async">
-        <td>{{req.method}}</td>
-        <td>{{req.url}}</td>
-        <td>{{req.origUrl}}</td>
-    </tr>
-</table>
+    <div class="form-group">
+        <label for="logLines">Max rows</label>
+        <input type="number" class="form-control" id="logLines" [(ngModel)]="maxRows" name="lines" min="10" max="500">
+    </div>
+    <div class="checkbox-inline">
+        <label>
+            <input type="checkbox" [(ngModel)]="replacedOnly" name="replacedOnly">  Replaced only
+        </label>
+    </div>
+</form>
+
+<div class="flex-grow">
+    <table class="table table-striped">
+        <tr>
+            <th>Method</th>
+            <th>Url</th>
+            <th>Orig url</th>
+        </tr>
+        <tr *ngFor="let req of requestsObservable | async">
+            <td>{{req.method}}</td>
+            <td>{{req.url}}</td>
+            <td>{{req.origUrl}}</td>
+        </tr>
+    </table>
+</div>

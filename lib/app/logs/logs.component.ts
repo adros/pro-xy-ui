@@ -10,7 +10,8 @@ var readLastLines = nw.require("read-last-lines");
     moduleId: module.id,
     templateUrl: 'logs.component.html',
     styleUrls: ['logs.component.css'],
-    selector: 'logs'
+    selector: 'logs',
+    host: { class: 'flex-grow' }
 })
 export class LogsComponent implements OnInit {
 

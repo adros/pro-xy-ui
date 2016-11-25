@@ -1,9 +1,20 @@
 <div *ngIf="!(configObservable|async)['pro-xy-url-replace'].replaces.length">No replaces availible</div>
 
-<div *ngIf="(configObservable|async)['pro-xy-url-replace'].replaces.length">
-    <div *ngFor="let item of (configObservable|async)['pro-xy-url-replace'].replaces; let i = index">
-        <div class="checkbox">
-            <label><input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)">{{item.name}}</label>
-        </div>
-    </div>
-</div>
+<table *ngIf="(configObservable|async)['pro-xy-url-replace'].replaces.length">
+    <tr>
+        <th>Name</th>
+        <th>Pattern</th>
+        <th>Replace</th>
+    </tr>
+    <tr *ngFor="let item of (configObservable|async)['pro-xy-url-replace'].replaces; let i = index">
+        <td class="replace-name">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)">{{item.name}}
+                </label>
+            </div>
+        </td>
+        <td class="replace-detail">{{item.pattern}}</td>
+        <td class="replace-detail">{{item.replacement}}</td>
+    </tr>
+</table>
