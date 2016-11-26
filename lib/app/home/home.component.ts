@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
     requestsObservable: Observable<any[]>
 
-    replacedOnly = true
+    replacedOnly = false
     maxRows = 50
 
     ngOnInit(): void {

@@ -1,8 +1,9 @@
-import { Injectable, NgZone, ApplicationRef }   from "@angular/core";
+import { Injectable, NgZone }   from "@angular/core";
 import { Observable  }          from 'rxjs/Observable';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 import { Subject }              from 'rxjs/Subject';
 import { ReplaySubject }        from 'rxjs/ReplaySubject';
+import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { ConfigService }        from './config.service';
 import * as io                  from "socket.io-client";
 
@@ -22,7 +23,7 @@ export class SocketService {
     _configSubject: BehaviorSubject<Config>
     _connectStatusSubject: BehaviorSubject<boolean>
 
-    constructor(private zone: NgZone, private configService: ConfigService, private app: ApplicationRef) {
+    constructor(private zone: NgZone, private configService: ConfigService/*, private app: ApplicationRef*/) {
 
         this._logsSubject = new ReplaySubject(20);
         this._configSubject = new BehaviorSubject(null);
@@ -32,8 +33,8 @@ export class SocketService {
         var socket = this.socket = this.connect(this.getSocketPath());
 
         this._requestsSubject = Observable.fromEvent(socket, "request")
-            .replay(100)
-            .do(() => app.tick());
+            .publishReplay(100);
+        (<ConnectableObservable<Req>>this._requestsSubject).connect();
     }
 
     log(str) {
