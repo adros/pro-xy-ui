@@ -22,7 +22,8 @@ import { UrlReplaceComponent } from './url-replace/url-replace.component';
 // import { ChartModule } from 'angular2-highcharts';
 //
 import { SocketService } from './service/socket.service';
-import {ConfigService } from './service/config.service';
+import { TrafficService } from './service/traffic.service';
+import { ConfigService } from './service/config.service';
 
 @NgModule({
     imports: [
@@ -49,7 +50,8 @@ import {ConfigService } from './service/config.service';
     providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         SocketService,
-        ConfigService
+        ConfigService,
+        TrafficService
         // ErrorHandler
     ]
 })

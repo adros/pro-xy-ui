@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SocketService } from '../service/socket.service';
+import { TrafficService } from '../service/traffic.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private socketService: SocketService) { }
+    constructor(private trafficService: TrafficService) { }
 
     requestsObservable: Observable<any[]>
 
@@ -19,12 +19,12 @@ export class HomeComponent implements OnInit {
     maxRows = 50
 
     ngOnInit(): void {
-        this.requestsObservable = this.socketService.getRequestsObservable()
-            .filter(req => !this.replacedOnly || !!req.origUrl)
-            .scan((arr, req) => {
-                arr.push(req);
-                return arr.slice(-1 * this.maxRows);
-            }, []);
+        this.requestsObservable = this.trafficService.traffic
+            // .filter(reqRes => !this.replacedOnly || !!reqRes. origUrl)
+            // .scan((arr, req) => {
+            //     arr.push(req);
+            //     return arr.slice(-1 * this.maxRows);
+            // }, []);
     }
 
 }

@@ -11,7 +11,7 @@ export default {
     "pro-xy-url-replace": {
         "disabled": false,
         "replaces": [
-            {
+            { 
                 "name": "my-repalce",
                 "pattern": "//localhost:..../something/svc/",
                 "replacement": "//some.server.com:8080/something/svc/",
