@@ -1,4 +1,4 @@
-import { Injectable, NgZone }   from "@angular/core";
+import { Injectable }   from "@angular/core";
 import { Observable  }          from 'rxjs/Observable';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 import { Subject }              from 'rxjs/Subject';
@@ -20,32 +20,45 @@ export class SocketService {
 
     _logsSubject: Subject<string>
     _requestsSubject: Observable<Req>
-    _configSubject: BehaviorSubject<Config>
-    _connectStatusSubject: BehaviorSubject<boolean>
+    _configSubject: Observable<Config>
+    _connectStatusSubject: Observable<boolean>
 
-    constructor(private zone: NgZone, private configService: ConfigService/*, private app: ApplicationRef*/) {
+    constructor(private configService: ConfigService) {
 
         this._logsSubject = new ReplaySubject(20);
-        this._configSubject = new BehaviorSubject(null);
-        // this._requestsSubject = new ReplaySubject(100);
-        this._connectStatusSubject = new BehaviorSubject(false);
 
         var socket = this.socket = this.connect(this.getSocketPath());
 
-        this._requestsSubject = Observable.fromEvent(socket, "request")
-            .publishReplay(100);
-        (<ConnectableObservable<Req>>this._requestsSubject).connect();
+        this._configSubject = Observable.fromEvent(socket, "config").publishBehavior(null);
+        this._requestsSubject = Observable.fromEvent(socket, "request").publishReplay(100);
+
+        this._connectStatusSubject = Observable.merge(
+            Observable.fromEvent(socket, "connect", () => true),
+            Observable.fromEvent(socket, "disconnect", () => false)
+        ).publishBehavior(false);
+
+        this.connectConnectables([
+            this._configSubject,
+            this._requestsSubject,
+            this._connectStatusSubject
+        ]);
+
+        this._configSubject.subscribe((conf) => conf && this.log(`new config received`));
+    }
+
+    connectConnectables(observables: any[]) {
+        (<ConnectableObservable<any>[]>observables).forEach(c => c.connect());
     }
 
     log(str) {
-        this.zone.run(() => this._logsSubject.next(str));
+        this._logsSubject.next(str);
     }
 
     getLogsObservable(): Observable<string> {
         return this._logsSubject;
     }
 
-    getConfigObservable(): BehaviorSubject<Config> {
+    getConfigObservable(): Observable<Config> {
         return this._configSubject;
     }
 
@@ -58,20 +71,14 @@ export class SocketService {
     }
 
     connect(socketPath) {
-        this.log(`Trying to connect to ${socketPath}`);
+        this.log(`trying to connect to ${socketPath}`);
         var _socket = io.connect(socketPath, {
             reconnectionAttempts: 2,
             transports: ["websocket"]
         });
 
-        _socket.on("connect", () => {
-            this.updateConnectStatus(true);
-            this.log(`Connected`)
-        });
-        _socket.on("disconnect", (reason) => {
-            this.updateConnectStatus(false);
-            this.log(`disconnect: ${reason}`);
-        });
+        _socket.on("connect", () => this.log(`connected`));
+        _socket.on("disconnect", (reason) => this.log(`disconnect: ${reason}`));
         _socket.on("connect_error", (err) => this.log(`connect_error: ${err}`));
         _socket.on("connect_timeout", (err) => this.log(`connect_timeout: ${err}`));
         _socket.on("reconnect_error", (err) => this.log(`reconnect_error: ${err}`));
@@ -79,22 +86,11 @@ export class SocketService {
         _socket.on("reconnect_failed", (err) => {
             this.log(`reconnect_failed: ${err}`);
             _socket.io.uri = this.getSocketPath();
-            this.log(`Trying to connect to ${_socket.io.uri}`);
+            this.log(`trying to connect to ${_socket.io.uri}`);
             _socket.io.connect();
         });
-        _socket.on("config", (config) => {
-            this.log(`New config received`);
-            this.zone.run(() => this._configSubject.next(config));
-        });
-        // _socket.on("request", (req) => {
-        //     this.zone.run(() => this._requestsSubject.next(req));
-        // });
 
         return _socket;
-    }
-
-    updateConnectStatus(connected) {
-        this.zone.run(() => this._connectStatusSubject.next(connected));
     }
 
     getPort() {
@@ -118,12 +114,12 @@ export class SocketService {
 
     updateConfig(config) {
         //will be mixin to current config in pro-xy-ws-api
-        this.log(`Sending config update`);
+        this.log(`dending config update`);
         this.socket.emit("configupdate", config);
     }
 
     replaceConfig(config) {
-        this.log(`Sending config replace`);
+        this.log(`dending config replace`);
         this.socket.emit("configreplace", config);
     }
 

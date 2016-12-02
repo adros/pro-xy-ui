@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../service/socket.service';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     moduleId: module.id,
@@ -11,16 +10,18 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class UrlReplaceComponent implements OnInit {
 
-    configObservable: BehaviorSubject<Object>
+    configObservable: Observable<Object>
+    config: any
 
     constructor(private socketService: SocketService) { }
 
     ngOnInit(): void {
         this.configObservable = this.socketService.getConfigObservable();
+        this.configObservable.subscribe(config => { this.config = config; })
     }
 
     hChange(item, index) {
         item.disabled = !item.disabled; //changed by reference
-        this.socketService.replaceConfig(this.configObservable.value);
+        this.socketService.replaceConfig(this.config);
     }
 }
