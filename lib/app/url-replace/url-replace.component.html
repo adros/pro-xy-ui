@@ -1,12 +1,12 @@
-<div *ngIf="!(configObservable|async)['pro-xy-url-replace'].replaces.length">No replaces availible</div>
+<div *ngIf="!(configObservable|async).proxyUrlReplace.replaces.length">No replaces availible</div>
 
-<table *ngIf="(configObservable|async)['pro-xy-url-replace'].replaces.length">
+<table *ngIf="(configObservable|async).proxyUrlReplace.replaces.length">
     <tr>
         <th>Name</th>
         <th>Pattern</th>
         <th>Replace</th>
     </tr>
-    <tr *ngFor="let item of (configObservable|async)['pro-xy-url-replace'].replaces; let i = index">
+    <tr *ngFor="let item of (configObservable|async).proxyUrlReplace.replaces; let i = index">
         <td class="replace-name">
             <div class="checkbox">
                 <label>

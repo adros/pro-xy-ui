@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this.statusObservable = this.socketService.getConnectStatusObservable();
         this.socketService.getConfigObservable().subscribe(config => {
-            var replaces = config && config['pro-xy-url-replace'] && config['pro-xy-url-replace'].replaces || [];
+            var replaces = config.proxyUrlReplace.replaces;
             var activeUrlReplaces = replaces.filter(r => !r.disabled).map(r => r.name);
             document.title = activeUrlReplaces.length ? `PRO-XY (${activeUrlReplaces.join(", ")})` : "PRO-XY";
         });
@@ -50,6 +50,9 @@ export class AppComponent implements OnInit {
             }
 
             var proxyPath = path.resolve(path.dirname(process.mainModule.filename), "./node_modules/.bin/pro-xy");
+            if (/^win/.test(process.platform)) {
+            	proxyPath += ".cmd";
+            }
             var errFileDesc = fs.openSync(PROXY_ERR_OUT_PATH, "w+");
             var proxyProcess = cp.spawn(proxyPath, [], { detached: true, stdio: ["ignore", "ignore", errFileDesc] });
             proxyProcess.unref();

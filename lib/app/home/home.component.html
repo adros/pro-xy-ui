@@ -15,13 +15,15 @@
     <table class="table table-striped">
         <tr>
             <th>Method</th>
+            <th>Status</th>
             <th>Url</th>
             <th>Orig url</th>
         </tr>
-        <tr *ngFor="let req of requestsObservable | async">
-            <td>{{req.method}}</td>
-            <td>{{req.url}}</td>
-            <td>{{req.origUrl}}</td>
+        <tr *ngFor="let reqRes of requestsObservable | async">
+            <td>{{reqRes.req.method}}</td>
+            <td>{{reqRes.res && reqRes.res.statusCode || '...'}}</td>
+            <td>{{reqRes.req.url}}</td>
+            <td>{{reqRes.req.origUrl}}</td>
         </tr>
     </table>
 </div>

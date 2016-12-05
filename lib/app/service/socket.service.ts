@@ -4,14 +4,12 @@ import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 import { Subject }              from 'rxjs/Subject';
 import { ReplaySubject }        from 'rxjs/ReplaySubject';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
+import { Req, Res, toReq, toRes } from '../model/http';
+import { Config, fromObject }   from '../model/config';
 import { ConfigService }        from './config.service';
 import * as io                  from "socket.io-client";
 
 var url = nw.require("url");
-
-
-class Req { url: string; origUrl: string; method: string }
-class Config { [key: string]: any; }
 
 @Injectable()
 export class SocketService {
@@ -19,7 +17,8 @@ export class SocketService {
     socket: any
 
     _logsSubject: Subject<string>
-    _requestsSubject: Observable<Req>
+    _reqSubject: Observable<Req>
+    _resSubject: Observable<Res>
     _configSubject: Observable<Config>
     _connectStatusSubject: Observable<boolean>
 
@@ -28,9 +27,9 @@ export class SocketService {
         this._logsSubject = new ReplaySubject(20);
 
         var socket = this.socket = this.connect(this.getSocketPath());
-
-        this._configSubject = Observable.fromEvent(socket, "config").publishBehavior(null);
-        this._requestsSubject = Observable.fromEvent(socket, "request").publishReplay(100);
+        this._configSubject = Observable.fromEvent(socket, "config").map(fromObject).publishBehavior(fromObject({}));
+        this._reqSubject = Observable.fromEvent(socket, "request").map(toReq).publishReplay(100);
+        this._resSubject = Observable.fromEvent(socket, "response").map(toRes).publishReplay(100);
 
         this._connectStatusSubject = Observable.merge(
             Observable.fromEvent(socket, "connect", () => true),
@@ -39,7 +38,8 @@ export class SocketService {
 
         this.connectConnectables([
             this._configSubject,
-            this._requestsSubject,
+            this._reqSubject,
+            this._resSubject,
             this._connectStatusSubject
         ]);
 
@@ -65,7 +65,11 @@ export class SocketService {
     }
 
     getRequestsObservable(): Observable<Req> {
-        return this._requestsSubject;
+        return this._reqSubject;
+    }
+
+    getResponseObservable(): Observable<Res> {
+        return this._resSubject;
     }
 
     getConnectStatusObservable(): Observable<boolean> {
