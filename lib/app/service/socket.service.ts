@@ -1,4 +1,4 @@
-import { Injectable }   from "@angular/core";
+import { Injectable, NgZone }   from "@angular/core";
 import { Observable  }          from 'rxjs/Observable';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 import { Subject }              from 'rxjs/Subject';
@@ -23,7 +23,7 @@ export class SocketService {
     _configSubject: Observable<Config>
     _connectStatusSubject: Observable<boolean>
 
-    constructor(private configService: ConfigService) {
+    constructor(private configService: ConfigService, private zone: NgZone) {
 
         this._logsSubject = new ReplaySubject(20);
 
@@ -44,6 +44,8 @@ export class SocketService {
         ]);
 
         this._configSubject.subscribe((conf) => conf && this.log(`new config received`));
+
+        this.registerShortcut();
     }
 
     connectConnectables(observables: any[]) {
@@ -114,16 +116,34 @@ export class SocketService {
 
     updateConfig(config) {
         //will be mixin to current config in pro-xy-ws-api
-        this.log(`dending config update`);
+        this.log(`sendending config update`);
         this.socket.emit("configupdate", config);
     }
 
     replaceConfig(config) {
-        this.log(`dending config replace`);
+        this.log(`sendending config replace`);
         this.socket.emit("configreplace", config);
     }
 
     sendKillSignal() {
         this.socket.emit("kill");
+    }
+
+    registerShortcut() {
+        var shortcut = new nw.Shortcut({
+            key: "Ctrl+R",
+            active: () => this.zone.run(() => this.connectToRemote())
+        });
+        nw.App.registerGlobalHotKey(shortcut);
+    }
+
+    connectToRemote() {
+        var path = prompt("Remote path (e.g. http://server:8000)");
+        if (!path) { return; }
+        this.socket.io.close();
+        this.socket.io.uri = path;
+        this.socket.io.skipReconnect = false;
+        this.log(`trying to connect to ${path}`);
+        this.socket.io.reconnect();
     }
 }
