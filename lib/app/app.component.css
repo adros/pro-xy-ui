@@ -5,9 +5,21 @@
     align-items: stretch;
 }
 
-.app>* {
+.right-section {
+    border-left: 2px solid #e8e8e8;
+}
+
+.right-section>* {
     padding: 8px;
 }
+
+.left-section{
+    flex: initial;
+    resize: horizontal;
+    width: 40%;
+    max-width: 80%;
+}
+
 
 header {
     background: #e8e8e8;
@@ -18,6 +30,7 @@ header {
 }
 
 .footer {
+    padding: 8px;
     height: 130px;
     font-size: 10px;
     overflow-y: auto;

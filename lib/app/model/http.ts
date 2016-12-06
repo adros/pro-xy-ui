@@ -27,16 +27,27 @@ export class ReqRes {
 
     constructor(private _req: Req) { }
 
-    get complete(): boolean {
-        return !!this.res;
-    }
-
     set res(res: Res) {
         this._res = res;
     }
 
-    get res() { return this._res; }
-    get req() { return this._req; }
+    get isComplete(): boolean { return !!this.res; }
+
+    get id() { return this._req && this._req.id; }
+    get url() { return this._req && this._req.url; }
+    get origUrl() { return this._req && this._req.origUrl; }
+    get method() { return this._req && this._req.method; }
+    get isReplaced() { return this._req && !!this._req.origUrl; }
+
+    get statusCode() { return this._res && this._res.statusCode; }
+    get resContentType() {
+        var ct = this.getResHeader('content-type');
+        return ct && ct.split(";")[0];
+    }
+
+    getResHeader(name) {
+        return this._res && this._res.headers && this._res.headers[name];
+    }
 }
 
 export function toReq(obj) {

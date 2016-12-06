@@ -1,6 +1,17 @@
+:host>form {
+    padding: 8px;
+    background: #e8e8e8;
+    margin: 0;
+}
+
+:host>div {
+    padding: 8px 0;
+}
+
 td {
     word-break: break-word;
-    min-width: 60px; /*so OPTIONS method fits*/
+    min-width: 60px;
+    /*so OPTIONS method fits*/
 }
 
 table {

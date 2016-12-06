@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
             var proxyPath = path.resolve(path.dirname(process.mainModule.filename), "./node_modules/.bin/pro-xy");
             if (/^win/.test(process.platform)) {
-            	proxyPath += ".cmd";
+                proxyPath += ".cmd";
             }
             var errFileDesc = fs.openSync(PROXY_ERR_OUT_PATH, "w+");
             var proxyProcess = cp.spawn(proxyPath, [], { detached: true, stdio: ["ignore", "ignore", errFileDesc] });
@@ -76,5 +76,10 @@ export class AppComponent implements OnInit {
         if (!!content) {
             alert("Error while starting pro-xy: " + content);
         }
+    }
+
+    handleModified(event) {
+        debugger;
+        console.log(event);
     }
 }

@@ -1,26 +1,33 @@
 <div defaultOverlayTarget class="app">
-    <header>
-        <nav>
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="btn btn-default">Home</a>
-            <a routerLink="/url-replace" routerLinkActive="active" class="btn btn-default">Url replace</a>
-            <a routerLink="/config" routerLinkActive="active" class="btn btn-default">Config</a>
-            <a routerLink="/logs" routerLinkActive="active" class="btn btn-default">Logs</a>
-        </nav>
-
-        <div class="connection-status">
-            <span *ngIf="statusObservable|async">
-            <span style="color:green">Connected</span>
-            <button class="btn btn-default" (click)="killProxy()">Kill pro-xy</button>
-            </span>
-
-            <span *ngIf="!(statusObservable|async)">
-            <span style="color:red">Disconnected</span>
-            <button class="btn btn-default" (click)="startProxy()">Start pro-xy</button>
-            </span>
+    <div class="flex-grow" style="flex-direction: row;">
+        <div class="flex-grow left-section" (DOMAttrModified)="handleModified($event)">
+            <home></home>
         </div>
-    </header>
-    <div class="flex-grow">
-        <router-outlet></router-outlet>
+        <div class="flex-grow right-section">
+            <header>
+                <nav>
+                    <a routerLink="/url-replace" routerLinkActive="active" class="btn btn-default">Url replace</a>
+                    <a routerLink="/config" routerLinkActive="active" class="btn btn-default">Config</a>
+                    <a routerLink="/logs" routerLinkActive="active" class="btn btn-default">Logs</a>
+                </nav>
+
+                <div class="connection-status">
+                    <span *ngIf="statusObservable|async">
+                    <span style="color:green">Connected</span>
+                    <button class="btn btn-default" (click)="killProxy()">Kill pro-xy</button>
+                    </span>
+
+                    <span *ngIf="!(statusObservable|async)">
+                    <span style="color:red">Disconnected</span>
+                    <button class="btn btn-default" (click)="startProxy()">Start pro-xy</button>
+                    </span>
+                </div>
+            </header>
+
+            <div class="flex-grow">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
     </div>
     <status #status class="footer" (click)="toggleStatus()"></status>
 </div>

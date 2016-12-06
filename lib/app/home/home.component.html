@@ -18,13 +18,15 @@
             <th>Method</th>
             <th>Status</th>
             <th>Url</th>
-            <th>Orig url</th>
+            <th>Content type</th>
+            <th>Replaced</th>
         </tr>
         <tr *ngFor="let reqRes of requestsObservable | async">
-            <td>{{reqRes.req.method}}</td>
-            <td>{{reqRes.res && reqRes.res.statusCode || '...'}}</td>
-            <td>{{reqRes.req.url}}</td>
-            <td>{{reqRes.req.origUrl}}</td>
+            <td>{{reqRes.method}}</td>
+            <td>{{reqRes.statusCode || '...'}}</td>
+            <td title="{{reqRes.url}}">{{reqRes.url}}</td>
+            <td>{{reqRes.resContentType}}</td>
+            <td title="{{reqRes.isReplaced ? reqRes.origUrl : ''}}">{{reqRes.isReplaced ? '&#10003;' : '' }}</td>
         </tr>
     </table>
 </div>

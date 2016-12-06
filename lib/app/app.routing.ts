@@ -13,7 +13,8 @@ const appRoutes: Routes = [
     },
     {
         path: '',
-        component: HomeComponent
+        redirectTo: '/url-replace',
+        pathMatch: 'full'
     },
     {
         path: 'url-replace',
