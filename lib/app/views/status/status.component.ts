@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { SocketService } from '../service/socket.service';
+import { SocketService } from '../../service/socket.service';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,31 +1,25 @@
 <div defaultOverlayTarget class="app">
     <div class="flex-grow" style="flex-direction: row;">
-        <div class="flex-grow left-section" (DOMAttrModified)="handleModified($event)">
-            <home></home>
+        <div class="flex-grow left-section">
+            <requests (selected)="inspect($event)"></requests>
         </div>
+
         <div class="flex-grow right-section">
             <header>
                 <nav>
-                    <a routerLink="/url-replace" routerLinkActive="active" class="btn btn-default">Url replace</a>
-                    <a routerLink="/config" routerLinkActive="active" class="btn btn-default">Config</a>
-                    <a routerLink="/logs" routerLinkActive="active" class="btn btn-default">Logs</a>
+                    <button class="btn btn-default" [class.active]="selectedView=='inspector'" (click)="this.selectedView='inspector'">Inspector</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'">Url replace</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'">Config</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'">Logs</button>
                 </nav>
-
-                <div class="connection-status">
-                    <span *ngIf="statusObservable|async">
-                    <span style="color:green">Connected</span>
-                    <button class="btn btn-default" (click)="killProxy()">Kill pro-xy</button>
-                    </span>
-
-                    <span *ngIf="!(statusObservable|async)">
-                    <span style="color:red">Disconnected</span>
-                    <button class="btn btn-default" (click)="startProxy()">Start pro-xy</button>
-                    </span>
-                </div>
+                <connection></connection>
             </header>
 
             <div class="flex-grow">
-                <router-outlet></router-outlet>
+                <inspector #inspector [hidden]="selectedView!='inspector'"></inspector>
+                <url-replace [hidden]="selectedView!='urlReplace'"></url-replace>
+                <config [hidden]="selectedView!='config'"></config>
+                <logs [hidden]="selectedView!='logs'"></logs>
             </div>
         </div>
     </div>

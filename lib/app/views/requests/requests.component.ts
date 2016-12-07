@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { TrafficService } from '../service/traffic.service';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { TrafficService } from '../../service/traffic.service';
 import { Observable } from 'rxjs';
+import {  ReqRes } from '../../model/http';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'home.component.html',
-    styleUrls: ['home.component.css'],
-    selector: 'home',
+    templateUrl: 'requests.component.html',
+    styleUrls: ['requests.component.css'],
+    selector: 'requests',
     host: { class: 'flex-grow' }
 })
-export class HomeComponent implements OnInit {
+export class RequestsComponent implements OnInit {
 
     constructor(private trafficService: TrafficService) { }
 
     requestsObservable: Observable<any[]>
+
+    @Output() selected = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {
@@ -39,6 +42,12 @@ export class HomeComponent implements OnInit {
         // }, []);
     }
 
-    clear() { this.trafficService.clear(); }
+    rowClicked(reqRes: ReqRes) {
+        this.selected.emit(reqRes);
+    }
+
+    clear() {
+        this.trafficService.clear();
+    }
 
 }

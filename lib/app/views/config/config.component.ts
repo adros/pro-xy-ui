@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SocketService } from '../service/socket.service';
+import { SocketService } from '../../service/socket.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -15,7 +14,7 @@ export class ConfigComponent implements OnInit {
     configObservable: Observable<any>
     updatedConfig: string
 
-    constructor(private router: Router, private socketService: SocketService) { }
+    constructor(private socketService: SocketService) { }
 
     ngOnInit(): void {
         this.configObservable = this.socketService.getConfigObservable();

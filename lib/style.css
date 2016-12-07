@@ -19,3 +19,8 @@ body {
     align-items: stretch;
     overflow-y: auto;
 }
+
+[hidden] {
+    /*stringer than normalize css*/
+    display: none !important;
+}
