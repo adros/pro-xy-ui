@@ -15,9 +15,9 @@ export class TrafficService {
     _maxRows = Infinity
     set maxRows(maxRows) {
         this._maxRows = maxRows;
-        // if (this._list.length > maxRows) {
-        //     this._list.splice(maxRows - this._list.length);
-        // }
+        if (this._list.length > maxRows) {
+            this._list.splice(maxRows - this._list.length);
+        }
     }
 
     _replacedOnly = false
@@ -28,7 +28,7 @@ export class TrafficService {
         // }
         if (replacedOnly) {
             this._list.splice(0).forEach(item => {
-                if (item._req.origUrl) {
+                if (item.origUrl) {
                     this._list.push(item);
                 }
             });

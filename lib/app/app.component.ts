@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
                 throw new Error("Config does not contain 'pro-xy-ws-api' plugin which is needed for pro-xy-ui. Not starting pro-xy.")
             }
 
-            var proxyPath = path.resolve(path.dirname(process.mainModule.filename), "./node_modules/.bin/pro-xy");
+            var proxyPath = path.resolve(path.dirname((process as any).mainModule.filename), "./node_modules/.bin/pro-xy");
             if (/^win/.test(process.platform)) {
                 proxyPath += ".cmd";
             }
@@ -76,10 +76,5 @@ export class AppComponent implements OnInit {
         if (!!content) {
             alert("Error while starting pro-xy: " + content);
         }
-    }
-
-    handleModified(event) {
-        debugger;
-        console.log(event);
     }
 }

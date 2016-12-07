@@ -1,3 +1,5 @@
+var http = nw.require("http");
+
 export class Req {
     constructor(obj) {
         if (obj) {
@@ -7,7 +9,8 @@ export class Req {
     id: number;
     url: string;
     origUrl: string;
-    method: string;
+    method: string;;
+    headers: { [key: string]: string }
 }
 
 export class Res {
@@ -18,7 +21,7 @@ export class Res {
     }
     id: number;
     statusCode: number;
-    headers: { [key: string]: any }
+    headers: { [key: string]: string }
 }
 
 export class ReqRes {
@@ -45,8 +48,23 @@ export class ReqRes {
         return ct && ct.split(";")[0];
     }
 
+    get reqHeaders() { return this._req && this._req.headers || {} }
+    get resHeaders() { return this._res && this._res.headers || {} }
+
     getResHeader(name) {
-        return this._res && this._res.headers && this._res.headers[name];
+        return this.resHeaders[name];
+    }
+
+    getReqHeader(name) {
+        return this.reqHeaders[name];
+    }
+
+    toString() {
+        var reqHeadersStr = Object.keys(this.reqHeaders).map(name => `${name}: ${this.reqHeaders[name]}`).join("\n");
+        var resHeadersStr = Object.keys(this.resHeaders).map(name => `${name}: ${this.resHeaders[name]}`).join("\n");
+        var statusStr = this.statusCode ? `${this.statusCode} ${http.STATUS_CODES[this.statusCode]}` : ""
+
+        return `${this.url}\n${reqHeadersStr}\n\n${statusStr}\n${resHeadersStr}`;
     }
 }
 
