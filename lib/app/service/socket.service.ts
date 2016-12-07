@@ -22,14 +22,24 @@ export class SocketService {
     _configSubject: Observable<Config>
     _connectStatusSubject: Observable<boolean>
 
+    reqBodyChunkObservable: Observable<any>
+    resBodyChunkObservable: Observable<any>
+    reqBodyEndObservable: Observable<any>
+    resBodyEndObservable: Observable<any>
+
     constructor(private configService: ConfigService, private zone: NgZone) {
 
         this._logsSubject = new ReplaySubject(20);
 
         var socket = this.socket = this.connect(this.getSocketPath());
         this._configSubject = Observable.fromEvent(socket, "config").map(fromObject).publishBehavior(fromObject({}));
-        this._reqSubject = Observable.fromEvent(socket, "request").map(toReq).publishReplay(100);
-        this._resSubject = Observable.fromEvent(socket, "response").map(toRes).publishReplay(100);
+        this._reqSubject = Observable.fromEvent(socket, "request").map(toReq);
+        this._resSubject = Observable.fromEvent(socket, "response").map(toRes);
+
+        this.reqBodyChunkObservable = Observable.fromEvent(socket, "request-body-chunk");
+        this.resBodyChunkObservable = Observable.fromEvent(socket, "response-body-chunk");
+        this.reqBodyEndObservable = Observable.fromEvent(socket, "request-body-end");
+        this.resBodyEndObservable = Observable.fromEvent(socket, "response-body-end");
 
         this._connectStatusSubject = Observable.merge(
             Observable.fromEvent(socket, "connect", () => true),
@@ -38,8 +48,6 @@ export class SocketService {
 
         this.connectConnectables([
             this._configSubject,
-            this._reqSubject,
-            this._resSubject,
             this._connectStatusSubject
         ]);
 

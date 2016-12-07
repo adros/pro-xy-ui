@@ -21,7 +21,7 @@
             <th>Content type</th>
             <th>Replaced</th>
         </tr>
-        <tr *ngFor="let reqRes of requestsObservable | async" (click)="rowClicked(reqRes)">
+        <tr *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)">
             <td title="{{reqRes}}">{{reqRes.method}}</td>
             <td>{{reqRes.statusCode || '...'}}</td>
             <td title="{{reqRes.url}}">{{reqRes.url}}</td>

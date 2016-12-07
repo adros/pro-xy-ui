@@ -1,4 +1,5 @@
 var http = nw.require("http");
+var zlib = nw.require("zlib");
 
 export class Req {
     constructor(obj) {
@@ -27,6 +28,12 @@ export class Res {
 export class ReqRes {
 
     _res: Res
+
+    _reqBody = []
+    _resBody = []
+
+    reqBody: string = ""
+    resBody: string = ""
 
     constructor(private _req: Req) { }
 
@@ -59,13 +66,42 @@ export class ReqRes {
         return this.reqHeaders[name];
     }
 
+    addReqChunk(chunk: ArrayBuffer) {
+        chunk && this._reqBody.push(ab2b(chunk));
+    }
+
+    addResChunk(chunk: ArrayBuffer) {
+        chunk && this._resBody.push(ab2b(chunk));
+    }
+
+    endReq() {
+        this.reqBody = Buffer.concat(this._reqBody).toString();
+    }
+
+    endRes() {
+        var buff = Buffer.concat(this._resBody);
+        if (this.getResHeader("content-encoding") == "gzip") {
+            buff = zlib.gunzipSync(buff);
+        }
+        this.resBody = buff.toString('utf8');
+    }
+
     toString() {
         var reqHeadersStr = Object.keys(this.reqHeaders).map(name => `${name}: ${this.reqHeaders[name]}`).join("\n");
         var resHeadersStr = Object.keys(this.resHeaders).map(name => `${name}: ${this.resHeaders[name]}`).join("\n");
         var statusStr = this.statusCode ? `${this.statusCode} ${http.STATUS_CODES[this.statusCode]}` : ""
 
-        return `${this.url}\n${reqHeadersStr}\n\n${statusStr}\n${resHeadersStr}`;
+        return `${this.url}\n${reqHeadersStr}\n\n${this.reqBody}\n\n----------------\n${statusStr}\n${resHeadersStr}\n\n${this.resBody}`;
     }
+}
+
+function ab2b(ab) {
+    var buffer = new Buffer(ab.byteLength);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buffer.length; ++i) {
+        buffer[i] = view[i];
+    }
+    return buffer;
 }
 
 export function toReq(obj) {

@@ -42,10 +42,6 @@ export class RequestsComponent implements OnInit {
         // }, []);
     }
 
-    rowClicked(reqRes: ReqRes) {
-        this.selected.emit(reqRes);
-    }
-
     clear() {
         this.trafficService.clear();
     }

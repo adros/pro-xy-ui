@@ -42,6 +42,11 @@ export class TrafficService {
             socketService.getRequestsObservable(),
             socketService.getResponseObservable()
         ).scan(this._process.bind(this), this._list);
+
+        socketService.reqBodyChunkObservable.subscribe(evt => this._hReqChunk(evt));
+        socketService.resBodyChunkObservable.subscribe(evt => this._hResChunk(evt));
+        socketService.reqBodyEndObservable.subscribe(evt => this._hReqEnd(evt));
+        socketService.resBodyEndObservable.subscribe(evt => this._hResEnd(evt));
     }
 
     clear() {
@@ -65,6 +70,26 @@ export class TrafficService {
             list.shift();
         }
         return list;
+    }
+
+    _hReqChunk(evt) {
+        var rr = this._cache.get(evt.id);
+        rr && rr.addReqChunk(evt.chunk);
+    }
+
+    _hResChunk(evt) {
+        var rr = this._cache.get(evt.id);
+        rr && rr.addResChunk(evt.chunk);
+    }
+
+    _hReqEnd(evt) {
+        var rr = this._cache.get(evt.id);
+        rr && rr.endReq();
+    }
+
+    _hResEnd(evt) {
+        var rr = this._cache.get(evt.id);
+        rr && rr.endRes();
     }
 
 }
