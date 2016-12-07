@@ -1,4 +1,6 @@
 textarea {
     resize: none;
     height: 100%;
+    font-size: 12px;
+    line-height: 12px;
 }

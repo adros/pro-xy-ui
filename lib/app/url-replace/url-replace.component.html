@@ -1,6 +1,6 @@
 <div *ngIf="!(configObservable|async).proxyUrlReplace.replaces.length">No replaces availible</div>
 
-<table *ngIf="(configObservable|async).proxyUrlReplace.replaces.length">
+<table *ngIf="(configObservable|async).proxyUrlReplace.replaces.length" class="table table-hover">
     <tr>
         <th>Name</th>
         <th>Pattern</th>

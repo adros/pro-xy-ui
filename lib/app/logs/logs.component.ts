@@ -20,7 +20,7 @@ export class LogsComponent implements OnInit {
 
     constructor(private zone: NgZone) { }
 
-    lines = 50
+    lines = 100
     interval = 3
 
     ngOnInit(): void {

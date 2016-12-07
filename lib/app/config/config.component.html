@@ -1,6 +1,3 @@
-<div>
-    <label for="config">Config</label>
-</div>
 <div class="form-group flex-grow">
     <textarea class="form-control" id="config" [value]="configObservable|async|json" (change)="hChange($event.target.value)" rows="20"></textarea>
 </div>

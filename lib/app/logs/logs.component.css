@@ -2,4 +2,6 @@ pre {
     height: 100%;
     width: 100%;
     white-space: pre-wrap;
+    font-size: 12px;
+    line-height: 12px;
 }
