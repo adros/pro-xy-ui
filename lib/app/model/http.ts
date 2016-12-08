@@ -1,5 +1,6 @@
 var http = nw.require("http");
 var zlib = nw.require("zlib");
+var stringify = nw.require("json-stable-stringify");
 
 export interface Req {
     id: number;
@@ -89,8 +90,8 @@ export class ReqRes {
         this.reqBody = Buffer.concat(this._reqBody).toString();
         if (this.reqBody && this.reqContentType == "application/json") {
             try {
-                this.reqBody = JSON.stringify(JSON.parse(this.reqBody), null, 2);
-                this.reqFlags += "[JSON formatted]";
+                this.reqBody = stringify(JSON.parse(this.reqBody), { space: 2 });
+                this.reqFlags += "[JSON formatted & sorted]";
             } catch (e) {
                 this.reqFlags += "[UNPARSABLE JSON]";
             }
@@ -107,8 +108,8 @@ export class ReqRes {
         this.resBody = buff.toString('utf8');
         if (this.resBody && this.resContentType == "application/json") {
             try {
-                this.resBody = JSON.stringify(JSON.parse(this.resBody), null, 2);
-                this.resFlags += "[JSON formatted]";
+                this.resBody = stringify(JSON.parse(this.resBody), { space: 2 });
+                this.resFlags += "[JSON formatted & sorted]";
             } catch (e) {
                 this.resFlags += "[UNPARSABLE JSON]";
             }
