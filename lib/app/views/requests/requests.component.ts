@@ -3,6 +3,9 @@ import { TrafficService } from '../../service/traffic.service';
 import { Observable } from 'rxjs';
 import {  ReqRes } from '../../model/http';
 
+var gui = nw.require('nw.gui');
+var clipboard = gui.Clipboard.get();
+
 @Component({
     moduleId: module.id,
     templateUrl: 'requests.component.html',
@@ -12,7 +15,13 @@ import {  ReqRes } from '../../model/http';
 })
 export class RequestsComponent implements OnInit {
 
-    constructor(private trafficService: TrafficService) { }
+    private menu: any
+
+    constructor(private trafficService: TrafficService) {
+        var menu = this.menu = new nw.Menu();
+        menu.append(new nw.MenuItem({ label: "Copy URL", click: this.copyUrl.bind(this) }));
+        menu.append(new nw.MenuItem({ label: "Copy req & res", click: this.copyAll.bind(this) }));
+    }
 
     requestsObservable: Observable<any[]>
 
@@ -44,6 +53,26 @@ export class RequestsComponent implements OnInit {
 
     clear() {
         this.trafficService.clear();
+    }
+
+    _lastReqRes: ReqRes
+
+    displayCtxMenu(reqRes: ReqRes, evt) {
+        if (evt.ctrlKey) { return; }
+        evt.preventDefault();
+
+        this._lastReqRes = reqRes;
+
+        this.menu.items[1].enabled = reqRes.isComplete;
+        this.menu.popup(evt.pageX, evt.pageY);
+    }
+
+    copyUrl() {
+        clipboard.set(this._lastReqRes.url, "text");
+    }
+
+    copyAll() {
+        clipboard.set(this._lastReqRes.toString(), "text");
     }
 
 }

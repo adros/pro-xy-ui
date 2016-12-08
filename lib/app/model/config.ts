@@ -8,24 +8,20 @@ class ProxyUrlReplace {
 export class Config {
     [key: string]: any;
 
-    constructor(obj) {
+    constructor(obj?) {
         if (obj) {
             Object.assign(this, obj);
         }
     }
 
     get proxyUrlReplace(): ProxyUrlReplace {
-        var proxyUrlReplace= this["pro-xy-url-replace"];
-        if(!proxyUrlReplace){
-          proxyUrlReplace={};
+        var proxyUrlReplace = this["pro-xy-url-replace"];
+        if (!proxyUrlReplace) {
+            proxyUrlReplace = {};
         }
-        if(!proxyUrlReplace.replaces){
-          proxyUrlReplace.replaces=[];
+        if (!proxyUrlReplace.replaces) {
+            proxyUrlReplace.replaces = [];
         }
         return proxyUrlReplace;
     }
-}
-
-export function fromObject(obj) {
-    return new Config(obj);
 }

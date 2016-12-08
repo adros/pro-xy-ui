@@ -18,7 +18,7 @@ export class StatusComponent implements OnInit {
     bufferSize = 20
 
     ngOnInit(): void {
-        this.logs = this.socketService.getLogsObservable()
+        this.logs = this.socketService.logsObservable
             .scan((arr, logStr) => {
                 arr.push(logStr);
                 return arr.slice(-1 * this.bufferSize);

@@ -16,7 +16,7 @@ export class UrlReplaceComponent implements OnInit {
     constructor(private socketService: SocketService) { }
 
     ngOnInit(): void {
-        this.configObservable = this.socketService.getConfigObservable();
+        this.configObservable = this.socketService.configObservable;
         this.configObservable.subscribe(config => { this.config = config; })
     }
 

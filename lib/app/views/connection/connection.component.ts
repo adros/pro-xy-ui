@@ -24,8 +24,8 @@ export class ConnectionComponent implements OnInit {
     constructor(private socketService: SocketService, private configService: ConfigService) { }
 
     ngOnInit(): void {
-        this.statusObservable = this.socketService.getConnectStatusObservable();
-        this.socketService.getConfigObservable().subscribe(config => {
+        this.statusObservable = this.socketService.connectStatusObservable;
+        this.socketService.configObservable.subscribe(config => {
             var replaces = config.proxyUrlReplace.replaces;
             var activeUrlReplaces = replaces.filter(r => !r.disabled).map(r => r.name);
             document.title = activeUrlReplaces.length ? `PRO-XY (${activeUrlReplaces.join(", ")})` : "PRO-XY";

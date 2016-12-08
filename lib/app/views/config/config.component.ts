@@ -17,7 +17,7 @@ export class ConfigComponent implements OnInit {
     constructor(private socketService: SocketService) { }
 
     ngOnInit(): void {
-        this.configObservable = this.socketService.getConfigObservable();
+        this.configObservable = this.socketService.configObservable;
     }
 
     save(): void {

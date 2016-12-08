@@ -1,25 +1,15 @@
 var http = nw.require("http");
 var zlib = nw.require("zlib");
 
-export class Req {
-    constructor(obj) {
-        if (obj) {
-            Object.assign(this, obj);
-        }
-    }
+export interface Req {
     id: number;
     url: string;
     origUrl: string;
-    method: string;;
+    method: string;
     headers: { [key: string]: string }
 }
 
-export class Res {
-    constructor(obj) {
-        if (obj) {
-            Object.assign(this, obj);
-        }
-    }
+export interface Res {
     id: number;
     statusCode: number;
     headers: { [key: string]: string }
@@ -28,6 +18,9 @@ export class Res {
 export class ReqRes {
 
     _res: Res
+
+    _reqDone = false
+    _resDone = false
 
     _reqBody = []
     _resBody = []
@@ -44,7 +37,7 @@ export class ReqRes {
         this._res = res;
     }
 
-    get isComplete(): boolean { return !!this.res; }
+    get isComplete(): boolean { return this._reqDone && this._resDone; }
 
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
@@ -102,6 +95,7 @@ export class ReqRes {
                 this.reqFlags += "[UNPARSABLE JSON]";
             }
         }
+        this._reqDone = true;
     }
 
     endRes() {
@@ -119,6 +113,7 @@ export class ReqRes {
                 this.resFlags += "[UNPARSABLE JSON]";
             }
         }
+        this._resDone = true;
     }
 
     toString() {
@@ -133,12 +128,4 @@ function ab2b(ab) {
         buffer[i] = view[i];
     }
     return buffer;
-}
-
-export function toReq(obj) {
-    return new Req(obj);
-}
-
-export function toRes(obj) {
-    return new Res(obj);
 }

@@ -1,8 +1,7 @@
 import { Injectable }           from "@angular/core";
 import { Observable  }          from 'rxjs/Observable';
-import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { SocketService }        from './socket.service'
-import { ReqRes, Req, Res }             from '../model/http';
+import { ReqRes, Req, Res }     from '../model/http';
 
 @Injectable()
 export class TrafficService {
@@ -38,11 +37,10 @@ export class TrafficService {
     constructor(private socketService: SocketService) {
         this._cache = new Map<number, ReqRes>();
 
-        this.traffic = Observable.merge(
-            socketService.getRequestsObservable(),
-            socketService.getResponseObservable()
-        ).scan(this._process.bind(this), this._list);
+        this.traffic = socketService.reqObservable
+            .scan(this._hReq.bind(this), this._list);
 
+        socketService.resObservable.subscribe(evt => this._hRes(evt))
         socketService.reqBodyChunkObservable.subscribe(evt => this._hReqChunk(evt));
         socketService.resBodyChunkObservable.subscribe(evt => this._hResChunk(evt));
         socketService.reqBodyEndObservable.subscribe(evt => this._hReqEnd(evt));
@@ -53,23 +51,23 @@ export class TrafficService {
         this._list.splice(0)
     }
 
-    _process(list, item) {
-        if (item instanceof Req) {
-            if (this._replacedOnly && !item.origUrl) {
-                return list;
-            }
-            var rr = new ReqRes(item);
-            list.push(rr);
-            this._cache.set(item.id, rr);
-        } else {
-            var res = item as Res;
-            var rr = this._cache.get(res.id);
-            rr && (rr.res = res);
+    _hReq(list, item: Req) {
+        if (this._replacedOnly && !item.origUrl) {
+            return list;
         }
+        var rr = new ReqRes(item);
+        list.push(rr);
+        this._cache.set(item.id, rr);
+
         if (list.length > this._maxRows) {
             list.shift();
         }
         return list;
+    }
+
+    _hRes(res: Res) {
+        var rr = this._cache.get(res.id);
+        rr && (rr.res = res);
     }
 
     _hReqChunk(evt) {

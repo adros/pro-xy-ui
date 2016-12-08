@@ -1,11 +1,11 @@
-import { Injectable, NgZone }   from "@angular/core";
+import { Injectable }   from "@angular/core";
 import { Observable  }          from 'rxjs/Observable';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 import { Subject }              from 'rxjs/Subject';
 import { ReplaySubject }        from 'rxjs/ReplaySubject';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
-import { Req, Res, toReq, toRes } from '../model/http';
-import { Config, fromObject }   from '../model/config';
+import { Req, Res } from '../model/http';
+import { Config }   from '../model/config';
 import { ConfigService }        from './config.service';
 import * as io                  from "socket.io-client";
 
@@ -14,77 +14,55 @@ var url = nw.require("url");
 @Injectable()
 export class SocketService {
 
-    socket: any
+    private socket: any
 
-    _logsSubject: Subject<string>
-    _reqSubject: Observable<Req>
-    _resSubject: Observable<Res>
-    _configSubject: Observable<Config>
-    _connectStatusSubject: Observable<boolean>
+    logsObservable: Observable<string>
+    configObservable: Observable<Config>
+    connectStatusObservable: Observable<boolean>
 
+    reqObservable: Observable<Req>
+    resObservable: Observable<Res>
     reqBodyChunkObservable: Observable<any>
     resBodyChunkObservable: Observable<any>
     reqBodyEndObservable: Observable<any>
     resBodyEndObservable: Observable<any>
 
-    constructor(private configService: ConfigService, private zone: NgZone) {
+    constructor(private configService: ConfigService) {
 
-        this._logsSubject = new ReplaySubject(20);
+        this.logsObservable = new ReplaySubject(20);
 
-        var socket = this.socket = this.connect(this.getSocketPath());
-        this._configSubject = Observable.fromEvent(socket, "config").map(fromObject).publishBehavior(fromObject({}));
-        this._reqSubject = Observable.fromEvent(socket, "request").map(toReq);
-        this._resSubject = Observable.fromEvent(socket, "response").map(toRes);
+        var socket = this.socket = this.connect(this._getSocketPath());
+        this.configObservable = Observable.fromEvent(socket, "config").map(c => new Config(c)).publishBehavior(new Config());
+        this.reqObservable = Observable.fromEvent(socket, "request");
+        this.resObservable = Observable.fromEvent(socket, "response");
 
         this.reqBodyChunkObservable = Observable.fromEvent(socket, "request-body-chunk");
         this.resBodyChunkObservable = Observable.fromEvent(socket, "response-body-chunk");
         this.reqBodyEndObservable = Observable.fromEvent(socket, "request-body-end");
         this.resBodyEndObservable = Observable.fromEvent(socket, "response-body-end");
 
-        this._connectStatusSubject = Observable.merge(
+        this.connectStatusObservable = Observable.merge(
             Observable.fromEvent(socket, "connect", () => true),
             Observable.fromEvent(socket, "disconnect", () => false)
         ).publishBehavior(false);
 
         this.connectConnectables([
-            this._configSubject,
-            this._connectStatusSubject
+            this.configObservable,
+            this.connectStatusObservable
         ]);
 
-        this._configSubject.subscribe((conf) => conf && this.log(`new config received`));
-
-        this.registerShortcut();
+        this.configObservable.subscribe((conf) => conf && this.log(`new config received`));
     }
 
-    connectConnectables(observables: any[]) {
+    private connectConnectables(observables: any[]) {
         (<ConnectableObservable<any>[]>observables).forEach(c => c.connect());
     }
 
-    log(str) {
-        this._logsSubject.next(str);
+    private log(str) {
+        (<Subject<string>>this.logsObservable).next(str);
     }
 
-    getLogsObservable(): Observable<string> {
-        return this._logsSubject;
-    }
-
-    getConfigObservable(): Observable<Config> {
-        return this._configSubject;
-    }
-
-    getRequestsObservable(): Observable<Req> {
-        return this._reqSubject;
-    }
-
-    getResponseObservable(): Observable<Res> {
-        return this._resSubject;
-    }
-
-    getConnectStatusObservable(): Observable<boolean> {
-        return this._connectStatusSubject;
-    }
-
-    connect(socketPath) {
+    private connect(socketPath) {
         this.log(`trying to connect to ${socketPath}`);
         var _socket = io.connect(socketPath, {
             reconnectionAttempts: 2,
@@ -99,7 +77,7 @@ export class SocketService {
         _socket.on("reconnecting", (err) => this.log(`reconnecting: ${err}`));
         _socket.on("reconnect_failed", (err) => {
             this.log(`reconnect_failed: ${err}`);
-            _socket.io.uri = this.getSocketPath();
+            _socket.io.uri = this._getSocketPath();
             this.log(`trying to connect to ${_socket.io.uri}`);
             _socket.io.connect();
         });
@@ -107,7 +85,7 @@ export class SocketService {
         return _socket;
     }
 
-    getPort() {
+    private getPort() {
         var defPort = this.configService.DEFAULT_PORT;
 
         try {
@@ -118,7 +96,7 @@ export class SocketService {
         }
     }
 
-    getSocketPath() {
+    private _getSocketPath() {
         return url.format({
             hostname: "localhost",
             protocol: "http",
@@ -139,14 +117,6 @@ export class SocketService {
 
     sendKillSignal() {
         this.socket.emit("kill");
-    }
-
-    registerShortcut() {
-        var shortcut = new nw.Shortcut({
-            key: "Ctrl+R",
-            active: () => this.zone.run(() => this.connectToRemote())
-        });
-        nw.App.registerGlobalHotKey(shortcut);
     }
 
     connectToRemote() {
