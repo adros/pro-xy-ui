@@ -1,6 +1,9 @@
 <div class="form-group flex-grow">
-    <textarea class="form-control" id="config" [value]="configObservable|async|json" (change)="hChange($event.target.value)" rows="20"></textarea>
+    <textarea class="form-control" [value]="model" (keyup)="model=$event.target.value" (blur)="hBlur()"></textarea>
 </div>
 <div>
-    <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!updatedConfig">Submit</button>
+    <button class="btn btn-primary" (click)="save()" [disabled]="!dirty || invalid">Submit</button>
+    <button class="btn btn-default" (click)="reset()" [disabled]="origModel==model">Reset</button>
+    <button class="btn btn-default" (click)="showDiff()" [disabled]="origModel==model">Diff</button>
+    <em style="color:red">{{message}}</em>
 </div>
