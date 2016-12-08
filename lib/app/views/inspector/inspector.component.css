@@ -5,3 +5,9 @@ pre {
     font-size: 12px;
     line-height: 12px;
 }
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #ccc;
+}

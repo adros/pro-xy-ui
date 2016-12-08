@@ -1,3 +1,13 @@
 <div *ngIf="reqRes" class="flex-grow">
-    <pre>{{reqRes}}</pre>
+    <pre (dblclick)="selectAll($event)">
+{{reqRes.url}}
+{{reqRes.reqHeadersStr}}
+<em *ngIf="reqRes.reqFlags"><br>{{reqRes.reqFlags}}<br></em>
+{{reqRes.reqBody}}
+<hr>
+{{reqRes.statusStr}}
+{{reqRes.resHeadersStr}}
+<em *ngIf="reqRes.resFlags"><br>{{reqRes.resFlags}}<br></em>
+{{reqRes.resBody}}
+    </pre>
 </div>

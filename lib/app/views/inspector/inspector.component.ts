@@ -16,4 +16,12 @@ export class InspectorComponent implements OnInit {
 
     ngOnInit(): void { }
 
+    selectAll(evt) {
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        var range = document.createRange();
+        range.selectNodeContents(evt.target);
+        sel.addRange(range);
+    }
+
 }
