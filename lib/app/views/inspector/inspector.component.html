@@ -1,6 +1,6 @@
 <div *ngIf="reqRes" class="flex-grow">
     <pre (dblclick)="selectAll($event)">
-{{reqRes.url}}
+{{reqRes.method}} {{reqRes.url}}
 {{reqRes.reqHeadersStr}}
 <em *ngIf="reqRes.reqFlags"><br>{{reqRes.reqFlags}}<br></em>
 {{reqRes.reqBody}}
