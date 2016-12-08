@@ -1,24 +1,27 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { SocketService } from './service/socket.service';
-import { StatusComponent } from './views/status/status.component';
-import { InspectorComponent } from './views/inspector/inspector.component';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
+import { SocketService } from "./service/socket.service";
+import { StatusComponent } from "./views/status/status.component";
+import { InspectorComponent } from "./views/inspector/inspector.component";
+import { Observable } from "rxjs/Observable";
+import {crateAppMenu} from "./_common/app-menu"
 
 @Component({
     moduleId: module.id,
-    selector: 'my-app',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    selector: "my-app",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
     constructor(private socketService: SocketService, private zone: NgZone) { }
 
     configObservable: Observable<Object>
 
-    @ViewChild('status') status: StatusComponent;
-    @ViewChild('inspector') inspector: InspectorComponent;
+    @ViewChild("status") status: StatusComponent;
+    @ViewChild("inspector") inspector: InspectorComponent;
 
     selectedView = "urlReplace"
+
+    menu: any
 
     ngOnInit(): void {
         this.socketService.configObservable.subscribe(config => {
@@ -28,6 +31,7 @@ export class AppComponent implements OnInit {
         });
 
         this.registerShortcut();
+        this.menu = crateAppMenu();
     }
 
     toggleStatus() {
@@ -47,5 +51,10 @@ export class AppComponent implements OnInit {
         nw.App.registerGlobalHotKey(shortcut);
     }
 
+    showAppMenu(evt) {
+        if (evt.ctrlKey) { return; }
+        evt.preventDefault();
+        this.menu.popup(evt.pageX, evt.pageY);
+    }
 
 }

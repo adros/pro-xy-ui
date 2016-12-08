@@ -59,6 +59,7 @@ export class RequestsComponent implements OnInit {
 
     displayCtxMenu(reqRes: ReqRes, evt) {
         if (evt.ctrlKey) { return; }
+        evt.stopPropagation();
         evt.preventDefault();
 
         this._lastReqRes = reqRes;
