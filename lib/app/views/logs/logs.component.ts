@@ -4,8 +4,6 @@ var path = nw.require("path");
 var fs = nw.require("fs");
 var readLastLines = nw.require("read-last-lines");
 
-
-
 @Component({
     moduleId: module.id,
     templateUrl: 'logs.component.html',
@@ -30,13 +28,11 @@ export class LogsComponent implements OnInit {
     readLog() {
         if (!fs.existsSync(this.logLocation)) {
             this.setData(`Logs file '${this.logLocation}' not found.`);
-            return;
+        } else {
+            readLastLines.read(this.logLocation, this.lines)
+                .then(lines => this.setData(lines))
+                .catch(err => this.setData(`Error while loading data\r\n${err}`));
         }
-
-        readLastLines.read(this.logLocation, this.lines)
-            .then(lines => this.setData(lines))
-            .catch(err => this.setData(`Error while loading data\r\n${err}`));
-
         setTimeout(() => this.readLog(), this.interval * 1000);
     }
 
