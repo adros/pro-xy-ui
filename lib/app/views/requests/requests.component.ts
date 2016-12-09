@@ -72,4 +72,10 @@ export class RequestsComponent implements OnInit {
         clipboard.set(this._lastReqRes.toString(), "text");
     }
 
+    getColorByStatus(reqRes: ReqRes) {
+        if (reqRes.statusCode >= 400) {
+            return "red";
+        }
+    }
+
 }
