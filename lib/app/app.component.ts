@@ -3,7 +3,7 @@ import { SocketService } from "./service/socket.service";
 import { StatusComponent } from "./views/status/status.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
 import { Observable } from "rxjs/Observable";
-import {crateAppMenu} from "./_common/app-menu"
+import { openAppMenu } from "./_common/app-menu"
 
 @Component({
     moduleId: module.id,
@@ -21,8 +21,6 @@ export class AppComponent implements OnInit {
 
     selectedView = "urlReplace"
 
-    menu: any
-
     ngOnInit(): void {
         this.socketService.configObservable.subscribe(config => {
             var replaces = config.proxyUrlReplace.replaces;
@@ -31,7 +29,6 @@ export class AppComponent implements OnInit {
         });
 
         this.registerShortcut();
-        this.menu = crateAppMenu();
     }
 
     toggleStatus() {
@@ -51,10 +48,6 @@ export class AppComponent implements OnInit {
         nw.App.registerGlobalHotKey(shortcut);
     }
 
-    showAppMenu(evt) {
-        if (evt.ctrlKey) { return; }
-        evt.preventDefault();
-        this.menu.popup(evt.pageX, evt.pageY);
-    }
+    openAppMenu = openAppMenu
 
 }

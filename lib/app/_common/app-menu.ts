@@ -3,14 +3,28 @@ var path = nw.require("path");
 var LOG_FILE_LOCATION = path.join(process.env.HOME, "pro-xy-logs/pro-xy.log");
 var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
 
-export function crateAppMenu() {
-    var mainMenu = new nw.Menu();
+var mainMenu;
+var openMenuItem;
 
-    mainMenu.append(new nw.MenuItem({
-        label: "Open",
-        submenu: createOpenMenu()
-    }));
-    return mainMenu;
+export function openAppMenu(evt) {
+    if (evt.ctrlKey) { return; }
+    evt.preventDefault();
+
+    if (!mainMenu) { mainMenu = new nw.Menu(); }
+
+    while (mainMenu.items.length) { mainMenu.removeAt(0); }
+
+    if (evt.menuItems) {
+        evt.menuItems.forEach(item => mainMenu.append(item));
+    }
+    if (!evt.preventGlobalItem) {
+        if (!openMenuItem) {
+            openMenuItem = new nw.MenuItem({ label: "Open", submenu: createOpenMenu() });
+        }
+        mainMenu.append(openMenuItem);
+    }
+
+    mainMenu.popup(evt.pageX, evt.pageY);
 }
 
 function createOpenMenu() {

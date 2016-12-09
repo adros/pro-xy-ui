@@ -15,16 +15,12 @@ import { AppComponent } from './app.component';
 import { RequestsComponent } from './views/requests/requests.component';
 import { StatusComponent } from './views/status/status.component';
 import { ConfigComponent } from './views/config/config.component';
+import { DiffDialog } from './views/config/diff-dialog.component';
 import { LogsComponent } from './views/logs/logs.component';
 import { ConnectionComponent } from './views/connection/connection.component';
 import { UrlReplaceComponent } from './views/url-replace/url-replace.component';
 import { InspectorComponent } from './views/inspector/inspector.component';
 
-//
-// import { ModalModule } from 'angular2-modal';
-// import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
-// import { ChartModule } from 'angular2-highcharts';
-//
 import { SocketService } from './service/socket.service';
 import { TrafficService } from './service/traffic.service';
 import { ConfigService } from './service/config.service';
@@ -37,9 +33,6 @@ import { ConfigService } from './service/config.service';
         // HttpModule,
         //routing,
         MaterialModule.forRoot()
-        // ModalModule.forRoot(),
-        // BootstrapModalModule,
-        // ChartModule,
         // DataTableModule
     ],
     declarations: [
@@ -52,7 +45,12 @@ import { ConfigService } from './service/config.service';
         ConnectionComponent,
         InspectorComponent,
         //pipes:
-        JsonPipe
+        JsonPipe,
+        //dialogs
+        DiffDialog
+    ],
+    entryComponents: [
+        DiffDialog
     ],
     bootstrap: [AppComponent],
     providers: [

@@ -15,12 +15,14 @@ var clipboard = gui.Clipboard.get();
 })
 export class RequestsComponent implements OnInit {
 
-    private menu: any
+    private menuItems: any[]
 
     constructor(private trafficService: TrafficService) {
-        var menu = this.menu = new nw.Menu();
-        menu.append(new nw.MenuItem({ label: "Copy URL", click: this.copyUrl.bind(this) }));
-        menu.append(new nw.MenuItem({ label: "Copy req & res", click: this.copyAll.bind(this) }));
+        this.menuItems = [
+            new nw.MenuItem({ label: "Copy URL", click: this.copyUrl.bind(this) }),
+            new nw.MenuItem({ label: "Copy req & res", click: this.copyAll.bind(this) }),
+            new nw.MenuItem({ type: "separator" })
+        ];
     }
 
     requestsObservable: Observable<any[]>
@@ -58,14 +60,8 @@ export class RequestsComponent implements OnInit {
     _lastReqRes: ReqRes
 
     displayCtxMenu(reqRes: ReqRes, evt) {
-        if (evt.ctrlKey) { return; }
-        evt.stopPropagation();
-        evt.preventDefault();
-
         this._lastReqRes = reqRes;
-
-        this.menu.items[1].enabled = reqRes.isComplete;
-        this.menu.popup(evt.pageX, evt.pageY);
+        evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
 
     copyUrl() {

@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { SocketService } from '../../service/socket.service';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from "@angular/core";
+import { SocketService } from "../../service/socket.service";
+import { Observable } from "rxjs/Observable";
+import { MdDialogRef, MdDialog } from "@angular/material";
+import { DiffDialog } from "./diff-dialog.component";
 
 var diff = nw.require("diff");
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'config.component.html',
-    styleUrls: ['config.component.css'],
-    selector: 'config',
-    host: { class: 'flex-grow' }
+    templateUrl: "config.component.html",
+    styleUrls: ["config.component.css"],
+    selector: "config",
+    host: { class: "flex-grow" }
 })
 export class ConfigComponent implements OnInit {
 
-    configObservable: Observable<any>
+    dialogRef: MdDialogRef<DiffDialog>;
 
+    constructor(private dialog: MdDialog, private socketService: SocketService) { }
+
+    configObservable: Observable<any>
+    isConcurentModification = false
     invalid = false
+
     _message = ""
     set message(message) {
         this._message = message;
@@ -45,7 +52,10 @@ export class ConfigComponent implements OnInit {
         }
     }
 
-    constructor(private socketService: SocketService) { }
+    get resetTitle() {
+        if (!this.isConcurentModification) { return ""; }
+        return "Config was modified outside of 'Config' tab. Use 'Reset' to load new config. 'Save' will override new config.";
+    }
 
     ngOnInit(): void {
         this.socketService.configObservable.subscribe(config => {
@@ -54,6 +64,8 @@ export class ConfigComponent implements OnInit {
                 this.model = model;
             }
             this.origModel = model;
+            //if still dirty - concurent modif (else - it was our save reflected back)
+            this.isConcurentModification = this.dirty;
         });
     }
 
@@ -67,12 +79,18 @@ export class ConfigComponent implements OnInit {
         this.model = JSON.stringify(JSON.parse(this.model), null, 4);
     }
 
-    reset() { this.model = this.origModel; }
+    reset() {
+        this.model = this.origModel;
+        this.isConcurentModification = false;
+    }
 
     showDiff() {
         diff.diffLines(this.origModel, this.model)
             .forEach(part => {
-                console.log(`%c ${part.value}`, `color: ${part.added ? 'green' : part.removed ? 'red' : 'black'}`);
+                console.log(`%c ${part.value}`, `color: ${part.added ? "green" : part.removed ? "red" : "black"}`);
             });
+
+        this.dialogRef = this.dialog.open(DiffDialog, { disableClose: false });
+        this.dialogRef.componentInstance.diff = diff.diffLines(this.origModel, this.model);
     }
 }

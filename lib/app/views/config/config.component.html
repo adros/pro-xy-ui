@@ -2,8 +2,11 @@
     <textarea class="form-control" [value]="model" (keyup)="model=$event.target.value" (blur)="hBlur()"></textarea>
 </div>
 <div>
-    <button class="btn btn-primary" (click)="save()" [disabled]="!dirty || invalid">Submit</button>
-    <button class="btn btn-default" (click)="reset()" [disabled]="origModel==model">Reset</button>
-    <button class="btn btn-default" (click)="showDiff()" [disabled]="origModel==model">Diff</button>
+    <button class="btn btn-primary" (click)="save()" [disabled]="!dirty || invalid">Save</button>
+    <button class="btn btn-default" (click)="reset()" [disabled]="origModel==model" [class.btn-warning]="isConcurentModification" [title]="resetTitle">
+        Reset
+        <span *ngIf="isConcurentModification"> !!!</span>
+    </button>
+    <button class="btn btn-default" (click)="showDiff()" [disabled]="origModel==model">Show diff</button>
     <em style="color:red">{{message}}</em>
 </div>
