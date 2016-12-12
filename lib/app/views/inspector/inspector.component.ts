@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {  ReqRes } from '../../model/http';
 
+var gui = nw.require('nw.gui');
+var clipboard = gui.Clipboard.get();
+
 @Component({
     moduleId: module.id,
     templateUrl: 'inspector.component.html',
@@ -12,7 +15,15 @@ export class InspectorComponent implements OnInit {
 
     @Input() reqRes: ReqRes;
 
-    constructor() { }
+    private menuItems: any[]
+
+    constructor() {
+        this.menuItems = [
+            new nw.MenuItem({ label: "Copy URL", click: () => this.reqRes && clipboard.set(this.reqRes.url, "text") }),
+            new nw.MenuItem({ label: "Copy req & res", click: () => this.reqRes && clipboard.set(this.reqRes.toString(), "text") }),
+            new nw.MenuItem({ type: "separator" })
+        ];
+    }
 
     ngOnInit(): void { }
 
@@ -22,6 +33,10 @@ export class InspectorComponent implements OnInit {
         var range = document.createRange();
         range.selectNodeContents(evt.target);
         sel.addRange(range);
+    }
+
+    hCtxMenu(evt) {
+        evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
 
 }

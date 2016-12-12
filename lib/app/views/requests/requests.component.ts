@@ -16,11 +16,11 @@ var clipboard = gui.Clipboard.get();
 export class RequestsComponent implements OnInit {
 
     private menuItems: any[]
-
+ 
     constructor(private trafficService: TrafficService) {
         this.menuItems = [
-            new nw.MenuItem({ label: "Copy URL", click: this.copyUrl.bind(this) }),
-            new nw.MenuItem({ label: "Copy req & res", click: this.copyAll.bind(this) }),
+            new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
+            new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString, "text") }),
             new nw.MenuItem({ type: "separator" })
         ];
     }
@@ -59,17 +59,9 @@ export class RequestsComponent implements OnInit {
 
     _lastReqRes: ReqRes
 
-    displayCtxMenu(reqRes: ReqRes, evt) {
+    hCtxMenu(reqRes: ReqRes, evt) {
         this._lastReqRes = reqRes;
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
-    }
-
-    copyUrl() {
-        clipboard.set(this._lastReqRes.url, "text");
-    }
-
-    copyAll() {
-        clipboard.set(this._lastReqRes.toString(), "text");
     }
 
     getColorByStatus(reqRes: ReqRes) {
