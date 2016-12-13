@@ -3,10 +3,10 @@
 </div>
 <div>
     <button class="btn btn-primary" (click)="save()" [disabled]="!dirty || invalid">Save</button>
-    <button class="btn btn-default" (click)="reset()" [disabled]="origModel==model" [class.btn-warning]="isConcurentModification" [title]="resetTitle">
+    <button class="btn btn-default" (click)="reset()" [disabled]="!dirty" [class.btn-warning]="isConcurentModification" [title]="resetTitle">
         Reset
         <span *ngIf="isConcurentModification"> !!!</span>
     </button>
-    <button class="btn btn-default" (click)="showDiff()" [disabled]="origModel==model">Show diff</button>
+    <button class="btn btn-default" (click)="showDiff()" [disabled]="!dirty">Show diff</button>
     <em style="color:red">{{message}}</em>
 </div>
