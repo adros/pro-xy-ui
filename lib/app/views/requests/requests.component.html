@@ -21,12 +21,7 @@
             <th>Content type</th>
             <th>Replaced</th>
         </tr>
-        <tr *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hCtxMenu(reqRes,$event)" [style.color]="getColorByStatus(reqRes)">
-            <td title="{{reqRes}}">{{reqRes.method}}</td>
-            <td>{{reqRes.statusCode || '...'}}</td>
-            <td title="{{reqRes.url}}">{{reqRes.url}}</td>
-            <td title="{{reqRes.resContentType}}">{{reqRes.resContentType}}</td>
-            <td title="{{reqRes.isReplaced ? reqRes.origUrl : ''}}">{{reqRes.isReplaced ? '&#10003;' : '' }}</td>
+        <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hCtxMenu(reqRes,$event)" [style.color]="getColorByStatus(reqRes)">
         </tr>
     </table>
 </div>

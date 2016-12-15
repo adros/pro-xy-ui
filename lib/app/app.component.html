@@ -1,7 +1,7 @@
 <div defaultOverlayTarget class="app" (contextmenu)="openAppMenu($event)">
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section">
-            <requests (selected)="inspect($event)"></requests>
+            <requests (selected)="selectedReqRes=$event"></requests>
         </div>
 
         <div class="flex-grow right-section">
@@ -16,7 +16,7 @@
             </header>
 
             <div class="flex-grow">
-                <inspector #inspector [hidden]="selectedView!='inspector'"></inspector>
+                <inspector #inspector [reqRes]="selectedReqRes" [hidden]="selectedView!='inspector'"></inspector>
                 <url-replace [hidden]="selectedView!='urlReplace'"></url-replace>
                 <config [hidden]="selectedView!='config'"></config>
                 <logs [hidden]="selectedView!='logs'"></logs>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "@angular/core";
 import { SocketService } from "../../service/socket.service";
 import { Observable } from "rxjs/Observable";
 import { MdDialogRef, MdDialog } from "@angular/material";
@@ -11,13 +11,14 @@ var diff = nw.require("diff");
     templateUrl: "config.component.html",
     styleUrls: ["config.component.css"],
     selector: "config",
-    host: { class: "flex-grow" }
+    host: { class: "flex-grow" },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfigComponent implements OnInit {
 
     dialogRef: MdDialogRef<DiffDialog>;
 
-    constructor(private dialog: MdDialog, private socketService: SocketService) { }
+    constructor(private dialog: MdDialog, private socketService: SocketService, private cd: ChangeDetectorRef) { }
 
     configObservable: Observable<any>
     isConcurentModification = false
@@ -66,6 +67,7 @@ export class ConfigComponent implements OnInit {
             this.origModel = model;
             //if still dirty - concurent modif (else - it was our save reflected back)
             this.isConcurentModification = this.dirty;
+            this.cd.markForCheck();
         });
     }
 

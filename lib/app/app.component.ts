@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
+import { Component, OnInit, ViewChild, NgZone ,ChangeDetectionStrategy} from "@angular/core";
 import { SocketService } from "./service/socket.service";
 import { StatusComponent } from "./views/status/status.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
@@ -9,7 +9,8 @@ import { openAppMenu } from "./_common/app-menu"
     moduleId: module.id,
     selector: "my-app",
     templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.css"]
+    styleUrls: ["./app.component.css"], 
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
     constructor(private socketService: SocketService, private zone: NgZone) { }
@@ -18,6 +19,15 @@ export class AppComponent implements OnInit {
 
     @ViewChild("status") status: StatusComponent;
     @ViewChild("inspector") inspector: InspectorComponent;
+
+    _selectedReqRes: any
+    set selectedReqRes(selectedReqRes) {
+        this._selectedReqRes = selectedReqRes;
+        this.selectedView = "inspector";
+    }
+    get selectedReqRes() {
+        return this._selectedReqRes;
+    }
 
     selectedView = "urlReplace"
 
@@ -33,11 +43,6 @@ export class AppComponent implements OnInit {
 
     toggleStatus() {
         this.status.toggle();
-    }
-
-    inspect(reqRes) {
-        this.inspector.reqRes = reqRes;
-        this.selectedView = "inspector";
     }
 
     private registerShortcut() {

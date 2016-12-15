@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
     moduleId: module.id,
     templateUrl: 'url-replace.component.html',
     styleUrls: ['url-replace.component.css'],
-    selector: 'url-replace'
+    selector: 'url-replace',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UrlReplaceComponent implements OnInit {
 

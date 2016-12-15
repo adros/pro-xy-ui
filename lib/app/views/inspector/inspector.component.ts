@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {  ReqRes } from '../../model/http';
+import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import { ReqRes } from '../../model/http';
 
 var gui = nw.require('nw.gui');
 var clipboard = gui.Clipboard.get();
@@ -11,7 +11,7 @@ var clipboard = gui.Clipboard.get();
     selector: 'inspector',
     host: { class: 'flex-grow' }
 })
-export class InspectorComponent implements OnInit {
+export class InspectorComponent implements OnChanges {
 
     @Input() reqRes: ReqRes;
 
@@ -25,18 +25,18 @@ export class InspectorComponent implements OnInit {
         ];
     }
 
-    ngOnInit(): void { }
-
-    selectAll(evt) {
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        var range = document.createRange();
-        range.selectNodeContents(evt.target);
-        sel.addRange(range);
-    }
-
     hCtxMenu(evt) {
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
+    }
+
+    _subscription: any
+
+    ngOnChanges(changes) {
+        if (this._subscription) { this._subscription.unsubscribe; delete this._subscription; }
+        var reqRes = changes.reqRes.currentValue as ReqRes;
+        if (!reqRes) { return; }
+
+        this._subscription = reqRes.updated.subscribe(() => this.cd.markForCheck());
     }
 
 }

@@ -13,6 +13,7 @@ import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { RequestsComponent } from './views/requests/requests.component';
+import { RequestsRowComponent } from './views/requests/request-row.component';
 import { StatusComponent } from './views/status/status.component';
 import { ConfigComponent } from './views/config/config.component';
 import { DiffDialog } from './views/config/diff-dialog.component';
@@ -44,6 +45,7 @@ import { ConfigService } from './service/config.service';
         LogsComponent,
         ConnectionComponent,
         InspectorComponent,
+        RequestsRowComponent,
         //pipes:
         JsonPipe,
         //dialogs

@@ -1,6 +1,8 @@
 var http = nw.require("http");
 var zlib = nw.require("zlib");
 var stringify = nw.require("json-stable-stringify");
+import {  EventEmitter } from '@angular/core';
+
 
 export interface Req {
     id: number;
@@ -16,12 +18,15 @@ export interface Res {
     headers: { [key: string]: string }
 }
 
+export enum Update {
+    RES_HEADERS,
+    REQ_BODY,
+    RES_BODY
+}
+
 export class ReqRes {
 
     _res: Res
-
-    _reqDone = false
-    _resDone = false
 
     _reqBody = []
     _resBody = []
@@ -32,13 +37,14 @@ export class ReqRes {
     resFlags: string = ""
     reqFlags: string = ""
 
+    updated = new EventEmitter<Update>();
+
     constructor(private _req: Req) { }
 
     set res(res: Res) {
         this._res = res;
+        this.updated.emit(Update.RES_HEADERS);
     }
-
-    get isComplete(): boolean { return this._reqDone && this._resDone; }
 
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
@@ -96,7 +102,7 @@ export class ReqRes {
                 this.reqFlags += "[UNPARSABLE JSON]";
             }
         }
-        this._reqDone = true;
+        this.updated.emit(Update.REQ_BODY);
     }
 
     endRes() {
@@ -114,7 +120,7 @@ export class ReqRes {
                 this.resFlags += "[UNPARSABLE JSON]";
             }
         }
-        this._resDone = true;
+        this.updated.emit(Update.RES_BODY);
     }
 
     toString() {

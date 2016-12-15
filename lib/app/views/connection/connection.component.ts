@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
 import { ConfigService } from '../../service/config.service';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,8 @@ var PROXY_ERR_OUT_PATH = path.join(os.tmpdir(), "pro-xy-tmp-err.log");
     moduleId: module.id,
     templateUrl: 'connection.component.html',
     styleUrls: ['connection.component.css'],
-    selector: 'connection'
+    selector: 'connection',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConnectionComponent implements OnInit {
 

@@ -1,5 +1,5 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import {  BehaviorSubject, } from 'rxjs/BehaviorSubject';
+import { Component, OnInit, NgZone ,ChangeDetectionStrategy} from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 var path = nw.require("path");
 var fs = nw.require("fs");
 var readLastLines = nw.require("read-last-lines");
@@ -9,7 +9,8 @@ var readLastLines = nw.require("read-last-lines");
     templateUrl: 'logs.component.html',
     styleUrls: ['logs.component.css'],
     selector: 'logs',
-    host: { class: 'flex-grow' }
+    host: { class: 'flex-grow' },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LogsComponent implements OnInit {
 

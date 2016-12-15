@@ -16,5 +16,6 @@ import "rxjs/add/operator/scan";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/publishReplay";
 import "rxjs/add/operator/publishBehavior";
+import "rxjs/add/operator/throttleTime";
 
 import "rxjs/add/operator/toPromise";

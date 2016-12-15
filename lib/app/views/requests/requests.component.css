@@ -8,23 +8,23 @@
     padding: 8px 0;
 }
 
-tr>*:nth-child(1) {
+th:nth-child(1) {
     width: 60px;
 }
 
-tr>*:nth-child(2) {
+th:nth-child(2) {
     width: 50px;
 }
 
-tr>*:nth-child(3) {
+th:nth-child(3) {
     /*width: 50%;*/
 }
 
-tr>*:nth-child(4) {
+th:nth-child(4) {
     width: 90px;
 }
 
-tr>*:nth-child(5) {
+th:nth-child(5) {
     width: 60px;
 }
 
@@ -33,8 +33,7 @@ table {
     table-layout: fixed;
 }
 
-.table th,
-.table td {
+.table th {
     padding: 2px;
     text-overflow: ellipsis;
     white-space: nowrap;

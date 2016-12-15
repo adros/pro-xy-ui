@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { TrafficService } from '../../service/traffic.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import {  ReqRes } from '../../model/http';
 
 var gui = nw.require('nw.gui');
@@ -11,13 +11,14 @@ var clipboard = gui.Clipboard.get();
     templateUrl: 'requests.component.html',
     styleUrls: ['requests.component.css'],
     selector: 'requests',
-    host: { class: 'flex-grow' }
+    host: { class: 'flex-grow' },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RequestsComponent implements OnInit {
 
     private menuItems: any[]
- 
-    constructor(private trafficService: TrafficService) {
+
+    constructor(private trafficService: TrafficService, private cd: ChangeDetectorRef) {
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
             new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString, "text") }),
@@ -25,9 +26,10 @@ export class RequestsComponent implements OnInit {
         ];
     }
 
-    requestsObservable: Observable<any[]>
+    requestsObservable: Observable<ReqRes[]>;
 
-    @Output() selected = new EventEmitter<ReqRes>();
+    @Output()
+    selected = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {
@@ -45,12 +47,7 @@ export class RequestsComponent implements OnInit {
 
     ngOnInit(): void {
         this.trafficService.maxRows = this.maxRows;
-        this.requestsObservable = this.trafficService.traffic
-        // .filter(reqRes => !this.replacedOnly || !!reqRes. origUrl)
-        // .scan((arr, req) => {
-        //     arr.push(req);
-        //     return arr.slice(-1 * this.maxRows);
-        // }, []);
+        this.requestsObservable = this.trafficService.traffic.throttleTime(100);
     }
 
     clear() {

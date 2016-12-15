@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef,ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
 import { Observable } from 'rxjs';
 
@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
     moduleId: module.id,
     templateUrl: 'status.component.html',
     styleUrls: ['status.component.css'],
-    selector: 'status'
+    selector: 'status',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatusComponent implements OnInit {
 

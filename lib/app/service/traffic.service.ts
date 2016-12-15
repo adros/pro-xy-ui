@@ -25,19 +25,20 @@ export class TrafficService {
         // if (this._list.length > maxRows) {
         //     this._list.splice(maxRows - this._list.length);
         // }
-        if (replacedOnly) {
-            this._list.splice(0).forEach(item => {
-                if (item.origUrl) {
-                    this._list.push(item);
-                }
-            });
-        }
+        // if (replacedOnly) {
+        //     this._list.splice(0).forEach(item => {
+        //         if (item.origUrl) {
+        //             this._list.push(item);
+        //         }
+        //     });
+        // }
     }
 
     constructor(private socketService: SocketService) {
         this._cache = new Map<number, ReqRes>();
 
         this.traffic = socketService.reqObservable
+            .filter(req => !this._replacedOnly || !!req.origUrl)
             .scan(this._hReq.bind(this), this._list);
 
         socketService.resObservable.subscribe(evt => this._hRes(evt))
@@ -52,9 +53,6 @@ export class TrafficService {
     }
 
     _hReq(list, item: Req) {
-        if (this._replacedOnly && !item.origUrl) {
-            return list;
-        }
         var rr = new ReqRes(item);
         list.push(rr);
         this._cache.set(item.id, rr);
