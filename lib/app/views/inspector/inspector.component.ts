@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ReqRes } from '../../model/http';
 
 var gui = nw.require('nw.gui');
@@ -17,7 +17,7 @@ export class InspectorComponent implements OnChanges {
 
     private menuItems: any[]
 
-    constructor() {
+    constructor(private cd: ChangeDetectorRef) {
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => this.reqRes && clipboard.set(this.reqRes.url, "text") }),
             new nw.MenuItem({ label: "Copy req & res", click: () => this.reqRes && clipboard.set(this.reqRes.toString(), "text") }),
