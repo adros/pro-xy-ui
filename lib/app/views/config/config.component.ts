@@ -3,6 +3,7 @@ import { SocketService } from "../../service/socket.service";
 import { Observable } from "rxjs/Observable";
 import { MdDialogRef, MdDialog } from "@angular/material";
 import { DiffDialog } from "./diff-dialog.component";
+import defaultConfig from "../../service/config.defaultConfig";
 
 var diff = nw.require("diff");
 
@@ -94,5 +95,9 @@ export class ConfigComponent implements OnInit {
 
         this.dialogRef = this.dialog.open(DiffDialog, { disableClose: false });
         this.dialogRef.componentInstance.diff = diff.diffLines(this.origModel, this.model);
+    }
+
+    loadDefault() {
+        this.model = JSON.stringify(defaultConfig, null, 4);
     }
 }

@@ -24,3 +24,7 @@ td {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.flags /deep/ span {
+    cursor: help;
+}

@@ -27,7 +27,7 @@ export class TrafficService {
         // }
         // if (replacedOnly) {
         //     this._list.splice(0).forEach(item => {
-        //         if (item.origUrl) {
+        //         if (item.headers["x-pro-xy-url-replace"]) {
         //             this._list.push(item);
         //         }
         //     });
@@ -38,7 +38,7 @@ export class TrafficService {
         this._cache = new Map<number, ReqRes>();
 
         this.traffic = socketService.reqObservable
-            .filter(req => !this._replacedOnly || !!req.origUrl)
+            .filter(req => !this._replacedOnly || !!req.headers["x-pro-xy-url-replace"])
             .scan(this._hReq.bind(this), this._list);
 
         socketService.resObservable.subscribe(evt => this._hRes(evt))

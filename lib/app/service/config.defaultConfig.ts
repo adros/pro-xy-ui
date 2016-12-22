@@ -5,13 +5,14 @@ export default {
         "pro-xy-url-replace",
         "pro-xy-header-replace",
         "pro-xy-cookie-replace",
-        "pro-xy-auto-responder",
-        "pro-xy-ws-api"
+        "pro-xy-ws-api",
+        "pro-xy-delay",
+        "pro-xy-auto-responder"
     ],
     "pro-xy-url-replace": {
         "disabled": false,
         "replaces": [
-            { 
+            {
                 "name": "my-repalce",
                 "pattern": "//localhost:..../something/svc/",
                 "replacement": "//some.server.com:8080/something/svc/",
@@ -27,6 +28,7 @@ export default {
         "disabled": true,
         "responses": [
             {
+                "disabled": false,
                 "urlPattern": "ADD SOME PATTERN",
                 "status": 200,
                 "contentType": "text/plain",
@@ -54,6 +56,16 @@ export default {
                 "header": "Content-Type",
                 "pattern": "text/html",
                 "replacement": "text/plain"
+            }
+        ]
+    },
+    "pro-xy-delay": {
+        "disabled": false,
+        "rules": [
+            {
+                "urlPattern": ".*",
+                "delay": 2000,
+                "disabled": false
             }
         ]
     }

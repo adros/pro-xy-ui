@@ -7,7 +7,6 @@ import {  EventEmitter } from '@angular/core';
 export interface Req {
     id: number;
     url: string;
-    origUrl: string;
     method: string;
     headers: { [key: string]: string }
 }
@@ -48,9 +47,8 @@ export class ReqRes {
 
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
-    get origUrl() { return this._req && this._req.origUrl; }
     get method() { return this._req && this._req.method; }
-    get isReplaced() { return this._req && !!this._req.origUrl; }
+    get isReplaced() { return !!this.getReqHeader("x-pro-xy-url-replace"); }
 
     get statusCode() { return this._res && this._res.statusCode; }
 
