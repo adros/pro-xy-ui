@@ -17,11 +17,18 @@ var clipboard = gui.Clipboard.get();
 export class RequestsComponent implements OnInit {
 
     private menuItems: any[]
+    private _miCopyReqRes: any
+    private _miAutoResponse: any
 
     constructor(private trafficService: TrafficService, private cd: ChangeDetectorRef) {
+        this._miCopyReqRes = new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString(), "text") });
+        this._miAutoResponse = new nw.MenuItem({ label: "Make auto response", click: () => this.makeAutoResponse.emit(this._lastReqRes) });
+
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
-            new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString, "text") }),
+            this._miCopyReqRes,
+            new nw.MenuItem({ type: "separator" }),
+            this._miAutoResponse,
             new nw.MenuItem({ type: "separator" })
         ];
     }
@@ -30,6 +37,9 @@ export class RequestsComponent implements OnInit {
 
     @Output()
     selected = new EventEmitter<ReqRes>();
+
+    @Output()
+    makeAutoResponse = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {
@@ -58,6 +68,10 @@ export class RequestsComponent implements OnInit {
 
     hCtxMenu(reqRes: ReqRes, evt) {
         this._lastReqRes = reqRes;
+
+        this._miCopyReqRes.enabled = reqRes.isFinished;
+        this._miAutoResponse.enabled = reqRes.isFinished;
+
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
 

@@ -45,6 +45,8 @@ export class ReqRes {
         this.updated.emit(Update.RES_HEADERS);
     }
 
+    isFinished = false
+
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
     get method() { return this._req && this._req.method; }
@@ -119,6 +121,7 @@ export class ReqRes {
             }
         }
         this.updated.emit(Update.RES_BODY);
+        this.isFinished = true;
     }
 
     toString() {

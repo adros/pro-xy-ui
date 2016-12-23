@@ -1,0 +1,36 @@
+<div [ngSwitch]="(configObservable|async).delay.missing">
+    <div *ngSwitchCase="true">
+        Url replace configuration is missing.
+        <br>See <a href="https://github.com/adros/pro-xy-delay" (click)="openUrl($event)">pro-xy-delay</a> web page for configuration options.
+    </div>
+    <div *ngSwitchDefault>
+
+        <div *ngIf="!(configObservable|async).delay.rules.length">
+            No rules availible
+            <br>See <a href="https://github.com/adros/pro-xy-delay" (click)="openUrl($event)">pro-xy-delay</a> web page for configuration options.
+        </div>
+
+        <table *ngIf="(configObservable|async).delay.rules.length" class="table table-hover">
+            <tr>
+                <th>
+                    <div class="checkbox">
+                        <label style="font-weight:bold">
+                        <input type="checkbox" [checked]="!(configObservable|async).delay.disabled" (change)="toggleDisabled()">Delay enabled
+                    </label>
+                    </div>
+                </th>
+                <th>Delay</th>
+            </tr>
+            <tr *ngFor="let item of (configObservable|async).delay.rules; let i = index">
+                <td>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)" [disabled]="(configObservable|async).delay.disabled">{{item.urlPattern}}
+                        </label>
+                    </div>
+                </td>
+                <td>{{item.delay}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

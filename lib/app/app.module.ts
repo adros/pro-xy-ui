@@ -21,6 +21,9 @@ import { LogsComponent } from './views/logs/logs.component';
 import { ConnectionComponent } from './views/connection/connection.component';
 import { UrlReplaceComponent } from './views/url-replace/url-replace.component';
 import { InspectorComponent } from './views/inspector/inspector.component';
+import { AutoResponder } from './views/auto-responder/auto-responder.component';
+import { DelayComponent } from './views/delay/delay.component';
+
 
 import { SocketService } from './service/socket.service';
 import { TrafficService } from './service/traffic.service';
@@ -46,6 +49,8 @@ import { ConfigService } from './service/config.service';
         ConnectionComponent,
         InspectorComponent,
         RequestsRowComponent,
+        AutoResponder,
+        DelayComponent,
         //pipes:
         JsonPipe,
         //dialogs

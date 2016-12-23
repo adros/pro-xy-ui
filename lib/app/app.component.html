@@ -9,6 +9,8 @@
                 <nav>
                     <button class="btn btn-default" [class.active]="selectedView=='inspector'" (click)="this.selectedView='inspector'">Inspector</button>
                     <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'">Url replace</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'">Auto responder</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'">Delay</button>
                     <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'">Config</button>
                     <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'">Logs</button>
                 </nav>
@@ -18,6 +20,8 @@
             <div class="flex-grow">
                 <inspector #inspector [reqRes]="selectedReqRes" [hidden]="selectedView!='inspector'"></inspector>
                 <url-replace [hidden]="selectedView!='urlReplace'"></url-replace>
+                <auto-responder [hidden]="selectedView!='autoResponder'"></auto-responder>
+                <delay [hidden]="selectedView!='delay'"></delay>
                 <config [hidden]="selectedView!='config'"></config>
                 <logs [hidden]="selectedView!='logs'"></logs>
             </div>

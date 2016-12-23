@@ -1,20 +1,38 @@
-<div *ngIf="!(configObservable|async).proxyUrlReplace.replaces.length">No replaces availible</div>
+<div [ngSwitch]="(configObservable|async).urlReplace.missing">
+    <div *ngSwitchCase="true">
+        Url replace configuration is missing.
+        <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web page for configuration options.
+    </div>
+    <div *ngSwitchDefault>
 
-<table *ngIf="(configObservable|async).proxyUrlReplace.replaces.length" class="table table-hover">
-    <tr>
-        <th>Name</th>
-        <th>Pattern</th>
-        <th>Replace</th>
-    </tr>
-    <tr *ngFor="let item of (configObservable|async).proxyUrlReplace.replaces; let i = index">
-        <td class="replace-name">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)">{{item.name}}
+        <div *ngIf="!(configObservable|async).urlReplace.replaces.length">
+            No replaces availible
+            <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web page for configuration options.
+        </div>
+
+        <table *ngIf="(configObservable|async).urlReplace.replaces.length" class="table table-hover">
+            <tr>
+                <th>
+                    <div class="checkbox">
+                        <label style="font-weight:bold">
+                        <input type="checkbox" [checked]="!(configObservable|async).urlReplace.disabled" (change)="toggleDisabled()">Url repalce enabled
+                    </label>
+                    </div>
+                </th>
+                <th>Pattern</th>
+                <th>Replace</th>
+            </tr>
+            <tr *ngFor="let item of (configObservable|async).urlReplace.replaces; let i = index">
+                <td class="replace-name">
+                    <div class="checkbox">
+                        <label>
+                    <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)" [disabled]="(configObservable|async).urlReplace.disabled">{{item.name}}
                 </label>
-            </div>
-        </td>
-        <td class="replace-detail">{{item.pattern}}</td>
-        <td class="replace-detail">{{item.replacement}}</td>
-    </tr>
-</table>
+                    </div>
+                </td>
+                <td class="replace-detail">{{item.pattern}}</td>
+                <td class="replace-detail">{{item.replacement}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

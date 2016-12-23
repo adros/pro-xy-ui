@@ -4,13 +4,13 @@ import { ConfigListBase } from '../config-list-base'
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'url-replace.component.html',
-    styleUrls: ['url-replace.component.css'],
-    selector: 'url-replace',
+    templateUrl: 'delay.component.html',
+    styleUrls: ['delay.component.css'],
+    selector: 'delay',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UrlReplaceComponent extends ConfigListBase {
-    configProperty = "urlReplace"
+export class DelayComponent extends ConfigListBase {
+    configProperty = "delay"
 
     //TODO: how can we move this to parent?
     constructor(socketService: SocketService) {

@@ -1,0 +1,40 @@
+<div [ngSwitch]="(configObservable|async).autoResponder.missing">
+    <div *ngSwitchCase="true">
+        Auto responder configuration is missing.
+        <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a> web page for configuration options.
+    </div>
+    <div *ngSwitchDefault>
+
+        <div *ngIf="!(configObservable|async).autoResponder.responses.length">
+            No auto responses availible
+            <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a> web page for configuration options.
+        </div>
+
+        <table *ngIf="(configObservable|async).autoResponder.responses.length" class="table table-hover">
+            <tr>
+                <th>
+                    <div class="checkbox">
+                        <label style="font-weight:bold">
+                        <input type="checkbox" [checked]="!(configObservable|async).autoResponder.disabled" (change)="toggleDisabled()">Auto responder enabled
+                    </label>
+                    </div>
+                </th>
+                <th>Target</th>
+                <th>Status</th>
+                <th>Content type</th>
+            </tr>
+            <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index">
+                <td class="replace-name">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)" [disabled]="(configObservable|async).autoResponder.disabled">{{item.urlPattern}}
+                        </label>
+                    </div>
+                </td>
+                <td class="replace-detail"><a href="#" title="Open in system editor" (click)="openFile($event,item)">{{item.target}}</a></td>
+                <td class="replace-detail">{{item.status}}</td>
+                <td class="replace-detail">{{item.contentType}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

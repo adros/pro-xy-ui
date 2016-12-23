@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.socketService.configObservable.subscribe(config => {
-            var replaces = config.proxyUrlReplace.replaces;
+            var replaces = config.urlReplace.replaces;
             var activeUrlReplaces = replaces.filter(r => !r.disabled).map(r => r.name);
             document.title = activeUrlReplaces.length ? `PRO-XY (${activeUrlReplaces.join(", ")})` : "PRO-XY";
         });
