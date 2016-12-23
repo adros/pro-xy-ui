@@ -1,7 +1,7 @@
 <div defaultOverlayTarget class="app" (contextmenu)="openAppMenu($event)">
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section">
-            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event)"></requests>
+            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'"></requests>
         </div>
 
         <div class="flex-grow right-section">
