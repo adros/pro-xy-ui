@@ -20,8 +20,9 @@
                     </div>
                 </th>
                 <th>Target</th>
+                <th>Method</th>
                 <th>Status</th>
-                <th>Content type</th>
+                <th>Headers</th>
             </tr>
             <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index">
                 <td class="replace-name">
@@ -32,8 +33,9 @@
                     </div>
                 </td>
                 <td class="replace-detail"><a href="#" title="Open in system editor" (click)="openFile($event,item)">{{item.target}}</a></td>
+                <td class="replace-detail">{{item.method}}</td>
                 <td class="replace-detail">{{item.status}}</td>
-                <td class="replace-detail">{{item.contentType}}</td>
+                <td class="replace-detail" [style.cursor]="item.headers?'help':'default'" title="{{item.headers|json}}">{{item.headers ? "&#123; JSON &#125;" : ""}}</td>
             </tr>
         </table>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, NgZone ,ChangeDetectionStrategy} from "@angular/core";
+import { Component, OnInit, ViewChild, NgZone, ChangeDetectionStrategy} from "@angular/core";
 import { SocketService } from "./service/socket.service";
 import { StatusComponent } from "./views/status/status.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
@@ -9,7 +9,7 @@ import { openAppMenu } from "./_common/app-menu"
     moduleId: module.id,
     selector: "my-app",
     templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.css"], 
+    styleUrls: ["./app.component.css"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
 
     @ViewChild("status") status: StatusComponent;
     @ViewChild("inspector") inspector: InspectorComponent;
+    @ViewChild("autoResponder") autoResponder: any;
 
     _selectedReqRes: any
     set selectedReqRes(selectedReqRes) {

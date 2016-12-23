@@ -63,8 +63,8 @@ export class ReqRes {
         return ct && ct.split(";")[0];
     }
 
-    get reqHeaders() { return this._req && this._req.headers || {} }
-    get resHeaders() { return this._res && this._res.headers || {} }
+    get reqHeaders() { return Object.assign({}, this._req && this._req.headers); }
+    get resHeaders() { return Object.assign({}, this._res && this._res.headers); }
 
     get reqHeadersStr() {
         return Object.keys(this.reqHeaders).map(name => `${name}: ${this.reqHeaders[name]}`).join("\n");
@@ -107,7 +107,7 @@ export class ReqRes {
 
     endRes() {
         var buff = Buffer.concat(this._resBody);
-        if (this.getResHeader("content-encoding") == "gzip") {
+        if (this.isGzip) {
             this.resFlags += "[GZIP decoded]";
             buff = zlib.gunzipSync(buff);
         }
@@ -122,6 +122,10 @@ export class ReqRes {
         }
         this.updated.emit(Update.RES_BODY);
         this.isFinished = true;
+    }
+
+    get isGzip() {
+        return this.getResHeader("content-encoding") == "gzip";
     }
 
     toString() {

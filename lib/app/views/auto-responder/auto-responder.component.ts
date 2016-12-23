@@ -1,7 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
-import { ConfigListBase } from '../config-list-base'
+import { ConfigListBase } from '../config-list-base';
+import { ReqRes } from '../../model/http';
+
 var path = nw.require("path");
+var url = nw.require("url");
+var fs = nw.require("fs");
+var format = nw.require('date-format');
+var escapeStringRegexp = nw.require('escape-string-regexp');
 
 @Component({
     moduleId: module.id,
@@ -23,7 +29,13 @@ export class AutoResponder extends ConfigListBase {
 
     openFile(event, item) {
         event.preventDefault();
-        nw.Shell.openItem(this.getFileLocation(item.target));
+
+        var path = this.getFileLocation(item.target)
+
+        if (!fs.existsSync(path)) {
+            fs.writeFileSync(path, "");
+        }
+        nw.Shell.openItem(path);
     }
 
     getFileLocation(target) {
@@ -31,6 +43,39 @@ export class AutoResponder extends ConfigListBase {
             return target;
         }
         return path.join(process.env.HOME, ".auto-respond", target);
+    }
+
+    add(reqRes: ReqRes) {
+        if (!this.config) {
+            alert("Config not availible");
+            return;
+        }
+
+        var headers = reqRes.resHeaders;
+        if (reqRes.isGzip) {
+            //we have unzipped the response
+            delete headers["content-encoding"];
+        }
+
+        var fileName = makeName(reqRes.url);
+        var path = this.getFileLocation(fileName);
+
+        fs.writeFileSync(path, reqRes.resBody);
+
+        this.config.addAutoResponse({
+            urlPattern: escapeStringRegexp(reqRes.url),
+            status: reqRes.statusCode,
+            headers: headers,
+            method: reqRes.method,
+            target: fileName,
+            disabled: false
+        });
+        this.socketService.replaceConfig(this.config);
+
+        function makeName(_url) {
+            var path = url.parse(_url).pathname.replace(/\/$/, "");
+            return `${path.split("/").slice(-2).join("_")}_${format('yyyyMMdd_hhmmss', new Date())}`;
+        }
     }
 
 }

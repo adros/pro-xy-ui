@@ -22,7 +22,7 @@ export class RequestsComponent implements OnInit {
 
     constructor(private trafficService: TrafficService, private cd: ChangeDetectorRef) {
         this._miCopyReqRes = new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString(), "text") });
-        this._miAutoResponse = new nw.MenuItem({ label: "Make auto response", click: () => this.makeAutoResponse.emit(this._lastReqRes) });
+        this._miAutoResponse = new nw.MenuItem({ label: "Save as auto response", click: () => this.autoResponse.emit(this._lastReqRes) });
 
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
@@ -39,7 +39,7 @@ export class RequestsComponent implements OnInit {
     selected = new EventEmitter<ReqRes>();
 
     @Output()
-    makeAutoResponse = new EventEmitter<ReqRes>();
+    autoResponse = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {

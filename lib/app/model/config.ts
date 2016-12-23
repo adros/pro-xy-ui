@@ -46,4 +46,18 @@ export class Config {
         }
         return delay;
     }
+
+    addAutoResponse(response) {
+        var autoResponder = this.autoResponder;
+        if (autoResponder.missing) {
+            autoResponder = this["pro-xy-auto-responder"] = {
+                disabled: false,
+                responses: []
+            };
+        }
+        if (!autoResponder.responses) {
+            autoResponder.responses = [];
+        }
+        autoResponder.responses.push(response);
+    }
 }
