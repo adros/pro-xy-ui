@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
     openAppMenu = openAppMenu
 
     checkVersion() {
-        this.http.get("http://registry.npmjs.org/pro-xy-ui")
+        this.http.get("http://registry.npmjs.org/pro-xy-ui?cacheBust=" + Math.random())
             .toPromise()
             .then(response => {
                 var currentVersion = nw.require("nw.gui").App.manifest.version;
