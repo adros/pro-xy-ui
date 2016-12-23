@@ -4,7 +4,7 @@ import { MaterialModule } from '@angular/material';
 
 import {JsonPipe} from './_common/pipes';
 import { FormsModule } from '@angular/forms';
-// import { HttpModule } from '@angular/http';
+import { HttpModule } from '@angular/http';
 
 import './_common/rxjs-extensions'; //load extensions
 
@@ -34,7 +34,7 @@ import { ConfigService } from './service/config.service';
     imports: [
         BrowserModule,
         FormsModule,
-        // HttpModule,
+        HttpModule,
         //routing,
         MaterialModule.forRoot()
         // DataTableModule

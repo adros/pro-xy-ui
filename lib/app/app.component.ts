@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild, NgZone, ChangeDetectionStrategy} from "@angular/core";
+import { Http, Response } from '@angular/http';
 import { SocketService } from "./service/socket.service";
 import { StatusComponent } from "./views/status/status.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
 import { Observable } from "rxjs/Observable";
-import { openAppMenu } from "./_common/app-menu"
+import { openAppMenu } from "./_common/app-menu";
+import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+
+var semver = nw.require("semver");
 
 @Component({
     moduleId: module.id,
@@ -13,7 +17,7 @@ import { openAppMenu } from "./_common/app-menu"
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-    constructor(private socketService: SocketService, private zone: NgZone) { }
+    constructor(private socketService: SocketService, private zone: NgZone, private http: Http, private snackBar: MdSnackBar) { }
 
     configObservable: Observable<Object>
 
@@ -40,6 +44,9 @@ export class AppComponent implements OnInit {
         });
 
         this.registerShortcut();
+
+        this.checkVersion();
+
     }
 
     toggleStatus() {
@@ -55,5 +62,25 @@ export class AppComponent implements OnInit {
     }
 
     openAppMenu = openAppMenu
+
+    checkVersion() {
+        this.http.get("http://registry.npmjs.org/pro-xy-ui")
+            .toPromise()
+            .then(response => {
+                var currentVersion = nw.require("nw.gui").App.manifest.version;
+                var latestVersion = response.json()["dist-tags"].latest;
+
+                if (semver.gt(latestVersion, currentVersion)) {
+                    this.snackBar.open(`New version availible ${latestVersion} (current version ${currentVersion})`, null, {
+                        duration: 4000,
+                    } as MdSnackBarConfig);
+                }
+
+            })
+            .catch(err => console.error("Error while geting lates version", err));
+
+
+
+    }
 
 }
