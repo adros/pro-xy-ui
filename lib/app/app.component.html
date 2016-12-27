@@ -7,12 +7,12 @@
         <div class="flex-grow right-section">
             <header>
                 <nav>
-                    <button class="btn btn-default" [class.active]="selectedView=='inspector'" (click)="this.selectedView='inspector'">Inspector</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'">Url replace</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'">Auto responder</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'">Delay</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'">Config</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'">Logs</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='inspector'" (click)="this.selectedView='inspector'" [disabled]="!(statusObservable|async)">Inspector</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'" [disabled]="!(statusObservable|async)">Url replace</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'" [disabled]="!(statusObservable|async)">Auto responder</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
                 </nav>
                 <connection></connection>
             </header>

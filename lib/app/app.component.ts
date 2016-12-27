@@ -19,7 +19,8 @@ var semver = nw.require("semver");
 export class AppComponent implements OnInit {
     constructor(private socketService: SocketService, private zone: NgZone, private http: Http, private snackBar: MdSnackBar) { }
 
-    configObservable: Observable<Object>
+    configObservable: Observable<Object>;
+    statusObservable: Observable<boolean>;
 
     @ViewChild("status") status: StatusComponent;
     @ViewChild("inspector") inspector: InspectorComponent;
@@ -44,9 +45,10 @@ export class AppComponent implements OnInit {
         });
 
         this.registerShortcut();
-
         this.checkVersion();
 
+        this.statusObservable = this.socketService.connectStatusObservable;
+        this.statusObservable.subscribe(connected => !connected && (this.selectedView = "logs"))
     }
 
     toggleStatus() {
@@ -78,9 +80,5 @@ export class AppComponent implements OnInit {
 
             })
             .catch(err => console.error("Error while geting lates version", err));
-
-
-
     }
-
 }
