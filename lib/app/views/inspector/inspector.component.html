@@ -1,3 +1,5 @@
+<div *ngIf="!reqRes">Select a request in left panel to inspect.</div>
+
 <div *ngIf="reqRes" class="flex-grow" (contextmenu)="hCtxMenu($event)">
     <pre (dblclick)="selectAll($event)">
 {{reqRes.method}} {{reqRes.url}}

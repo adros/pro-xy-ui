@@ -10,72 +10,80 @@ var format = nw.require('date-format');
 var escapeStringRegexp = nw.require('escape-string-regexp');
 
 @Component({
-    moduleId: module.id,
-    templateUrl: 'auto-responder.component.html',
-    styleUrls: ['auto-responder.component.css'],
-    selector: 'auto-responder',
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
+	moduleId: module.id,
+	templateUrl: 'auto-responder.component.html',
+	styleUrls: [
+		'auto-responder.component.css'
+	],
+	selector: 'auto-responder',
+	changeDetection: ChangeDetectionStrategy.OnPush
+	})
 export class AutoResponder extends ConfigListBase {
 
-    configProperty = "autoResponder"
+		configProperty = "autoResponder"
 
-    //TODO: how can we move this to parent?
-    constructor(socketService: SocketService) {
-        super();
-        this.socketService = socketService;
-    }
+		//TODO: how can we move this to parent?
+		constructor(socketService: SocketService) {
+			super();
+			this.socketService = socketService;
+		}
 
 
-    openFile(event, item) {
-        event.preventDefault();
+		openFile(event, item) {
+			event.preventDefault();
 
-        var path = this.getFileLocation(item.target)
+			var path = this.getFileLocation(item.target)
 
-        if (!fs.existsSync(path)) {
-            fs.writeFileSync(path, "");
-        }
-        nw.Shell.openItem(path);
-    }
+			if (!fs.existsSync(path)) {
+				fs.writeFileSync(path, "");
+			}
+			nw.Shell.openItem(path);
+		}
 
-    getFileLocation(target) {
-        if (path.isAbsolute(target)) {
-            return target;
-        }
-        return path.join(process.env.HOME, ".auto-respond", target);
-    }
+		getFileLocation(target) {
+			if (path.isAbsolute(target)) {
+				return target;
+			}
+			return path.join(process.env.HOME, ".auto-respond", target);
+		}
 
-    add(reqRes: ReqRes) {
-        if (!this.config) {
-            alert("Config not availible");
-            return;
-        }
+		add(reqRes: ReqRes) {
+			if (!this.config) {
+				alert("Config not availible");
+				return;
+			}
 
-        var headers = reqRes.resHeaders;
-        if (reqRes.isGzip) {
-            //we have unzipped the response
-            delete headers["content-encoding"];
-        }
+			var headers = reqRes.resHeaders;
+			if (reqRes.isGzip) {
+				//we have unzipped the response
+				delete headers["content-encoding"];
+			}
+			delete headers["content-length"]; //node will count it automatically
 
-        var fileName = makeName(reqRes.url);
-        var path = this.getFileLocation(fileName);
+			var fileName = makeName(reqRes.url);
+			var filePath = this.getFileLocation(fileName);
 
-        fs.writeFileSync(path, reqRes.resBody);
+			var autoRespFolder = path.join(process.env.HOME, ".auto-respond");
+			if (!fs.existsSync(autoRespFolder)) {
+				fs.mkdirSync(autoRespFolder);
+			}
 
-        this.config.addAutoResponse({
-            urlPattern: escapeStringRegexp(reqRes.url),
-            status: reqRes.statusCode,
-            headers: headers,
-            method: reqRes.method,
-            target: fileName,
-            disabled: false
-        });
-        this.socketService.replaceConfig(this.config);
+			fs.writeFileSync(filePath, reqRes.resBody);
 
-        function makeName(_url) {
-            var path = url.parse(_url).pathname.replace(/\/$/, "");
-            return `${path.split("/").slice(-2).join("_")}_${format('yyyyMMdd_hhmmss', new Date())}`;
-        }
-    }
+			this.config.addAutoResponse({
+				urlPattern: "^" + escapeStringRegexp(reqRes.url) + "$",
+				status: reqRes.statusCode,
+				headers: headers,
+				method: reqRes.method,
+				target: fileName,
+				disabled: false
+			});
+			this.socketService.replaceConfig(this.config);
 
-}
+			function makeName(_url) {
+				var path = url.parse(_url).pathname.replace(/\/$/, "");
+				return `${path.split("/").slice(-2).join("_")}_${format('yyyyMMdd_hhmmss', new Date())}`;
+			}
+		}
+
+	}
