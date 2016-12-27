@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from "@angular/core";
 import { SocketService } from "../../service/socket.service";
 import { Observable } from "rxjs/Observable";
-import { MdDialogRef, MdDialog } from "@angular/material";
-import { DiffDialog } from "./diff-dialog.component";
+import { MdDialog } from "@angular/material";
+import { DiffDialog } from "./diff.dialog";
+import { PluginsDialog } from "./plugins.dialog";
 import defaultConfig from "../../service/config.defaultConfig";
+import { Config } from "../../model/config";
 
 var diff = nw.require("diff");
 
@@ -17,9 +19,10 @@ var diff = nw.require("diff");
 })
 export class ConfigComponent implements OnInit {
 
-    dialogRef: MdDialogRef<DiffDialog>;
-
     constructor(private dialog: MdDialog, private socketService: SocketService, private cd: ChangeDetectorRef) { }
+
+    @Output()
+    restartNeeded = new EventEmitter<any>();
 
     configObservable: Observable<any>
     isConcurentModification = false
@@ -70,6 +73,11 @@ export class ConfigComponent implements OnInit {
             this.isConcurentModification = this.dirty;
             this.cd.markForCheck();
         });
+
+        this.socketService.configObservable
+            .filter(config => !config.isEmpty)
+            .first()
+            .subscribe(config => this.checkPlugins(config));
     }
 
     save(): void {
@@ -93,11 +101,29 @@ export class ConfigComponent implements OnInit {
                 console.log(`%c ${part.value}`, `color: ${part.added ? "green" : part.removed ? "red" : "black"}`);
             });
 
-        this.dialogRef = this.dialog.open(DiffDialog, { disableClose: false });
-        this.dialogRef.componentInstance.diff = diff.diffLines(this.origModel, this.model);
+        var dialogRef = this.dialog.open(DiffDialog, {
+            disableClose: false,
+            height: '90%',
+            width: '850px'
+        });
+        dialogRef.componentInstance.diff = diff.diffLines(this.origModel, this.model);
     }
 
-    loadDefault() {
-        this.model = JSON.stringify(defaultConfig, null, 4);
+    defaultConfigJson = JSON.stringify(defaultConfig, null, 4)
+
+    checkPlugins(config: Config) {
+        if (JSON.stringify(config.plugins) == JSON.stringify(defaultConfig.plugins)) { return; }
+        var dialogRef = this.dialog.open(PluginsDialog, {
+            disableClose: true,
+            height: '450px',
+            width: '850px'
+        });
+        dialogRef.componentInstance.plugins = { current: config.plugins, expected: defaultConfig.plugins };
+
+        dialogRef.afterClosed().subscribe(doReplace => {
+            if (!doReplace) { return; }
+            this.socketService.updateConfig(Object.assign(config, { plugins: defaultConfig.plugins }));
+            this.restartNeeded.emit();
+        });
     }
 }

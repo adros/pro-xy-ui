@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
 import { ConfigService } from '../../service/config.service';
 import { Observable } from 'rxjs/Observable';
@@ -71,5 +71,10 @@ export class ConnectionComponent implements OnInit {
         if (!!content) {
             alert("Error while starting pro-xy: " + content);
         }
+    }
+
+    restart() {
+        this.socketService.sendKillSignal();
+        setTimeout(() => { this.startProxy() }, 500); //wait little bit
     }
 }

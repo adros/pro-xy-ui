@@ -4,8 +4,8 @@ import { MdDialogRef } from '@angular/material';
 @Component({
     moduleId: module.id,
     selector: "diff-dialog",
-    styles: ["pre{max-height:800px;}"],
-    templateUrl: "diff-dialog.component.html",
+    styles: ["pre{height: calc(100% - 10px);}"],
+    templateUrl: "diff.dialog.html",
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DiffDialog {

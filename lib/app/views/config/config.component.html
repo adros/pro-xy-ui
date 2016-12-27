@@ -8,7 +8,7 @@
         <span *ngIf="isConcurentModification"> !!!</span>
     </button>
     <button class="btn btn-default" (click)="showDiff()" [disabled]="!dirty">Show diff</button>
-    <button class="btn btn-default" (click)="loadDefault()">Load default</button>
+    <button class="btn btn-default" (click)="this.model = this.defaultConfigJson">Load default</button>
 
     <em style="color:red">{{message}}</em>
 </div>

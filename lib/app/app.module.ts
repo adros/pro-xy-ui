@@ -16,7 +16,8 @@ import { RequestsComponent } from './views/requests/requests.component';
 import { RequestsRowComponent } from './views/requests/request-row.component';
 import { StatusComponent } from './views/status/status.component';
 import { ConfigComponent } from './views/config/config.component';
-import { DiffDialog } from './views/config/diff-dialog.component';
+import { DiffDialog } from './views/config/diff.dialog';
+import { PluginsDialog } from './views/config/plugins.dialog';
 import { LogsComponent } from './views/logs/logs.component';
 import { ConnectionComponent } from './views/connection/connection.component';
 import { UrlReplaceComponent } from './views/url-replace/url-replace.component';
@@ -54,10 +55,12 @@ import { ConfigService } from './service/config.service';
         //pipes:
         JsonPipe,
         //dialogs
-        DiffDialog
+        DiffDialog,
+        PluginsDialog
     ],
     entryComponents: [
-        DiffDialog
+        DiffDialog,
+        PluginsDialog
     ],
     bootstrap: [AppComponent],
     providers: [

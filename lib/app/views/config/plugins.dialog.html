@@ -1,0 +1,17 @@
+<p>Your plugins configuration does not match recommended plugins configuration.</p>
+<p>Some PRO-XY-UI features may not work correctly, or not work at all.</p>
+<p>This state may be caused by updating to newer version, which have different plugins requirements than older version.</p>
+
+<table class="table">
+    <tr>
+        <th>Recommended</th>
+        <th>Current</th>
+    </tr>
+    <tr>
+        <td [innerHTML]="plugins.expected.join('&lt;br&gt;')"></td>
+        <td [innerHTML]="plugins.current.join('&lt;br&gt;')"></td>
+    </tr>
+</table>
+
+<button class="btn btn-primary" (click)="dialogRef.close(true)">Replace with recommended config</button>
+<button class="btn btn-default" (click)="dialogRef.close(false)">Keep current config</button>

@@ -6,18 +6,24 @@ class urlReplace {
 
 
 export class Config {
-    [key: string]: any;
+    plugins: string[]
+
+    isEmpty = false
 
     constructor(obj?) {
         if (obj) {
             Object.assign(this, obj);
+        } else {
+            this.isEmpty = true;
         }
     }
 
     get urlReplace(): urlReplace {
         var urlReplace = this["pro-xy-url-replace"];
         if (!urlReplace) {
-            urlReplace = { missing: true };
+            urlReplace = {
+                missing: true
+            };
         }
         if (!urlReplace.replaces) {
             urlReplace.replaces = [];
@@ -28,7 +34,9 @@ export class Config {
     get autoResponder() {
         var autoResponder = this["pro-xy-auto-responder"];
         if (!autoResponder) {
-            autoResponder = { missing: true };
+            autoResponder = {
+                missing: true
+            };
         }
         if (!autoResponder.responses) {
             autoResponder.responses = [];
@@ -39,7 +47,9 @@ export class Config {
     get delay() {
         var delay = this["pro-xy-delay"];
         if (!delay) {
-            delay = { missing: true };
+            delay = {
+                missing: true
+            };
         }
         if (!delay.rules) {
             delay.rules = [];
