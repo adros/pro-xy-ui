@@ -1,7 +1,7 @@
 <div defaultOverlayTarget class="app" (contextmenu)="openAppMenu($event)">
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section">
-            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'"></requests>
+            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'" (compose)="this.composerReqRes=$event;this.selectedView='composer';"></requests>
         </div>
 
         <div class="flex-grow right-section">
@@ -23,7 +23,7 @@
                 <url-replace [hidden]="selectedView!='urlReplace'"></url-replace>
                 <auto-responder #autoResponder [hidden]="selectedView!='autoResponder'"></auto-responder>
                 <delay [hidden]="selectedView!='delay'"></delay>
-                <composer [hidden]="selectedView!='composer'"></composer>
+                <composer #composer [reqRes]="composerReqRes" [hidden]="selectedView!='composer'"></composer>
                 <config [hidden]="selectedView!='config'" (restartNeeded)=connection.restart()></config>
                 <logs [hidden]="selectedView!='logs'"></logs>
             </div>

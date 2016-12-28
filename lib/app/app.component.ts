@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
     @ViewChild("inspector") inspector: InspectorComponent;
     @ViewChild("autoResponder") autoResponder: any;
     @ViewChild("connection") connection: any;
+    @ViewChild("composer") composer: any;
 
     _selectedReqRes: any
     set selectedReqRes(selectedReqRes) {

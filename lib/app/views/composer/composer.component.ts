@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { SocketService } from '../../service/socket.service';
+import { ReqRes } from '../../model/http';
 var app = nw.require('nw.gui').App;
 var validUrl = nw.require('valid-url');
 
@@ -26,6 +27,12 @@ export class ComposerComponent implements OnInit {
     }
 
     invalid = false
+
+    @Input()
+    set reqRes(reqRes: ReqRes) {
+        if (!reqRes) { return; }
+        this.model = `${reqRes.method} ${reqRes.url}\n${reqRes.reqHeadersStr}\n\n${reqRes.reqBody}`;
+    }
 
     _message = ""
     get message() { return this._message; }
@@ -62,7 +69,9 @@ export class ComposerComponent implements OnInit {
         };
 
         var url = parts.slice(1).join(" ").trim();
-        if (!validUrl.isUri(url)) {
+        //if (!validUrl.isUri(url)) { //this is now working for some urls, eg: http://toplist.cz/count.asp?id=1128198&logo=mc&http&t=ForcaBarca.sk%2C%20informa%u010Dn%FD%20servis%20FC%20Barcelona&wi=1920&he=1080&cd=24
+        //http://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+        if (!/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(url)) {
             throw new Error(`Invalid URL: ${url}`);
         }
 

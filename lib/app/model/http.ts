@@ -46,6 +46,7 @@ export class ReqRes {
     }
 
     isFinished = false
+    isReqFinished = false
 
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
@@ -103,6 +104,7 @@ export class ReqRes {
             }
         }
         this.updated.emit(Update.REQ_BODY);
+        this.isReqFinished = true;
     }
 
     endRes() {

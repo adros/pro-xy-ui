@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { TrafficService } from '../../service/traffic.service';
 import { Observable } from 'rxjs/Observable';
 import {  ReqRes } from '../../model/http';
@@ -19,16 +19,19 @@ export class RequestsComponent implements OnInit {
     private menuItems: any[]
     private _miCopyReqRes: any
     private _miAutoResponse: any
+    private _miComposer: any
 
-    constructor(private trafficService: TrafficService, private cd: ChangeDetectorRef) {
+    constructor(private zone: NgZone, private trafficService: TrafficService, private cd: ChangeDetectorRef) {
         this._miCopyReqRes = new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString(), "text") });
-        this._miAutoResponse = new nw.MenuItem({ label: "Save as auto response", click: () => this.autoResponse.emit(this._lastReqRes) });
+        this._miAutoResponse = new nw.MenuItem({ label: "Save as auto response", click: () => this.zone.run(() => this.autoResponse.emit(this._lastReqRes)) });
+        this._miComposer = new nw.MenuItem({ label: "Compose", click: () => this.zone.run(() => this.compose.emit(this._lastReqRes)) });
 
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
             this._miCopyReqRes,
             new nw.MenuItem({ type: "separator" }),
             this._miAutoResponse,
+            this._miComposer,
             new nw.MenuItem({ type: "separator" })
         ];
     }
@@ -37,9 +40,10 @@ export class RequestsComponent implements OnInit {
 
     @Output()
     selected = new EventEmitter<ReqRes>();
-
     @Output()
     autoResponse = new EventEmitter<ReqRes>();
+    @Output()
+    compose = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {
@@ -71,6 +75,8 @@ export class RequestsComponent implements OnInit {
 
         this._miCopyReqRes.enabled = reqRes.isFinished;
         this._miAutoResponse.enabled = reqRes.isFinished;
+        this._miComposer.enabled = reqRes.isReqFinished;
+
 
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
@@ -80,5 +86,4 @@ export class RequestsComponent implements OnInit {
             return "red";
         }
     }
-
 }
