@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
+import { SocketService } from '../../service/socket.service';
 var app = nw.require('nw.gui').App;
+var validUrl = nw.require('valid-url');
+
+var SAMPLE_REQUEST = 'GET http://sample.foo/bar?baz\ncontent-type: application/json\naccept: */*\n\n{"sample":1}';
 
 @Component({
     moduleId: module.id,
@@ -13,27 +16,102 @@ var app = nw.require('nw.gui').App;
 })
 export class ComposerComponent implements OnInit {
 
-    invalid = false
-    model = 'GET http://sample.foo/bar?baz\ncontent-type: application/json\naccept: */*\n\n{"sample":1}'
+    constructor(private http: Http, private socketService: SocketService) { }
 
-    constructor(private http: Http) {
-    }
+    config: any
 
     ngOnInit(): void {
+        this.loadSample();
+        this.socketService.configObservable.subscribe(config => { this.config = config; })
     }
 
-    hBlur() {
-        if (this.invalid) { return; }
-        //this.model = JSON.stringify(JSON.parse(this.model), null, 4);
+    invalid = false
+
+    _message = ""
+    get message() { return this._message; }
+    set message(message) {
+        this._message = message;
+        this.invalid = !!message;
+    }
+
+    parsedModel: any
+
+    _model: string
+    get model() { return this._model; }
+    set model(model) {
+        this._model = model;
+        try {
+            this.parsedModel = this.parse(this.model);
+            this.message = null;
+        } catch (e) {
+            this.message = e.message;
+        }
+    }
+
+    parse(value: string) {
+        if (!value) {
+            throw new Error("Method and URL are required");
+        }
+        var lines = value.split(/\r\n?|\n/);
+
+        var parts = lines.shift().split(" ");
+
+        var method = parts[0].trim();
+        if (!/^(get|post|put|delete|options|head)$/i.test(method)) {
+            throw new Error(`Unknown method: ${method}`);
+        };
+
+        var url = parts.slice(1).join(" ").trim();
+        if (!validUrl.isUri(url)) {
+            throw new Error(`Invalid URL: ${url}`);
+        }
+
+        var bodySepIdx = lines.indexOf("");
+        var headerLines = ~bodySepIdx ? lines.slice(0, bodySepIdx) : lines;
+
+        var headers = headerLines.reduce((obj, line) => {
+            var parts = line.split(":");
+            var name = parts.shift().trim();
+            var value = parts.join(":").trim();
+            if (!isValidHeaderName(name)) {
+                throw new Error(`Invalid header name '${name}'`);
+            }
+            if (!value) {
+                throw new Error(`Invalid header line '${line}'`);
+            }
+            obj[name] = value;
+            return obj;
+        }, {});
+
+        var body = "";
+        if (~bodySepIdx) {
+            body = lines.slice(bodySepIdx + 1).join("\n");
+        }
+
+        return { method, url, headers, body };
+
+        function isValidHeaderName(val) {
+            //https://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.2
+            return /^[ -~]+$/.test(val) && !/[\(\)<>@,;:\\<>\/\[\]\?={} \t]/.test(val);
+        }
     }
 
     send() {
-        //TODO read port from config
-        app.setProxyConfig("http=localhost:8000,direct://;direct://");
-        this.http.get("http://registry.npmjs.org/pro-xy-ui?cacheBust=" + Math.random())
+        var req = this.parsedModel;
+        let options = new RequestOptions({
+            headers: new Headers(req.headers),
+            method: req.method,
+            body: req.body
+        });
+
+        app.setProxyConfig(`http=localhost:${this.config.port},direct://;direct://`);
+        this.http.request(req.url, options)
             .toPromise()
-            .then(response => console.log(response))
-            .catch(err => console.error(err))
+            .catch(() => null) // no op
             .then(() => app.setProxyConfig(""));
+    }
+
+    loadSample() {
+        this.model = SAMPLE_REQUEST;
     }
 }
