@@ -82,7 +82,7 @@ export class AutoResponder extends ConfigListBase {
 
 			function makeName(_url) {
 				var path = url.parse(_url).pathname.replace(/\/$/, "");
-				return `${path.split("/").slice(-2).join("_")}_${format('yyyyMMdd_hhmmss', new Date())}`;
+				return `${path.split("/").slice(-2).join("_")}_${format('yyyyMMdd_hhmmss', new Date())}.txt`;
 			}
 		}
 

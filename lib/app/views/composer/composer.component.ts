@@ -4,8 +4,9 @@ import { SocketService } from '../../service/socket.service';
 import { ReqRes } from '../../model/http';
 var app = nw.require('nw.gui').App;
 var validUrl = nw.require('valid-url');
+var url = nw.require('url');
 
-var SAMPLE_REQUEST = 'GET http://sample.foo/bar?baz\ncontent-type: application/json\naccept: */*\n\n{"sample":1}';
+var SAMPLE_REQUEST = 'POST http://jsonplaceholder.typicode.com/posts\ncontent-type: application/json\naccept: */*\n\n{"sample":1}';
 
 @Component({
     moduleId: module.id,
@@ -68,12 +69,12 @@ export class ComposerComponent implements OnInit {
             throw new Error(`Unknown method: ${method}`);
         };
 
-        var url = parts.slice(1).join(" ").trim();
+        var uri = parts.slice(1).join(" ").trim();
         //if (!validUrl.isUri(url)) { //this is now working for some urls, eg: http://toplist.cz/count.asp?id=1128198&logo=mc&http&t=ForcaBarca.sk%2C%20informa%u010Dn%FD%20servis%20FC%20Barcelona&wi=1920&he=1080&cd=24
         //http://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
-        if (!/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(url)) {
-            throw new Error(`Invalid URL: ${url}`);
-        }
+
+        //if (!/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(url)) {
+        validateUrl(uri);
 
         var bodySepIdx = lines.indexOf("");
         var headerLines = ~bodySepIdx ? lines.slice(0, bodySepIdx) : lines;
@@ -97,11 +98,21 @@ export class ComposerComponent implements OnInit {
             body = lines.slice(bodySepIdx + 1).join("\n");
         }
 
-        return { method, url, headers, body };
+        return { method, url: uri, headers, body };
 
         function isValidHeaderName(val) {
             //https://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.2
             return /^[ -~]+$/.test(val) && !/[\(\)<>@,;:\\<>\/\[\]\?={} \t]/.test(val);
+        }
+
+        function validateUrl(val) {
+            var parsed = url.parse(val);
+            if (!parsed.protocol || !parsed.host) {
+                throw new Error("Only absolute URLs are allowed");
+            }
+            if (!/^http:$/i.test(parsed.protocol)) {
+                throw new Error("Only HTTP protocol is allowed");
+            }
         }
     }
 
