@@ -11,6 +11,7 @@
                     <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'" [disabled]="!(statusObservable|async)">Url replace</button>
                     <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'" [disabled]="!(statusObservable|async)">Auto responder</button>
                     <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='composer'" (click)="this.selectedView='composer'" [disabled]="!(statusObservable|async)">Composer</button>
                     <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
                     <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
                 </nav>
@@ -22,8 +23,9 @@
                 <url-replace [hidden]="selectedView!='urlReplace'"></url-replace>
                 <auto-responder #autoResponder [hidden]="selectedView!='autoResponder'"></auto-responder>
                 <delay [hidden]="selectedView!='delay'"></delay>
-                <logs [hidden]="selectedView!='logs'"></logs>
+                <composer [hidden]="selectedView!='composer'"></composer>
                 <config [hidden]="selectedView!='config'" (restartNeeded)=connection.restart()></config>
+                <logs [hidden]="selectedView!='logs'"></logs>
             </div>
         </div>
     </div>

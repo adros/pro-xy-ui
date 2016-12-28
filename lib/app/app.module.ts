@@ -24,6 +24,7 @@ import { UrlReplaceComponent } from './views/url-replace/url-replace.component';
 import { InspectorComponent } from './views/inspector/inspector.component';
 import { AutoResponder } from './views/auto-responder/auto-responder.component';
 import { DelayComponent } from './views/delay/delay.component';
+import { ComposerComponent } from './views/composer/composer.component';
 
 
 import { SocketService } from './service/socket.service';
@@ -52,6 +53,7 @@ import { ConfigService } from './service/config.service';
         RequestsRowComponent,
         AutoResponder,
         DelayComponent,
+        ComposerComponent,
         //pipes:
         JsonPipe,
         //dialogs

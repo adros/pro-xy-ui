@@ -7,6 +7,7 @@ var cp = nw.require("child_process");
 var path = nw.require("path");
 var fs = nw.require("fs");
 var os = nw.require("os");
+var app = nw.require('nw.gui').App;
 
 var PROXY_ERR_OUT_PATH = path.join(os.tmpdir(), "pro-xy-tmp-err.log");
 
@@ -34,6 +35,8 @@ export class ConnectionComponent implements OnInit {
     }
 
     startProxy() {
+        //TODO: this should be not needed if proxy is configured correctly
+        app.setProxyConfig(""); //if proxy was cahnged by composer (and not yet reverted, make sure its empty, othwerwise there are connection errors)
         try {
             var cs = this.configService;
             if (!cs.configExists()) {

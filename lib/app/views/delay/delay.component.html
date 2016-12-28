@@ -1,6 +1,6 @@
 <div [ngSwitch]="(configObservable|async).delay.missing">
     <div *ngSwitchCase="true">
-        Url replace configuration is missing.
+        Delay configuration is missing.
         <br>See <a href="https://github.com/adros/pro-xy-delay" (click)="openUrl($event)">pro-xy-delay</a> web page for configuration options.
     </div>
     <div *ngSwitchDefault>
