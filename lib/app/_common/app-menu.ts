@@ -4,7 +4,10 @@ var LOG_FILE_LOCATION = path.join(process.env.HOME, "pro-xy-logs/pro-xy.log");
 var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
 
 var mainMenu;
-var openMenuItem;
+var globalItems = [
+    new nw.MenuItem({ label: "Reload app", click: () => chrome.runtime.reload() }),
+    new nw.MenuItem({ label: "Open", submenu: createOpenMenu() })
+];
 
 export function openAppMenu(evt) {
     if (evt.ctrlKey) { return; }
@@ -17,11 +20,8 @@ export function openAppMenu(evt) {
     if (evt.menuItems) {
         evt.menuItems.forEach(item => mainMenu.append(item));
     }
-    if (!evt.preventGlobalItem) {
-        if (!openMenuItem) {
-            openMenuItem = new nw.MenuItem({ label: "Open", submenu: createOpenMenu() });
-        }
-        mainMenu.append(openMenuItem);
+    if (!evt.preventGlobalItems) {
+        globalItems.forEach(item => mainMenu.append(item));
     }
 
     mainMenu.popup(evt.pageX, evt.pageY);
