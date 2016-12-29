@@ -33,11 +33,11 @@ export class RequestsRowComponent implements OnChanges {
 
         var str = "";
         if (this.reqRes.isReplaced) {
-            str += `<span title="Replaced: ${this.reqRes.getReqHeader("x-pro-xy-url-replace")}">&#128256;</span>`;
+            str += `<span title="Replaced: ${this.reqRes.getReqHeader("x-pro-xy-url-replace")}">&#128259;</span>`;
         }
         var delay = this.reqRes.getResHeader("x-pro-xy-delay") || this.reqRes.getReqHeader("x-pro-xy-delay");
         if (delay) {
-            str += `<span title="Delayed: ${delay} ms">&#9201;</span>`;
+            str += `<span title="Delayed: ${delay} ms">&#9200;</span>`;
         }
         var autoResponse = this.reqRes.getResHeader("x-pro-xy-auto-response");
         if (autoResponse) {
