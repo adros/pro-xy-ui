@@ -29,7 +29,7 @@
     "escape-string-regexp": "^1.0.5",
     "json-stable-stringify": "^1.0.1",
     "nw": "0.18.4-sdk",
-    "pro-xy": "^0.1.17",
+    "pro-xy": "^0.1.18",
     "pro-xy-auto-responder": "^0.2.0",
     "pro-xy-cookie-replace": "^0.1.1",
     "pro-xy-delay": "^0.1.1",
