@@ -20,11 +20,13 @@ export class RequestsComponent implements OnInit {
     private _miCopyReqRes: any
     private _miAutoResponse: any
     private _miComposer: any
+    private _miReplay: any
 
     constructor(private zone: NgZone, private trafficService: TrafficService, private cd: ChangeDetectorRef) {
         this._miCopyReqRes = new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString(), "text") });
         this._miAutoResponse = new nw.MenuItem({ label: "Save as auto response", click: () => this.zone.run(() => this.autoResponse.emit(this._lastReqRes)) });
         this._miComposer = new nw.MenuItem({ label: "Compose", click: () => this.zone.run(() => this.compose.emit(this._lastReqRes)) });
+        this._miReplay = new nw.MenuItem({ label: "Replay", click: () => this.zone.run(() => this.replay.emit(this._lastReqRes)) });
 
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => clipboard.set(this._lastReqRes.url, "text") }),
@@ -32,6 +34,7 @@ export class RequestsComponent implements OnInit {
             new nw.MenuItem({ type: "separator" }),
             this._miAutoResponse,
             this._miComposer,
+            this._miReplay,
             new nw.MenuItem({ type: "separator" })
         ];
     }
@@ -44,6 +47,8 @@ export class RequestsComponent implements OnInit {
     autoResponse = new EventEmitter<ReqRes>();
     @Output()
     compose = new EventEmitter<ReqRes>();
+    @Output()
+    replay = new EventEmitter<ReqRes>();
 
     _maxRows = 50
     set maxRows(maxRows) {
@@ -76,7 +81,7 @@ export class RequestsComponent implements OnInit {
         this._miCopyReqRes.enabled = reqRes.isFinished;
         this._miAutoResponse.enabled = reqRes.isFinished;
         this._miComposer.enabled = reqRes.isReqFinished;
-
+        this._miReplay.enabled = reqRes.isReqFinished;
 
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }

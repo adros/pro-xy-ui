@@ -116,8 +116,17 @@ export class ComposerComponent implements OnInit {
         }
     }
 
-    send() {
+    send(reqRes?: ReqRes) {
         var req = this.parsedModel;
+        if (reqRes) {
+            req = {
+                url: reqRes.url,
+                method:reqRes.method,
+                headers:reqRes.reqHeaders,
+                body:reqRes.reqBody
+            };
+        }
+
         let options = new RequestOptions({
             //AR:do not add no-cache, we do not want to spoil headers, we will clear the cache (disabling cache in nw.js seems to be buggy, see issues)
             //headers: new Headers(Object.assign({ pragma: "no-cache" }, req.headers)),
