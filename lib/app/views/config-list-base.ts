@@ -8,7 +8,18 @@ export abstract class ConfigListBase implements OnInit {
     config: any
 
     configProperty: string
+    itemsProperty: string
     socketService: SocketService
+
+    private menuItems: any[]
+
+    constructor() {
+        this.menuItems = [
+            new nw.MenuItem({ label: "Delete", click: () => this.deleteItem(this._lastCtxItem) }),
+            new nw.MenuItem({ type: "separator" })
+        ];
+    }
+
 
     ngOnInit(): void {
         this.configObservable = this.socketService.configObservable;
@@ -28,5 +39,19 @@ export abstract class ConfigListBase implements OnInit {
     openUrl($event) {
         $event.preventDefault();
         nw.Shell.openExternal($event.target.href);
+    }
+
+    deleteItem(item) {
+        var items = this.config[this.configProperty][this.itemsProperty] as any[];
+        items.splice(items.indexOf(item), 1);
+        this.socketService.replaceConfig(this.config);
+    }
+
+    _lastCtxItem: any
+
+    hCtxMenu(item, evt) {
+        this._lastCtxItem = item;
+
+        evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
 }

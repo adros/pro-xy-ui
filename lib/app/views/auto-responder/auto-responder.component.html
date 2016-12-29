@@ -1,13 +1,13 @@
 <div [ngSwitch]="(configObservable|async).autoResponder.missing">
     <div *ngSwitchCase="true">
         Auto responder configuration is missing.
-        <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a> web page for configuration options.
+        <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a>        web page for configuration options.
     </div>
     <div *ngSwitchDefault>
 
         <div *ngIf="!(configObservable|async).autoResponder.responses.length">
             No auto responses availible
-            <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a> web page for configuration options.
+            <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a>            web page for configuration options.
         </div>
 
         <table *ngIf="(configObservable|async).autoResponder.responses.length" class="table table-hover">
@@ -24,7 +24,7 @@
                 <th>Status</th>
                 <th>Headers</th>
             </tr>
-            <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index">
+            <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index" (contextmenu)="hCtxMenu(item,$event)">
                 <td class="replace-name">
                     <div class="checkbox">
                         <label>

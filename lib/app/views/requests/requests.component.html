@@ -21,7 +21,8 @@
             <th>Content type</th>
             <th>Flags</th>
         </tr>
-        <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hCtxMenu(reqRes,$event)" [style.color]="getColorByStatus(reqRes)">
+        <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hCtxMenu(reqRes,$event)"
+            [style.color]="getColorByStatus(reqRes)">
         </tr>
     </table>
 </div>
