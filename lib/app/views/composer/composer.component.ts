@@ -119,11 +119,13 @@ export class ComposerComponent implements OnInit {
     send() {
         var req = this.parsedModel;
         let options = new RequestOptions({
+            //AR:do not add no-cache, we do not want to spoil headers, we will clear the cache (disabling cache in nw.js seems to be buggy, see issues)
+            //headers: new Headers(Object.assign({ pragma: "no-cache" }, req.headers)),
             headers: new Headers(req.headers),
             method: req.method,
             body: req.body
         });
-
+        app.clearCache();
         app.setProxyConfig(`http=localhost:${this.config.port},direct://;direct://`);
         this.http.request(req.url, options)
             .toPromise()
