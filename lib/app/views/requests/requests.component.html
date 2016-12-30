@@ -21,7 +21,7 @@
             <th>Content type</th>
             <th>Flags</th>
         </tr>
-        <tbody [dragula]="'req-res'">
+        <tbody [dragula]="'req-res'" class="source">
             <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hCtxMenu(reqRes,$event)" [style.color]="getColorByStatus(reqRes)">
             </tr>
         </tbody>

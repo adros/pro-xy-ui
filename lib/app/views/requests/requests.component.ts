@@ -41,17 +41,11 @@ export class RequestsComponent implements OnInit {
 
         dragulaService.setOptions('req-res', {
             copy: true,
-            isContainer: function(el) {
-                return false; // only elements in drake.containers will be taken into account
-            },
-            moves: function(el, source, handle, sibling) {
-                return true; // elements are always draggable by default
+            moves: function(el, source:Element, handle, sibling) {
+                return source.classList.contains("source");
             },
             accepts: function(el, target, source, sibling) {
-                return true; // elements can be dropped in any of the `containers` by default
-            },
-            invalid: function(el, handle) {
-                return false; // don't prevent any drags from initiating by default
+                return !target.classList.contains("source");
             }
         });
     }
