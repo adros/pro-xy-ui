@@ -89,4 +89,11 @@ export class AppComponent implements OnInit {
             })
             .catch(err => console.error("Error while geting lates version", err));
     }
+
+    x(dragData) {
+        this.zone.run(() => {
+            this.composer.reqRes = dragData;
+            this.selectedView == 'composer';
+        });
+    }
 }

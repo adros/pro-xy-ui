@@ -37,6 +37,7 @@ body {
 }
 
 .dnd-drag-over {
+    opacity:0.7;
     border: 1px dashed #333;
 }
 

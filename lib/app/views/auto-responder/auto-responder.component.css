@@ -3,3 +3,16 @@
     padding: 2px;
     border-top-color: white;
 }
+
+[dnd-droppable] {
+    border: 1px solid white;
+}
+
+[dnd-droppable]>table {
+    margin-top: -1px;
+    margin-left: -1px;
+}
+
+.dnd-drag-enter[dnd-droppable], .dnd-drag-over[dnd-droppable] {
+    border: 1px dashed #333;
+}
