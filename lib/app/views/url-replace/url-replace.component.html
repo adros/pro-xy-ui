@@ -1,27 +1,28 @@
 <div [ngSwitch]="(configObservable|async).urlReplace.missing">
     <div *ngSwitchCase="true">
         Url replace configuration is missing.
-        <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web page for configuration options.
+        <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web
+        page for configuration options.
+        <br><br>
+        <div>
+            <button class="btn btn-default" (click)="addEmptyConfig()">Add empty configuration</button>
+        </div>
     </div>
     <div *ngSwitchDefault>
-
-        <div *ngIf="!(configObservable|async).urlReplace.replaces.length">
-            No replaces availible
-            <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web page for configuration options.
-        </div>
-
-        <table *ngIf="(configObservable|async).urlReplace.replaces.length" class="table table-hover">
-            <tr>
-                <th>
-                    <div class="checkbox">
-                        <label style="font-weight:bold">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="checkbox">
+                            <label style="font-weight:bold">
                         <input type="checkbox" [checked]="!(configObservable|async).urlReplace.disabled" (change)="toggleDisabled()">Url repalce enabled
                     </label>
-                    </div>
-                </th>
-                <th>Pattern</th>
-                <th>Replace</th>
-            </tr>
+                        </div>
+                    </th>
+                    <th>Pattern</th>
+                    <th>Replace</th>
+                </tr>
+            </thead>
             <tr *ngFor="let item of (configObservable|async).urlReplace.replaces; let i = index">
                 <td class="replace-name">
                     <div class="checkbox">

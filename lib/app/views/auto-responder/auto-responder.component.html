@@ -1,29 +1,30 @@
-<div [ngSwitch]="(configObservable|async).autoResponder.missing">
+<div [ngSwitch]="(configObservable|async).autoResponder.missing" class="flex-grow">
     <div *ngSwitchCase="true">
         Auto responder configuration is missing.
         <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a>        web page for configuration options.
-    </div>
-    <div *ngSwitchDefault>
-
-        <div *ngIf="!(configObservable|async).autoResponder.responses.length">
-            No auto responses availible
-            <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a>            web page for configuration options.
+        <br><br>
+        <div>
+            <button class="btn btn-default" (click)="addEmptyConfig()">Add empty configuration</button>
         </div>
+    </div>
+    <div *ngSwitchDefault dnd-droppable (onDropSuccess)="add($event.dragData)" class="flex-grow">
 
-        <table *ngIf="(configObservable|async).autoResponder.responses.length" class="table table-hover">
-            <tr>
-                <th>
-                    <div class="checkbox">
-                        <label style="font-weight:bold">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="checkbox">
+                            <label style="font-weight:bold">
                         <input type="checkbox" [checked]="!(configObservable|async).autoResponder.disabled" (change)="toggleDisabled()">Auto responder enabled
                     </label>
-                    </div>
-                </th>
-                <th>Target</th>
-                <th>Method</th>
-                <th>Status</th>
-                <th>Headers</th>
-            </tr>
+                        </div>
+                    </th>
+                    <th>Target</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Headers</th>
+                </tr>
+            </thead>
             <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index" (contextmenu)="hCtxMenu(item,$event)">
                 <td class="replace-name">
                     <div class="checkbox">

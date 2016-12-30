@@ -54,4 +54,13 @@ export abstract class ConfigListBase implements OnInit {
 
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
+
+    addEmptyConfig() {
+        this.socketService.updateConfig({
+            [this.configProperty]: {
+                disabled: false,
+                [this.itemsProperty]: []
+            }
+        });
+    }
 }

@@ -11,6 +11,7 @@ import { ConfigListBase } from '../config-list-base'
 })
 export class DelayComponent extends ConfigListBase {
     configProperty = "delay"
+    itemsProperty = "rules"
 
     //TODO: how can we move this to parent?
     constructor(socketService: SocketService) {

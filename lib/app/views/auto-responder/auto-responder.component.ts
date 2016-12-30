@@ -16,6 +16,7 @@ var escapeStringRegexp = nw.require('escape-string-regexp');
         'auto-responder.component.css'
     ],
     selector: 'auto-responder',
+    host: { class: 'flex-grow' },
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AutoResponder extends ConfigListBase {

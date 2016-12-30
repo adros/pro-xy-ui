@@ -11,6 +11,7 @@ import { ConfigListBase } from '../config-list-base'
 })
 export class UrlReplaceComponent extends ConfigListBase {
     configProperty = "urlReplace"
+    itemsProperty = "replaces"
 
     //TODO: how can we move this to parent?
     constructor(socketService: SocketService) {

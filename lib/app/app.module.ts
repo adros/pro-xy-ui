@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 
-import {JsonPipe} from './_common/pipes';
+import { DndModule } from 'ng2-dnd';
+
+import { JsonPipe } from './_common/pipes';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -33,45 +35,51 @@ import { ConfigService } from './service/config.service';
 
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        //routing,
-        MaterialModule.forRoot()
-        // DataTableModule
-    ],
-    declarations: [
-        AppComponent,
-        ConfigComponent,
-        RequestsComponent,
-        StatusComponent,
-        UrlReplaceComponent,
-        LogsComponent,
-        ConnectionComponent,
-        InspectorComponent,
-        RequestsRowComponent,
-        AutoResponder,
-        DelayComponent,
-        ComposerComponent,
-        //pipes:
-        JsonPipe,
-        //dialogs
-        DiffDialog,
-        PluginsDialog
-    ],
-    entryComponents: [
-        DiffDialog,
-        PluginsDialog
-    ],
-    bootstrap: [AppComponent],
-    providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        SocketService,
-        ConfigService,
-        TrafficService
-        // ErrorHandler
-    ]
-})
+	imports: [
+	BrowserModule,
+		FormsModule,
+		HttpModule,
+		//routing,
+		MaterialModule.forRoot(),
+    DndModule.forRoot()
+	// DataTableModule
+	],
+	declarations: [
+		AppComponent,
+		ConfigComponent,
+		RequestsComponent,
+		StatusComponent,
+		UrlReplaceComponent,
+		LogsComponent,
+		ConnectionComponent,
+		InspectorComponent,
+		RequestsRowComponent,
+		AutoResponder,
+		DelayComponent,
+		ComposerComponent,
+		//pipes:
+		JsonPipe,
+		//dialogs
+		DiffDialog,
+		PluginsDialog
+	],
+	entryComponents: [
+		DiffDialog,
+		PluginsDialog
+	],
+	bootstrap: [
+		AppComponent
+	],
+	providers: [
+		{
+			provide: APP_BASE_HREF,
+			useValue: '/'
+		},
+		SocketService,
+		ConfigService,
+		TrafficService
+	// ErrorHandler
+	]
+	})
 export class AppModule {
-}
+	}

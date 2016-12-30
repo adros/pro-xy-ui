@@ -24,3 +24,32 @@ body {
     /*stringer than normalize css*/
     display: none !important;
 }
+
+.dnd-drag-start {
+    /*transform:scale(0.8);*/
+    opacity:0.7;
+    border: 1px dashed #333;
+}
+
+.dnd-drag-enter {
+    opacity:0.7;
+    border: 1px dashed #333;
+}
+
+.dnd-drag-over {
+    border: 1px dashed #333;
+}
+
+/*chb in table*/
+table .checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table .checkbox label{
+  min-height: inherit;
+}
+
+table input[type=checkbox] {
+    margin-top: 2px;
+}

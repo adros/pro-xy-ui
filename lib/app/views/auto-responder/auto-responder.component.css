@@ -1,24 +1,6 @@
-.replace-detail {
-    color: #777;
-    padding-right: 20px;
-}
-
-.replace-name {
-    padding-right: 20px;
-}
-
 .table td,
 .table th {
     font-size: 12px;
     padding: 2px;
     border-top-color: white;
-}
-
-.checkbox {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-input[type=checkbox] {
-    margin-top: 2px;
 }
