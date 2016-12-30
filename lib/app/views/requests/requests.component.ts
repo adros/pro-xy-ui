@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { TrafficService } from '../../service/traffic.service';
 import { Observable } from 'rxjs/Observable';
-import {  ReqRes } from '../../model/http';
+import { ReqRes } from '../../model/http';
+import { DragulaService } from 'ng2-dragula';
 
 var gui = nw.require('nw.gui');
 var clipboard = gui.Clipboard.get();
@@ -22,7 +23,7 @@ export class RequestsComponent implements OnInit {
     private _miComposer: any
     private _miReplay: any
 
-    constructor(private zone: NgZone, private trafficService: TrafficService, private cd: ChangeDetectorRef) {
+    constructor(private zone: NgZone, private trafficService: TrafficService, private cd: ChangeDetectorRef, private dragulaService: DragulaService) {
         this._miCopyReqRes = new nw.MenuItem({ label: "Copy req & res", click: () => clipboard.set(this._lastReqRes.toString(), "text") });
         this._miAutoResponse = new nw.MenuItem({ label: "Save as auto response", click: () => this.zone.run(() => this.autoResponse.emit(this._lastReqRes)) });
         this._miComposer = new nw.MenuItem({ label: "Compose", click: () => this.zone.run(() => this.compose.emit(this._lastReqRes)) });
@@ -37,6 +38,22 @@ export class RequestsComponent implements OnInit {
             this._miReplay,
             new nw.MenuItem({ type: "separator" })
         ];
+
+        dragulaService.setOptions('req-res', {
+            copy: true,
+            isContainer: function(el) {
+                return false; // only elements in drake.containers will be taken into account
+            },
+            moves: function(el, source, handle, sibling) {
+                return true; // elements are always draggable by default
+            },
+            accepts: function(el, target, source, sibling) {
+                return true; // elements can be dropped in any of the `containers` by default
+            },
+            invalid: function(el, handle) {
+                return false; // don't prevent any drags from initiating by default
+            }
+        });
     }
 
     requestsObservable: Observable<ReqRes[]>;

@@ -1,4 +1,4 @@
-<div class="form-group flex-grow">
+<div class="form-group flex-grow" [dragula]="'req-res'">
     <textarea class="form-control" [value]="model" (keyup)="model=$event.target.value"></textarea>
 </div>
 <div>

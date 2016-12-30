@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
+import { DragulaModule } from 'ng2-dragula';
 
 import {JsonPipe} from './_common/pipes';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
 
 import './_common/rxjs-extensions'; //load extensions
 
@@ -38,7 +40,8 @@ import { ConfigService } from './service/config.service';
         FormsModule,
         HttpModule,
         //routing,
-        MaterialModule.forRoot()
+        MaterialModule.forRoot(),
+        DragulaModule
         // DataTableModule
     ],
     declarations: [
