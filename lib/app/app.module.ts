@@ -10,7 +10,6 @@ import { HttpModule } from '@angular/http';
 
 import './_common/rxjs-extensions'; //load extensions
 
-import { routing } from './app.routing';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
@@ -35,51 +34,50 @@ import { ConfigService } from './service/config.service';
 
 
 @NgModule({
-	imports: [
-	BrowserModule,
-		FormsModule,
-		HttpModule,
-		//routing,
-		MaterialModule.forRoot(),
-    DndModule.forRoot()
-	// DataTableModule
-	],
-	declarations: [
-		AppComponent,
-		ConfigComponent,
-		RequestsComponent,
-		StatusComponent,
-		UrlReplaceComponent,
-		LogsComponent,
-		ConnectionComponent,
-		InspectorComponent,
-		RequestsRowComponent,
-		AutoResponder,
-		DelayComponent,
-		ComposerComponent,
-		//pipes:
-		JsonPipe,
-		//dialogs
-		DiffDialog,
-		PluginsDialog
-	],
-	entryComponents: [
-		DiffDialog,
-		PluginsDialog
-	],
-	bootstrap: [
-		AppComponent
-	],
-	providers: [
-		{
-			provide: APP_BASE_HREF,
-			useValue: '/'
-		},
-		SocketService,
-		ConfigService,
-		TrafficService
-	// ErrorHandler
-	]
-	})
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        MaterialModule.forRoot(),
+        DndModule.forRoot()
+        // DataTableModule
+    ],
+    declarations: [
+        AppComponent,
+        ConfigComponent,
+        RequestsComponent,
+        StatusComponent,
+        UrlReplaceComponent,
+        LogsComponent,
+        ConnectionComponent,
+        InspectorComponent,
+        RequestsRowComponent,
+        AutoResponder,
+        DelayComponent,
+        ComposerComponent,
+        //pipes:
+        JsonPipe,
+        //dialogs
+        DiffDialog,
+        PluginsDialog
+    ],
+    entryComponents: [
+        DiffDialog,
+        PluginsDialog
+    ],
+    bootstrap: [
+        AppComponent
+    ],
+    providers: [
+        {
+            provide: APP_BASE_HREF,
+            useValue: '/'
+        },
+        SocketService,
+        ConfigService,
+        TrafficService
+        // ErrorHandler
+    ]
+})
 export class AppModule {
-	}
+}

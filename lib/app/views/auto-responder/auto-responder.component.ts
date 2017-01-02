@@ -88,4 +88,8 @@ export class AutoResponder extends ConfigListBase {
         }
     }
 
+    checkDropAllow(reqRes: ReqRes) {
+        return reqRes.isFinished;
+    }
+
 }

@@ -1,8 +1,7 @@
 <div defaultOverlayTarget class="app" (contextmenu)="openAppMenu($event)">
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section">
-            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'"
-                (compose)="this.composerReqRes=$event;this.selectedView='composer';" (replay)="this.composer.send($event)"></requests>
+            <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'" (compose)="this.composerReqRes=$event;this.selectedView='composer';" (replay)="this.composer.send($event)"></requests>
         </div>
 
         <div class="flex-grow right-section">
@@ -10,13 +9,12 @@
                 <nav>
                     <button class="btn btn-default" [class.active]="selectedView=='inspector'" (click)="this.selectedView='inspector'" [disabled]="!(statusObservable|async)">Inspector</button>
                     <button class="btn btn-default" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'" [disabled]="!(statusObservable|async)">Url replace</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'"
-                        [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.autoResponder.add($event.dragData);this.selectedView='autoResponder'">Auto responder</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='composer'" (click)="this.selectedView='composer'" [disabled]="!(statusObservable|async)"
-                        dnd-droppable (onDropSuccess)="this.composerReqRes=$event.dragData;this.selectedView='composer'">Composer</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
-                    <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
+                    <button class="btn btn-default" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'" [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.autoResponder.add($event.dragData);this.selectedView='autoResponder'"
+                        [allowDrop]="autoResponder.checkDropAllow">Auto responder</button>
+                        <button class="btn btn-default" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
+                        <button class="btn btn-default" [class.active]="selectedView=='composer'" (click)="this.selectedView='composer'" [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.composerReqRes=$event.dragData;this.selectedView='composer'">Composer</button>
+                        <button class="btn btn-default" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
+                        <button class="btn btn-default" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
                 </nav>
                 <connection #connection></connection>
             </header>

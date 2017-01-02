@@ -1,13 +1,13 @@
 <div [ngSwitch]="(configObservable|async).autoResponder.missing" class="flex-grow">
     <div *ngSwitchCase="true">
         Auto responder configuration is missing.
-        <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a>        web page for configuration options.
+        <br>See <a href="https://github.com/adros/pro-xy-auto-responder" (click)="openUrl($event)">pro-xy-auto-responder</a> web page for configuration options.
         <br><br>
         <div>
             <button class="btn btn-default" (click)="addEmptyConfig()">Add empty configuration</button>
         </div>
     </div>
-    <div *ngSwitchDefault dnd-droppable (onDropSuccess)="add($event.dragData)" class="flex-grow">
+    <div *ngSwitchDefault dnd-droppable (onDropSuccess)="add($event.dragData)" [allowDrop]="checkDropAllow" class="flex-grow">
 
         <table class="table table-hover">
             <thead>
