@@ -28,8 +28,9 @@ export class AutoResponder extends ConfigListBase {
     constructor(socketService: SocketService) {
         super();
         this.socketService = socketService;
-    }
 
+        this.menuItems.splice(1, 0, new nw.MenuItem({ label: "Delete with target", click: () => this.deleteItem(this._lastCtxItem, true) }));
+    }
 
     openFile(event, item) {
         event.preventDefault();
@@ -90,6 +91,20 @@ export class AutoResponder extends ConfigListBase {
 
     checkDropAllow(reqRes: ReqRes) {
         return reqRes.isFinished;
+    }
+
+    deleteItem(item, deleteTarget?: boolean) {
+        super.deleteItem(item);
+        if (deleteTarget) {
+
+            var path = this.getFileLocation(item.target)
+
+            if (!fs.existsSync(path)) {
+                return;
+            }
+
+            fs.unlinkSync(path);
+        }
     }
 
 }

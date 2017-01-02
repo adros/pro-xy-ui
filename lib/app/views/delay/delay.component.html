@@ -23,7 +23,7 @@
                     <th>Delay</th>
                 </tr>
             </thead>
-            <tr *ngFor="let item of (configObservable|async).delay.rules; let i = index">
+            <tr *ngFor="let item of (configObservable|async).delay.rules; let i = index" (contextmenu)="hCtxMenu(item,$event)">
                 <td>
                     <div class="checkbox">
                         <label>

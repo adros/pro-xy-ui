@@ -23,7 +23,7 @@
                     <th>Replace</th>
                 </tr>
             </thead>
-            <tr *ngFor="let item of (configObservable|async).urlReplace.replaces; let i = index">
+            <tr *ngFor="let item of (configObservable|async).urlReplace.replaces; let i = index" (contextmenu)="hCtxMenu(item,$event)">
                 <td class="replace-name">
                     <div class="checkbox">
                         <label>

@@ -11,7 +11,7 @@ export abstract class ConfigListBase implements OnInit {
     itemsProperty: string
     socketService: SocketService
 
-    private menuItems: any[]
+    protected menuItems: any[]
 
     constructor() {
         this.menuItems = [
