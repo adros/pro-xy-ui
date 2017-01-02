@@ -37,7 +37,14 @@ export class AppComponent implements OnInit {
         return this._selectedReqRes;
     }
 
-    selectedView = "urlReplace"
+    _selectedView = "urlReplace"
+    set selectedView(selectedView) {
+        this._selectedView = selectedView;
+    }
+
+    get selectedView() {
+        return this._selectedView;
+    }
 
     ngOnInit(): void {
         this.socketService.configObservable.subscribe(config => {
@@ -88,12 +95,5 @@ export class AppComponent implements OnInit {
 
             })
             .catch(err => console.error("Error while geting lates version", err));
-    }
-
-    x(dragData) {
-        this.zone.run(() => {
-            this.composer.reqRes = dragData;
-            this.selectedView == 'composer';
-        });
     }
 }
