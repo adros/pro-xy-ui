@@ -29,6 +29,14 @@ export class InspectorComponent implements OnChanges {
         evt.menuItems = (evt.menuItems || []).concat(this.menuItems);
     }
 
+    selectAll(evt) {
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        var range = document.createRange();
+        range.selectNodeContents(evt.target);
+        sel.addRange(range);
+    }
+
     _subscription: any
 
     ngOnChanges(changes) {
