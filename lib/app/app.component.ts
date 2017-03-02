@@ -53,7 +53,6 @@ export class AppComponent implements OnInit {
             document.title = activeUrlReplaces.length ? `PRO-XY UI (${activeUrlReplaces.join(", ")})` : "PRO-XY UI";
         });
 
-        this.registerShortcut();
         this.checkVersion();
 
         this.statusObservable = this.socketService.connectStatusObservable;
@@ -62,14 +61,6 @@ export class AppComponent implements OnInit {
 
     toggleStatus() {
         this.status.toggle();
-    }
-
-    private registerShortcut() {
-        var shortcut = new nw.Shortcut({
-            key: "Ctrl+R",
-            active: () => this.zone.run(() => this.socketService.connectToRemote())
-        });
-        nw.App.registerGlobalHotKey(shortcut);
     }
 
     openAppMenu = openAppMenu
