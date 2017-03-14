@@ -1,5 +1,6 @@
 var http = nw.require("http");
 var zlib = nw.require("zlib");
+var url = nw.require("url");
 var stringify = nw.require("json-stable-stringify");
 import {  EventEmitter } from '@angular/core';
 
@@ -50,6 +51,7 @@ export class ReqRes {
 
     get id() { return this._req && this._req.id; }
     get url() { return this._req && this._req.url; }
+    get urlParts() { return this.url && url.parse(this.url); }
     get method() { return this._req && this._req.method; }
     get isReplaced() { return !!this.getReqHeader("x-pro-xy-url-replace"); }
 

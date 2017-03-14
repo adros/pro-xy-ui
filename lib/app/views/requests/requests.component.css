@@ -20,12 +20,15 @@ table /deep/ tr>*:nth-child(3) {
     width: 50px;
 }
 table /deep/ tr>*:nth-child(4) {
-    /*width: 60px;*/
+    width: 30%;
 }
 table /deep/ tr>*:nth-child(5) {
-    width: 90px;
+    width:70%;
 }
 table /deep/ tr>*:nth-child(6) {
+    width: 90px;
+}
+table /deep/ tr>*:nth-child(7) {
     width: 60px;
 }
 

@@ -1,6 +1,7 @@
 <td dnd-draggable [dragEnabled]="true" [dragData]="reqRes" title="Drag to auto responder or composer">&#10303;</td>
-<td title="{{reqRes}}">{{reqRes.method}}</td>
-<td>{{reqRes.statusCode || '...'}}</td>
-<td title="{{reqRes.url}}">{{reqRes.url}}</td>
-<td title="{{reqRes.resContentType}}">{{reqRes.resContentType}}</td>
-<td class="flags" [innerHTML]="flags"></td>
+<td [style.display]="(enabledHeaders|async)[0] ? 'table-cell' : 'none'" title="{{reqRes}}">{{reqRes.method}}</td>
+<td [style.display]="(enabledHeaders|async)[1] ? 'table-cell' : 'none'">{{reqRes.statusCode || '...'}}</td>
+<td [style.display]="(enabledHeaders|async)[2] ? 'table-cell' : 'none'" title="{{reqRes.urlParts.host}}">{{reqRes.urlParts.host}}</td>
+<td [style.display]="(enabledHeaders|async)[3] ? 'table-cell' : 'none'" title="{{reqRes.urlParts.path}}">{{reqRes.urlParts.path}}</td>
+<td [style.display]="(enabledHeaders|async)[4] ? 'table-cell' : 'none'" title="{{reqRes.resContentType}}">{{reqRes.resContentType}}</td>
+<td [style.display]="(enabledHeaders|async)[5] ? 'table-cell' : 'none'" class="flags" [innerHTML]="flags"></td>

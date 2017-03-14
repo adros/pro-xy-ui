@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ReqRes, Update } from '../../model/http';
+import { Subject }              from 'rxjs/Subject';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +15,9 @@ export class RequestsRowComponent implements OnChanges {
 
     @Input('request-row')
     reqRes: ReqRes;
+
+    @Input('enabled-headers')
+    enabledHeaders: Subject<boolean[]>;
 
     _subscription: any
 
