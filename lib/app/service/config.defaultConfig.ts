@@ -2,9 +2,9 @@ export default {
     "port": 8000,
     "logLevel": "DEBUG",
     "plugins": [
-        "pro-xy-url-replace",
         "pro-xy-header-replace",
         "pro-xy-cookie-replace",
+        "pro-xy-url-replace",
         "pro-xy-ws-api",
         "pro-xy-delay",
         "pro-xy-auto-responder"
