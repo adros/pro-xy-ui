@@ -1,5 +1,8 @@
 .flags /deep/ span {
     cursor: help;
+    font-family: 'FontAwesome';
+    width: 16px;
+    display: inline-block;
 }
 
 td[dnd-draggable] {

@@ -37,15 +37,15 @@ export class RequestsRowComponent implements OnChanges {
 
         var str = "";
         if (this.reqRes.isReplaced) {
-            str += `<span title="Replaced: ${this.reqRes.getReqHeader("x-pro-xy-url-replace")}">&#128259;</span>`;
+            str += `<span title="Replaced: ${this.reqRes.getReqHeader("x-pro-xy-url-replace")}">&#xf0ec;</span>`;
         }
         var delay = this.reqRes.getResHeader("x-pro-xy-delay") || this.reqRes.getReqHeader("x-pro-xy-delay");
         if (delay) {
-            str += `<span title="Delayed: ${delay} ms">&#9200;</span>`;
+            str += `<span title="Delayed: ${delay} ms">&#xf017;</span>`;
         }
         var autoResponse = this.reqRes.getResHeader("x-pro-xy-auto-response");
         if (autoResponse) {
-            str += `<span title="Auto responded: ${autoResponse}">&#128663;</span>`;
+            str += `<span title="Auto responded: ${autoResponse}">&#xf1b9;</span>`;
         }
         return str;
 
