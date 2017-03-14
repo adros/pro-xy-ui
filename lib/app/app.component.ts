@@ -86,5 +86,9 @@ export class AppComponent implements OnInit {
 
             })
             .catch(err => console.error("Error while geting lates version", err));
+    },
+
+    reload() {
+        chrome.runtime.reload();
     }
 }

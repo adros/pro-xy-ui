@@ -1,4 +1,4 @@
-<div defaultOverlayTarget class="app" (contextmenu)="openAppMenu($event)">
+<div defaultOverlayTarget tabIndex="0" class="app" (contextmenu)="openAppMenu($event)" (keyup.control.r)="socketService.connectToRemote()" (keyup.f5)="reload()">
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section">
             <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'" (compose)="this.composerReqRes=$event;this.selectedView='composer';" (replay)="this.composer.send($event)"></requests>
