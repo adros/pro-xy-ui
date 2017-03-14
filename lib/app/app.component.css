@@ -13,13 +13,13 @@
     padding: 8px;
 }
 
-.left-section{
+.left-section {
     flex: initial;
     resize: horizontal;
-    width: 40%;
-    max-width: 80%;
+    min-width: 300px;
+    /*width: 50%; OVERRIDEN IN INIT*/
+    max-width: calc(100% - 300px);
 }
-
 
 header {
     background: #e8e8e8;

@@ -5,6 +5,7 @@ import { StatusComponent } from "./views/status/status.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
 import { Observable } from "rxjs/Observable";
 import { openAppMenu } from "./_common/app-menu";
+import { patchResize } from "./_common/patchResize";
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 
 var semver = nw.require("semver");
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     @ViewChild("autoResponder") autoResponder: any;
     @ViewChild("connection") connection: any;
     @ViewChild("composer") composer: any;
+    @ViewChild("leftSection") leftSection: any;
 
     _selectedReqRes: any
     set selectedReqRes(selectedReqRes) {
@@ -57,6 +59,10 @@ export class AppComponent implements OnInit {
 
         this.statusObservable = this.socketService.connectStatusObservable;
         this.statusObservable.subscribe(connected => !connected && (this.selectedView = "logs"))
+
+        var width = localStorage.getItem("leftSectionWidth");
+        this.leftSection.nativeElement.style.width = width ? width + "px" : "50%";
+        patchResize(this.leftSection.nativeElement, size => localStorage.setItem("leftSectionWidth", size.w));
     }
 
     toggleStatus() {
@@ -86,7 +92,7 @@ export class AppComponent implements OnInit {
 
             })
             .catch(err => console.error("Error while geting lates version", err));
-    },
+    }
 
     reload() {
         chrome.runtime.reload();
