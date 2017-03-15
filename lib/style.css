@@ -75,3 +75,14 @@ table input[type=checkbox] {
     top: calc(50% - 40px);
     width: 100%;
 }
+
+pre {
+    display: block;
+    padding: 9.5px;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

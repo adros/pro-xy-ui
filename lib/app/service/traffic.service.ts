@@ -34,11 +34,24 @@ export class TrafficService {
         // }
     }
 
+
+    _urlPatterRegex: RegExp
+    _urlPattern = ""
+    set urlPattern(urlPattern) {
+        this._urlPattern = urlPattern;
+        try {
+            this._urlPatterRegex = urlPattern && new RegExp(urlPattern) || null;
+        } catch (e) {
+            this._urlPatterRegex = null;
+        }
+    }
+
     constructor(private socketService: SocketService) {
         this._cache = new Map<number, ReqRes>();
 
         this.traffic = socketService.reqObservable
             .filter(req => !this._replacedOnly || !!req.headers["x-pro-xy-url-replace"])
+            .filter(req => !this._urlPatterRegex || this._urlPatterRegex.test(req.url))
             .scan(this._hReq.bind(this), this._list);
 
         socketService.resObservable.subscribe(evt => this._hRes(evt))
