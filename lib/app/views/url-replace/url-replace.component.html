@@ -1,8 +1,7 @@
 <div [ngSwitch]="(configObservable|async).urlReplace.missing">
     <div *ngSwitchCase="true">
         Url replace configuration is missing.
-        <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web
-        page for configuration options.
+        <br>See <a href="https://github.com/adros/pro-xy-url-replace" (click)="openUrl($event)">pro-xy-url-replace</a> web page for configuration options.
         <br><br>
         <div>
             <button class="btn btn-default" (click)="addEmptyConfig()">Add empty configuration</button>
@@ -13,11 +12,9 @@
             <thead>
                 <tr>
                     <th>
-                        <div class="checkbox">
-                            <label style="font-weight:bold">
-                        <input type="checkbox" [checked]="!(configObservable|async).urlReplace.disabled" (change)="toggleDisabled()">Url repalce enabled
-                    </label>
-                        </div>
+                        <label>
+                            <input type="checkbox" [checked]="!(configObservable|async).urlReplace.disabled" (change)="toggleDisabled()">Url repalce enabled
+                        </label>
                     </th>
                     <th>Pattern</th>
                     <th>Replace</th>

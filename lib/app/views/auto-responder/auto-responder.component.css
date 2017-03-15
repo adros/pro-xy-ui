@@ -1,7 +1,25 @@
-.table td, .table th {
+.table td,
+.table th {
     font-size: 12px;
     padding: 2px;
     border-top-color: white;
+}
+
+.table tr * {
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+.table label {
+    margin-bottom: 0;
+}
+
+.table thead label {
+    font-weight: bold;
+}
+
+.table input {
+    margin-right: 6px;
 }
 
 [dnd-droppable] {
@@ -13,6 +31,7 @@
     margin-left: -1px;
 }
 
-.dnd-drag-enter[dnd-droppable], .dnd-drag-over[dnd-droppable] {
+.dnd-drag-enter[dnd-droppable],
+.dnd-drag-over[dnd-droppable] {
     border: 1px dashed #333;
 }

@@ -1,11 +1,15 @@
 :host>form {
-    padding: 8px;
+    padding: 6px;
     background: #e8e8e8;
     margin: 0;
 }
 
 :host>div {
-    padding: 8px 0;
+    padding: 6px 0;
+}
+
+#urlPattern {
+    width: 100px;
 }
 
 table /deep/ tr>*:nth-child(1) {

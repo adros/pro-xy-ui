@@ -1,14 +1,14 @@
-<div class="form-group flex-grow">
+<div class="mb-2 flex-grow">
     <textarea class="form-control" [value]="model" (keyup)="model=$event.target.value" (blur)="hBlur()"></textarea>
 </div>
 <div>
-    <button class="btn btn-primary" (click)="save()" [disabled]="!dirty || invalid">Save</button>
-    <button class="btn btn-default" (click)="reset()" [disabled]="!dirty" [class.btn-warning]="isConcurentModification" [title]="resetTitle">
+    <button class="btn btn-sm btn-primary" (click)="save()" [disabled]="!dirty || invalid">Save</button>
+    <button class="btn btn-sm btn-secondary" (click)="reset()" [disabled]="!dirty" [class.btn-warning]="isConcurentModification" [title]="resetTitle">
         Reset
         <span *ngIf="isConcurentModification"> !!!</span>
     </button>
-    <button class="btn btn-default" (click)="showDiff()" [disabled]="!dirty">Show diff</button>
-    <button class="btn btn-default" (click)="this.model = this.defaultConfigJson">Load default</button>
+    <button class="btn btn-sm btn-secondary" (click)="showDiff()" [disabled]="!dirty">Show diff</button>
+    <button class="btn btn-sm btn-secondary" (click)="this.model = this.defaultConfigJson">Load default</button>
 
     <em style="color:red">{{message}}</em>
 </div>

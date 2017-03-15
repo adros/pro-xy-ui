@@ -4,3 +4,20 @@
     padding: 2px;
     border-top-color: white;
 }
+
+.table tr * {
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+.table label {
+    margin-bottom: 0;
+}
+
+.table thead label {
+    font-weight: bold;
+}
+
+.table input {
+    margin-right: 6px;
+}

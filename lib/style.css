@@ -19,6 +19,10 @@ body {
     padding: 0;
 }
 
+body {
+    font-size: .875rem
+}
+
 .flex-grow {
     flex: 1;
     display: flex;
@@ -62,4 +66,12 @@ table .checkbox label {
 
 table input[type=checkbox] {
     margin-top: 2px;
+}
+
+#loadingMsg {
+    font-size: 40px;
+    text-align: center;
+    position: absolute;
+    top: calc(50% - 40px);
+    width: 100%;
 }

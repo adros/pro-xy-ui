@@ -1,14 +1,11 @@
-<form class="form-inline">
-    <div class="form-group">
-        <label for="logLines">Lines</label>
-        <input type="number" class="form-control" id="logLines" [(ngModel)]="lines" name="lines" min="10" max="500">
-    </div>
-    <div class="form-group">
-        <label for="logInterval">Update interval</label>
-        <div class="input-group">
-            <input type="number" class="form-control" id="logInterval" [(ngModel)]="interval" name="interval" min="1" max="60" step="2">
-            <div class="input-group-addon">sec.</div>
-        </div>
+<form class="form-inline mb-2">
+    <label for="logLines" class="col-form-label-sm mr-1">Lines</label>
+    <input type="number" class="form-control form-control-sm mr-2" id="logLines" [(ngModel)]="lines" name="lines" min="10" max="500">
+
+    <label for="logInterval" class="col-form-label-sm mr-1">Update interval</label>
+    <div class="input-group input-group-sm">
+        <input type="number" class="form-control" id="logInterval" [(ngModel)]="interval" name="interval" min="1" max="60" step="2">
+        <div class="input-group-addon">sec.</div>
     </div>
 </form>
 <div class="flex-grow">

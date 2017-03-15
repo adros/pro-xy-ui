@@ -1,15 +1,16 @@
 <form class="form-inline">
+    <label for="logLines" class="col-form-label-sm mr-1">Max rows</label>
+    <input type="number" class="form-control form-control-sm mr-2" id="logLines" [(ngModel)]="maxRows" name="lines" min="10" max="500">
 
-    <div class="form-group">
-        <label for="logLines">Max rows</label>
-        <input type="number" class="form-control" id="logLines" [(ngModel)]="maxRows" name="lines" min="10" max="500">
-    </div>
-    <div class="checkbox-inline">
-        <label>
-            <input type="checkbox" [(ngModel)]="replacedOnly" name="replacedOnly">  Replaced only
+    <label for="urlPattern" class="col-form-label-sm mr-1">URL pattern</label>
+    <input class="form-control form-control-sm mr-2" id="urlPattern" [(ngModel)]="urlPattern" name="urlPattern" disabled>
+
+    <div class="form-check mr-2">
+        <label class="form-check-label col-form-label-sm">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="replacedOnly" name="replacedOnly">  Replaced only
         </label>
     </div>
-    <button class="btn btn-default" (click)="clear()">Clear</button>
+    <button class="btn btn-secondary btn-sm" (click)="clear()">Clear</button>
 </form>
 
 <div class="flex-grow">
@@ -25,8 +26,7 @@
                 <th [style.display]="(enabledHeaders|async)[5] ? 'table-cell' : 'none'">Flags</th>
             </tr>
         </thead>
-        <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hBodyCtxMenu(reqRes,$event)"
-            [style.color]="getColorByStatus(reqRes)" [enabled-headers]="enabledHeaders">
+        <tr [request-row]=reqRes *ngFor="let reqRes of requestsObservable | async" (click)="selected.emit(reqRes)" (contextmenu)="hBodyCtxMenu(reqRes,$event)" [style.color]="getColorByStatus(reqRes)" [enabled-headers]="enabledHeaders">
         </tr>
     </table>
 </div>

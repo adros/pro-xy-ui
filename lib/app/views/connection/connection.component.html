@@ -1,9 +1,9 @@
 <span *ngIf="statusObservable|async">
-<span style="color:green">Connected</span>
-<button class="btn btn-default" (click)="killProxy()">Kill pro-xy</button>
+<span style="color:green;vertical-align:middle">Connected</span>
+<button class="btn btn-secondary btn-sm" (click)="killProxy()">Kill pro-xy</button>
 </span>
 
 <span *ngIf="!(statusObservable|async)">
-<span style="color:red">Disconnected</span>
-<button class="btn btn-default" (click)="startProxy()">Start pro-xy</button>
+<span style="color:red;vertical-align:middle">Disconnected</span>
+<button class="btn btn-secondary btn-sm" (click)="startProxy()">Start pro-xy</button>
 </span>

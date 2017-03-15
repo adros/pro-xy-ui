@@ -1,9 +1,9 @@
-<div class="form-group flex-grow">
+<div class="mb-2 flex-grow">
     <textarea class="form-control" [value]="model" (keyup)="model=$event.target.value" dnd-droppable (onDropSuccess)="reqRes=$event.dragData"></textarea>
 </div>
 <div>
-    <button class="btn btn-primary" (click)="send()" [disabled]="invalid">Send</button>
-    <button class="btn btn-default" (click)="loadSample()">Load sample</button>
+    <button class="btn btn-sm btn-primary" (click)="send()" [disabled]="invalid">Send</button>
+    <button class="btn btn-sm btn-secondary" (click)="loadSample()">Load sample</button>
 
     <em style="color:red">{{message}}</em>
 </div>

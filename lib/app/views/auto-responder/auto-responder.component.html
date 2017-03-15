@@ -13,11 +13,9 @@
             <thead>
                 <tr>
                     <th>
-                        <div class="checkbox">
-                            <label style="font-weight:bold">
-                        <input type="checkbox" [checked]="!(configObservable|async).autoResponder.disabled" (change)="toggleDisabled()">Auto responder enabled
-                    </label>
-                        </div>
+                        <label>
+                            <input type="checkbox" [checked]="!(configObservable|async).autoResponder.disabled" (change)="toggleDisabled()">Auto responder enabled
+                        </label>
                     </th>
                     <th>Target</th>
                     <th>Method</th>
