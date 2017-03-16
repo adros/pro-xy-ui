@@ -29,6 +29,7 @@ export class RequestsComponent implements OnInit {
     requestsObservable: Observable<ReqRes[]>;
 
     @ViewChild("tableHead") tableHead: any;
+    @ViewChild("urlPatterWrapper") urlPatterWrapper: any;
 
     @Output() selected = new EventEmitter<ReqRes>();
     @Output() autoResponse = new EventEmitter<ReqRes>();
@@ -69,15 +70,25 @@ export class RequestsComponent implements OnInit {
         this._urlPattern = urlPattern;
         this.trafficService.urlPattern = urlPattern;
         localStorage.setItem("requestsComponent-urlPattern", urlPattern + "");
+
+        this.validateUrlPatternField();
     }
     get urlPattern() { return this._urlPattern; }
 
+    validateUrlPatternField() {
+        if (!this.urlPatterWrapper) { return; }
+        var isValid = true;
+        try { new RegExp(this.urlPattern); } catch (e) { isValid = false; }
+        this.urlPatterWrapper.nativeElement.classList[isValid ? "remove" : "add"]("has-danger");
+    }
 
     ngOnInit(): void {
         this.trafficService.maxRows = this.maxRows;
         this.requestsObservable = this.trafficService.traffic.throttleTime(100);
         this._bodyMenu = new BodyMenu(this, this.zone);
         this._headMenu = new HeadMenu(this, this.zone);
+
+        this.validateUrlPatternField();
     }
 
     clear() {

@@ -2,9 +2,10 @@
     <label for="logLines" class="col-form-label-sm mr-1">Max rows</label>
     <input type="number" class="form-control form-control-sm mr-2" id="logLines" [(ngModel)]="maxRows" name="lines" min="10" max="500">
 
-    <label for="urlPattern" class="col-form-label-sm mr-1">URL pattern</label>
-    <input class="form-control form-control-sm mr-2" id="urlPattern" [(ngModel)]="urlPattern" name="urlPattern">
-
+    <span #urlPatterWrapper title="Regular expression that will be used to filter requests according to url" style="display:flex">
+        <label for="urlPattern" class="col-form-label-sm mr-1">URL pattern</label>
+        <input class="form-control form-control-sm mr-2" id="urlPattern" [(ngModel)]="urlPattern" name="urlPattern">
+    </span>
     <div class="form-check mr-2">
         <label class="form-check-label col-form-label-sm">
             <input class="form-check-input" type="checkbox" [(ngModel)]="replacedOnly" name="replacedOnly">  Replaced only
