@@ -1,4 +1,4 @@
-<div defaultOverlayTarget tabIndex="0" class="app" (contextmenu)="openAppMenu($event)" (keyup.control.r)="socketService.connectToRemote()" (keyup.f5)="reload()">
+<div defaultOverlayTarget tabIndex="0" class="app" (window:keyup.control.r)="socketService.connectToRemote()" (window:keyup.f5)="reload()" (window:keyup.control.f)="find.show()"> 
     <div class="flex-grow" style="flex-direction: row;">
         <div class="flex-grow left-section" #leftSection>
             <requests (selected)="selectedReqRes=$event" (autoResponse)="autoResponder.add($event);this.selectedView='autoResponder'" (compose)="this.composerReqRes=$event;this.selectedView='composer';" (replay)="this.composer.send($event)"></requests>
@@ -11,10 +11,10 @@
                     <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='urlReplace'" (click)="this.selectedView='urlReplace'" [disabled]="!(statusObservable|async)">Url replace</button>
                     <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='autoResponder'" (click)="this.selectedView='autoResponder'" [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.autoResponder.add($event.dragData);this.selectedView='autoResponder'"
                         [allowDrop]="autoResponder.checkDropAllow">Auto responder</button>
-                    <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
-                    <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='composer'" (click)="this.selectedView='composer'" [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.composerReqRes=$event.dragData;this.selectedView='composer'">Composer</button>
-                    <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
-                    <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
+                        <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='delay'" (click)="this.selectedView='delay'" [disabled]="!(statusObservable|async)">Delay</button>
+                        <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='composer'" (click)="this.selectedView='composer'" [disabled]="!(statusObservable|async)" dnd-droppable (onDropSuccess)="this.composerReqRes=$event.dragData;this.selectedView='composer'">Composer</button>
+                        <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='config'" (click)="this.selectedView='config'" [disabled]="!(statusObservable|async)">Config</button>
+                        <button class="btn btn-secondary btn-sm" [class.active]="selectedView=='logs'" (click)="this.selectedView='logs'" [disabled]="!(statusObservable|async)">Logs</button>
                 </nav>
                 <connection #connection></connection>
             </header>
@@ -30,5 +30,6 @@
             </div>
         </div>
     </div>
-    <status #status class="footer" (click)="toggleStatus()"></status>
+    <status #status class="footer" (click)="status.toggle()"></status>
+    <find #find></find>
 </div>

@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 import { RequestsComponent } from './views/requests/requests.component';
 import { RequestsRowComponent } from './views/requests/request-row.component';
 import { StatusComponent } from './views/status/status.component';
+import { FindComponent } from './views/find/find.component';
 import { ConfigComponent } from './views/config/config.component';
 import { DiffDialog } from './views/config/diff.dialog';
 import { PluginsDialog } from './views/config/plugins.dialog';
@@ -47,6 +48,7 @@ import { ConfigService } from './service/config.service';
         ConfigComponent,
         RequestsComponent,
         StatusComponent,
+        FindComponent,
         UrlReplaceComponent,
         LogsComponent,
         ConnectionComponent,

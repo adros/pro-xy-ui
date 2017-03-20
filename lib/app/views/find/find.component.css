@@ -1,0 +1,30 @@
+:host {
+    font-size: 10px;
+    overflow-y: auto;
+    background: #ccc;
+    transition-property: height;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+}
+
+:host.minimized {
+    height: 0px;
+}
+
+:host.minimized>* {
+    display: none;
+}
+
+.numbers {
+    width: 50px;
+    display: inline-block;
+    position: absolute;
+    left: 240px;
+    text-align: right;
+    color: #666;
+}
+
+input {
+    width: 250px !important;
+    padding-right: 60px;
+}

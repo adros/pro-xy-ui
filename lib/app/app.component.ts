@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, NgZone, ChangeDetectionStrategy} from "@angular/core";
-import { Http, Response } from '@angular/http';
+import { Http, Response } from "@angular/http";
 import { SocketService } from "./service/socket.service";
 import { StatusComponent } from "./views/status/status.component";
+import { FindComponent } from "./views/find/find.component";
 import { InspectorComponent } from "./views/inspector/inspector.component";
 import { Observable } from "rxjs/Observable";
 import { openAppMenu } from "./_common/app-menu";
 import { patchResize } from "./_common/patchResize";
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 
 var semver = nw.require("semver");
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     @ViewChild("connection") connection: any;
     @ViewChild("composer") composer: any;
     @ViewChild("leftSection") leftSection: any;
+    @ViewChild("find") find: FindComponent;
 
     _selectedReqRes: any
     set selectedReqRes(selectedReqRes) {
@@ -63,10 +65,8 @@ export class AppComponent implements OnInit {
         var width = localStorage.getItem("leftSectionWidth");
         this.leftSection.nativeElement.style.width = width ? width + "px" : "50%";
         patchResize(this.leftSection.nativeElement, size => localStorage.setItem("leftSectionWidth", size.w));
-    }
 
-    toggleStatus() {
-        this.status.toggle();
+        this.find.hide();
     }
 
     openAppMenu = openAppMenu

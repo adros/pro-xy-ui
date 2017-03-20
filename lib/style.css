@@ -86,3 +86,11 @@ pre {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.search-result {
+    background-color: yellow !important;
+}
+
+.search-result-current {
+    background-color: orange !important;
+}
