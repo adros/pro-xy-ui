@@ -1,7 +1,13 @@
-textarea {
-    resize: none;
+pre {
     height: 100%;
     font-size: 12px;
     line-height: 12px;
+    background: white;
+    margin-bottom: 0 !important;
     font-family:Menlo,Monaco,Consolas,"Courier New",monospace
+}
+
+pre:focus {
+    border-color: #5cb3fd;
+    outline: 0;
 }

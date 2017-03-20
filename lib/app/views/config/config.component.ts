@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from "@angular/core";
+import { Component, ViewChild, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from "@angular/core";
 import { SocketService } from "../../service/socket.service";
 import { Observable } from "rxjs/Observable";
 import { MdDialog } from "@angular/material";
@@ -23,6 +23,8 @@ export class ConfigComponent implements OnInit {
 
     @Output()
     restartNeeded = new EventEmitter<any>();
+
+    @ViewChild("preNode") preNode: any;
 
     configObservable: Observable<any>
     isConcurentModification = false
@@ -54,6 +56,9 @@ export class ConfigComponent implements OnInit {
             this.message = null;
         } catch (e) {
             this.message = "Invalid JSON";
+        }
+        if (this.preNode.nativeElement.innerText != model) {
+            this.preNode.nativeElement.innerText = model;
         }
     }
 
@@ -88,6 +93,7 @@ export class ConfigComponent implements OnInit {
     hBlur() {
         if (this.invalid) { return; }
         this.model = JSON.stringify(JSON.parse(this.model), null, 4);
+        this.cd.markForCheck();
     }
 
     reset() {

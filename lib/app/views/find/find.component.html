@@ -1,8 +1,8 @@
 <div tabIndex="0" (keyup.esc)="hide()">
     <form class="form-inline m-1">
         <label for="findTerm" class="col-form-label-sm mr-1">Search</label>
-        <input #termInput class="form-control form-control-sm mr-2" id="findTerm" [(ngModel)]="term" name="term" (keyup.enter)="next()" autocomplete="off">
-        <span *ngIf="count" class="numbers">{{current}} of {{count}}</span>
+        <input #termInput class="form-control form-control-sm mr-2" id="findTerm" [value]="term" [formControl]="termControl" (keyup.enter)="next()" autocomplete="off">
+        <span *ngIf="term" class="numbers">{{current}} of {{count}}</span>
         <button type="button" class="close" aria-label="Close" (click)="hide()">
           <span aria-hidden="true">&times;</span>
         </button>

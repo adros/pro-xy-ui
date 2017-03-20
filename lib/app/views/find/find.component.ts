@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import * as rangy from "rangy/lib/rangy-textrange";
 import "rangy/lib/rangy-classapplier";
 
@@ -14,6 +15,8 @@ export class FindComponent implements OnInit {
     constructor(private rootElement: ElementRef, private cd: ChangeDetectorRef) { }
 
     @ViewChild("termInput") termInput: any;
+
+    termControl = new FormControl();
 
     _term: string
     set term(term) {
@@ -46,11 +49,16 @@ export class FindComponent implements OnInit {
             withinRange: searchScopeRange,
             direction: "forward"
         };
+
+        this.termControl.valueChanges
+            .debounceTime(400)
+            .subscribe(term => { this.term = term; this.cd.markForCheck(); });
     }
 
     show() {
         this.rootElement.nativeElement.classList.remove("minimized");
         this.termInput.nativeElement.focus();
+        this.termInput.nativeElement.select();
         this.term && this.search(); //reinit search
         this.cd.markForCheck();
     }

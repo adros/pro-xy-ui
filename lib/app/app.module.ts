@@ -5,7 +5,7 @@ import { MaterialModule } from '@angular/material';
 import { DndModule } from 'ng2-dnd';
 
 import { JsonPipe } from './_common/pipes';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import './_common/rxjs-extensions'; //load extensions
@@ -38,6 +38,7 @@ import { ConfigService } from './service/config.service';
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         MaterialModule.forRoot(),
         DndModule.forRoot()
