@@ -1,6 +1,8 @@
-import { Component, OnInit, ElementRef,ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { SocketService } from '../../service/socket.service';
 import { Observable } from 'rxjs';
+
+const MINIMIZED = localStorage.getItem("statusComponent-minimized") == "true";
 
 @Component({
     moduleId: module.id,
@@ -18,16 +20,26 @@ export class StatusComponent implements OnInit {
 
     bufferSize = 20
 
+    minimized: boolean;
+
     ngOnInit(): void {
         this.logs = this.socketService.logsObservable
             .scan((arr, logStr) => {
                 arr.push(logStr);
                 return arr.slice(-1 * this.bufferSize);
             }, []);
+
+        let e = this.rootElement.nativeElement;
+        e.classList.add("notransition");
+        this.toggle(MINIMIZED);
+        e.offsetHeight; // Trigger a reflow, flushing the CSS changes
+        e.classList.remove("notransition");
     }
 
-    toggle() {
-        this.rootElement.nativeElement.classList.toggle("minimized");
+    toggle(force?) {
+        this.minimized = force != null ? force : !this.minimized;
+        this.rootElement.nativeElement.classList.toggle("minimized", this.minimized);
+        localStorage.setItem("statusComponent-minimized", this.minimized + "");
     }
 
 }

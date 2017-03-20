@@ -94,3 +94,7 @@ pre {
 .search-result-current {
     background-color: orange !important;
 }
+
+.notransition {
+  transition: none !important;
+}

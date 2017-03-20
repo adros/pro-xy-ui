@@ -24,6 +24,7 @@ export class ConfigComponent implements OnInit {
     @Output()
     restartNeeded = new EventEmitter<any>();
 
+    //PRE with content editable is used, to support CTRL-F (search) in config; it would not work in textarea
     @ViewChild("preNode") preNode: any;
 
     configObservable: Observable<any>
