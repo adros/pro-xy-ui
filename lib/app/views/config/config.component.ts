@@ -84,6 +84,8 @@ export class ConfigComponent implements OnInit {
             .filter(config => !config.isEmpty)
             .first()
             .subscribe(config => this.checkPlugins(config));
+
+        this.preNode.nativeElement
     }
 
     save(): void {
@@ -95,6 +97,12 @@ export class ConfigComponent implements OnInit {
         if (this.invalid) { return; }
         this.model = JSON.stringify(JSON.parse(this.model), null, 4);
         this.cd.markForCheck();
+    }
+
+    hPaste(evt) {
+        evt.preventDefault();// cancel paste
+        var text = evt.clipboardData.getData("text/plain"); // get text representation of clipboard
+        document.execCommand("insertHTML", false, text); // insert text manually
     }
 
     reset() {
