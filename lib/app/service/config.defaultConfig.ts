@@ -60,7 +60,7 @@ export default {
         ]
     },
     "pro-xy-delay": {
-        "disabled": false,
+        "disabled": true,
         "rules": [
             {
                 "urlPattern": ".*",
