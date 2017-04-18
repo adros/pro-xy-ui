@@ -95,7 +95,7 @@ export class FindComponent implements OnInit {
         }
         this.searchResultCurrentApplier.applyToRange(this.range);
         let n = document.querySelector(".search-result-current")
-        n && n.scrollIntoViewIfNeeded();
+        n && n.scrollIntoView();
         this.current++;
     }
 
