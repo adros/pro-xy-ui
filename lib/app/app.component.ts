@@ -9,6 +9,8 @@ import { openAppMenu } from "./_common/app-menu";
 import { patchResize } from "./_common/patchResize";
 import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 
+const {remote} = nodeRequire("electron");
+
 var semver = nodeRequire("semver");
 
 @Component({
@@ -76,7 +78,8 @@ export class AppComponent implements OnInit {
             .toPromise()
             .then(response => {
                 //TODO: electron
-                var currentVersion = "1.0.0"; //nodeRequire("nw.gui").App.manifest.version;
+
+                var currentVersion = remote.app.getVersion();
                 var latestVersion = response.json()["dist-tags"].latest;
 
                 if (!semver.gt(latestVersion, currentVersion)) { return; }

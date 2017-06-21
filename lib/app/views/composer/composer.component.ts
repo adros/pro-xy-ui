@@ -2,10 +2,10 @@ import { Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core'
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { SocketService } from '../../service/socket.service';
 import { ReqRes } from '../../model/http';
-//TODO: electron
-//var app = nodeRequire('nw.gui').App;
-var validUrl = nodeRequire('valid-url');
-var url = nodeRequire('url');
+
+const {session: {defaultSession: session}} = nodeRequire('electron').remote
+const validUrl = nodeRequire('valid-url');
+const url = nodeRequire('url');
 
 var SAMPLE_REQUEST = 'POST http://jsonplaceholder.typicode.com/posts\ncontent-type: application/json\naccept: */*\n\n{"sample":1}';
 
@@ -122,27 +122,42 @@ export class ComposerComponent implements OnInit {
         if (reqRes) {
             req = {
                 url: reqRes.url,
-                method:reqRes.method,
-                headers:reqRes.reqHeaders,
-                body:reqRes.reqBody
+                method: reqRes.method,
+                headers: reqRes.reqHeaders,
+                body: reqRes.reqBody
             };
         }
 
         let options = new RequestOptions({
-            //AR:do not add no-cache, we do not want to spoil headers, we will clear the cache (disabling cache in nw.js seems to be buggy, see issues)
+            //AR:do not add no-cache, we do not want to spoil headers, we will clear the cache (disabling cache in nw seems to be buggy, see issues)
+            // but electron is maybe not buggy, see https://github.com/electron/electron/issues/891
             //headers: new Headers(Object.assign({ pragma: "no-cache" }, req.headers)),
             headers: new Headers(req.headers),
             method: req.method,
             body: req.body
         });
-        //TODO: electron
-        //app.clearCache();
-        //app.setProxyConfig(`http=localhost:${this.config.port},direct://;direct://`);
-        this.http.request(req.url, options)
-            .toPromise()
-            .catch(() => null); // no op
-            //TODO: electron
-            //.then(() => app.setProxyConfig(""));
+
+        prepare.call(this)
+            .then(() => this.http.request(req.url, options).toPromise())
+            .catch(() => null)// no op
+            .then(() => session.setProxy({ proxyRules: "" }, () => 1));
+
+        function prepare() {
+            var proxyRules = `http=localhost:${this.config.port},direct://;direct://`;
+            return new Promise((resolve, reject) => {
+                session.clearCache((err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    session.setProxy({ proxyRules }, (err) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        resolve();
+                    });
+                });
+            });
+        }
     }
 
     loadSample() {

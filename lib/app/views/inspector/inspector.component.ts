@@ -1,9 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ReqRes } from '../../model/http';
 
-//TODO: electron
-//var gui = nodeRequire('nw.gui');
-//var clipboard = gui.Clipboard.get();
+const {remote, clipboard} = nodeRequire("electron");
+const {MenuItem} = remote;
 
 @Component({
     moduleId: module.id,
@@ -20,10 +19,9 @@ export class InspectorComponent implements OnChanges {
 
     constructor(private cd: ChangeDetectorRef) {
         this.menuItems = [
-            //TODO: electron
-            //new nw.MenuItem({ label: "Copy URL", click: () => this.reqRes && clipboard.set(this.reqRes.url, "text") }),
-            //new nw.MenuItem({ label: "Copy req & res", click: () => this.reqRes && clipboard.set(this.reqRes.toString(), "text") }),
-            //new nw.MenuItem({ type: "separator" })
+            new MenuItem({ label: "Copy URL", click: () => this.reqRes && clipboard.writeText(this.reqRes.url) }),
+            new MenuItem({ label: "Copy req & res", click: () => this.reqRes && clipboard.writeText(this.reqRes.toString()) }),
+            new MenuItem({ type: "separator" })
         ];
     }
 

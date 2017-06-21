@@ -3,6 +3,9 @@ import { SocketService } from '../../service/socket.service';
 import { ConfigListBase } from '../config-list-base';
 import { ReqRes } from '../../model/http';
 
+const {remote, shell} = nodeRequire("electron");
+const {MenuItem} = remote;
+
 var path = nodeRequire("path");
 var url = nodeRequire("url");
 var fs = nodeRequire("fs");
@@ -29,8 +32,7 @@ export class AutoResponder extends ConfigListBase {
         super();
         this.socketService = socketService;
 
-        //TODO: electron
-        //this.menuItems.splice(1, 0, new nw.MenuItem({ label: "Delete with target", click: () => this.deleteItem(this._lastCtxItem, true) }));
+        this.menuItems.splice(1, 0, new MenuItem({ label: "Delete with target", click: () => this.deleteItem(this._lastCtxItem, true) }));
     }
 
     openFile(event, item) {
@@ -41,8 +43,7 @@ export class AutoResponder extends ConfigListBase {
         if (!fs.existsSync(path)) {
             fs.writeFileSync(path, "");
         }
-        //TODO: electron
-        //nw.Shell.openItem(path);
+        shell.openItem(path);
     }
 
     getFileLocation(target) {

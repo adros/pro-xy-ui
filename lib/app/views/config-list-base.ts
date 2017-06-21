@@ -2,6 +2,9 @@ import { OnInit } from '@angular/core';
 import { SocketService } from '../service/socket.service';
 import { Observable } from 'rxjs/Observable';
 
+const {shell, remote} = nodeRequire("electron");
+const {MenuItem} = remote;
+
 export abstract class ConfigListBase implements OnInit {
 
     configObservable: Observable<Object>
@@ -15,8 +18,8 @@ export abstract class ConfigListBase implements OnInit {
 
     constructor() {
         this.menuItems = [
-            //TODO: electronnew nw.MenuItem({ label: "Delete", click: () => this.deleteItem(this._lastCtxItem) }),
-            //TODO: electronnew nw.MenuItem({ type: "separator" })
+            new MenuItem({ label: "Delete", click: () => this.deleteItem(this._lastCtxItem) }),
+            new MenuItem({ type: "separator" })
         ];
     }
 
@@ -38,7 +41,7 @@ export abstract class ConfigListBase implements OnInit {
 
     openUrl($event) {
         $event.preventDefault();
-        //TODO: electronnw.Shell.openExternal($event.target.href);
+        shell.openExternal($event.target.href);
     }
 
     deleteItem(item) {

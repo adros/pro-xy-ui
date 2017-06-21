@@ -1,6 +1,9 @@
 import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import {RequestsComponent} from './requests.component';
 
+const {remote} = nodeRequire("electron");
+const {MenuItem} = remote;
+
 export class HeadMenu {
 
     private menuHeadItems: any[]
@@ -15,15 +18,14 @@ export class HeadMenu {
         let ths = Array.prototype.slice.call(requestsComponent.tableHead.nativeElement.querySelectorAll("th"), 1);
         let enabledHeaders = requestsComponent.enabledHeaders.getValue();
 
-        //TODO: electron
-        // this.menuHeadItems = ths.map((th, idx) => new nw.MenuItem({
-        //     label: th.innerHTML,
-        //     type: "checkbox",
-        //     checked: enabledHeaders[idx],
-        //     click: () => zone.run(() => this.update(idx))
-        // }));
-        //
-        // this.menuHeadItems.push(new nw.MenuItem({ type: "separator" }))
+        this.menuHeadItems = ths.map((th, idx) => new MenuItem({
+            label: th.innerHTML,
+            type: "checkbox",
+            checked: enabledHeaders[idx],
+            click: () => zone.run(() => this.update(idx))
+        }));
+
+        this.menuHeadItems.push(new MenuItem({ type: "separator" }))
     }
 
     update(idx) {

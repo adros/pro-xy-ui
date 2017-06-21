@@ -7,8 +7,7 @@ var cp = nodeRequire("child_process");
 var path = nodeRequire("path");
 var fs = nodeRequire("fs");
 var os = nodeRequire("os");
-//TODO: electron
-//var app = nodeRequire('nw.gui').App;
+const {session: {defaultSession: session}} = nodeRequire('electron').remote
 
 var PROXY_ERR_OUT_PATH = path.join(os.tmpdir(), "pro-xy-tmp-err.log");
 
@@ -37,8 +36,7 @@ export class ConnectionComponent implements OnInit {
 
     startProxy() {
         //TODO: this should be not needed if proxy is configured correctly
-        //TODO: electron
-        //app.setProxyConfig(""); //if proxy was cahnged by composer (and not yet reverted, make sure its empty, othwerwise there are connection errors)
+        session.setProxy({ proxyRules: "" }, () => 1);
         try {
             var cs = this.configService;
             if (!cs.configExists()) {

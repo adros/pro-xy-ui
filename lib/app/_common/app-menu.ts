@@ -1,42 +1,43 @@
-var path = nodeRequire("path");
+const path = nodeRequire("path");
+const {remote, shell} = nodeRequire("electron");
+const {Menu, MenuItem, app} = remote;
 
-var LOG_FILE_LOCATION = path.join(process.env.HOME, "pro-xy-logs/pro-xy.log");
-var CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
+const LOG_FILE_LOCATION = path.join(process.env.HOME, "pro-xy-logs/pro-xy.log");
+const CONFIG_LOCATION = path.join(process.env.HOME, ".pro-xyrc.json");
 
-var mainMenu;
-var globalItems = [
-    //TODO: electron
-    //new nw.MenuItem({ label: "Reload app", click: () => chrome.runtime.reload() }),
-    //new nw.MenuItem({ label: "Open", submenu: createOpenMenu() })
+let mainMenu;
+let globalItems = [
+    new MenuItem({ label: "Reload app", click: () => {app.relaunch(); app.exit(0)} }),
+    new MenuItem({ label: "Open", submenu: createOpenMenu() })
 ];
 
 export function openAppMenu(evt) {
     if (evt.ctrlKey) { return; }
     evt.preventDefault();
-    //TODO: electron
-    //if (!mainMenu) { mainMenu = new nw.Menu(); }
 
-    // while (mainMenu.items.length) { mainMenu.removeAt(0); }
-    //
-    // if (evt.menuItems) {
-    //     evt.menuItems.forEach(item => mainMenu.append(item));
-    // }
-    // if (!evt.preventGlobalItems) {
-    //     globalItems.forEach(item => mainMenu.append(item));
-    // }
-    //
-    // mainMenu.popup(evt.pageX, evt.pageY);
+    //NTH: there seems to be no way to remove old items in electron, so recreate menu
+    mainMenu && mainMenu.destroy();
+    mainMenu = new Menu();
+
+    if (evt.menuItems) {
+        evt.menuItems.forEach(item => mainMenu.append(item));
+    }
+    if (!evt.preventGlobalItems) {
+        globalItems.forEach(item => mainMenu.append(item));
+    }
+
+    mainMenu.popup(evt.pageX, evt.pageY);
 }
 
 function createOpenMenu() {
-    var openMenu = new nw.Menu();
-    openMenu.append(new nw.MenuItem({
+    let openMenu = new Menu();
+    openMenu.append(new MenuItem({
         label: "Config file (in system editor)",
-        click: () => nw.Shell.openItem(CONFIG_LOCATION)
+        click: () => shell.openItem(CONFIG_LOCATION)
     }));
-    openMenu.append(new nw.MenuItem({
+    openMenu.append(new MenuItem({
         label: "Log file (in system editor)",
-        click: () => nw.Shell.openItem(LOG_FILE_LOCATION)
+        click: () => shell.openItem(LOG_FILE_LOCATION)
     }));
     return openMenu;
 }
