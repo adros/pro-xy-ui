@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import defaultConfig from "./config.defaultConfig";
-
-var path = nw.require("path");
-var fs = nw.require("fs");
+var path = nodeRequire("path");
+var fs = nodeRequire("fs");
 
 @Injectable()
 export class ConfigService {

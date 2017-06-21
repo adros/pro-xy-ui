@@ -5,20 +5,19 @@
 var path = require("path");
 var cp = require("child_process");
 
-var nwBin = require.resolve("nw/bin/nw");
-nwBin = path.resolve(__dirname, "../node_modules/.bin/nw");
+var bin = path.resolve(__dirname, "../node_modules/.bin/electron");
 if (/^win/.test(process.platform)) {
-	nwBin += ".cmd";
+	bin += ".cmd";
 }
 
-var nwProcess = cp.spawn(nwBin, [
+var nwProcess = cp.spawn(bin, [
 	path.resolve(__dirname, "..")
 ], {
 	detached: true,
 	stdio: "ignore",
-	terminal:false,
-	env: Object.assign({
-		CHROME_LOG_FILE: path.join(process.env.HOME, "pro-xy-logs/pro-xy-ui.log")
-	}, process.env)
+	terminal: false
+// env: Object.assign({
+// 	CHROME_LOG_FILE: path.join(process.env.HOME, "pro-xy-logs/pro-xy-ui.log")
+// }, process.env)
 });
 nwProcess.unref();

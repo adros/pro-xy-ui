@@ -9,7 +9,7 @@ import { Config }   from '../model/config';
 import { ConfigService }        from './config.service';
 import * as io                  from "socket.io-client";
 
-var url = nw.require("url");
+var url = nodeRequire("url");
 
 @Injectable()
 export class SocketService {

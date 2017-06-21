@@ -9,7 +9,7 @@ import { openAppMenu } from "./_common/app-menu";
 import { patchResize } from "./_common/patchResize";
 import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 
-var semver = nw.require("semver");
+var semver = nodeRequire("semver");
 
 @Component({
     moduleId: module.id,
@@ -75,7 +75,8 @@ export class AppComponent implements OnInit {
         this.http.get("http://registry.npmjs.org/pro-xy-ui?cacheBust=" + Math.random())
             .toPromise()
             .then(response => {
-                var currentVersion = nw.require("nw.gui").App.manifest.version;
+                //TODO: electron
+                var currentVersion = "1.0.0"; //nodeRequire("nw.gui").App.manifest.version;
                 var latestVersion = response.json()["dist-tags"].latest;
 
                 if (!semver.gt(latestVersion, currentVersion)) { return; }

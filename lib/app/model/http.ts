@@ -1,7 +1,7 @@
-var http = nw.require("http");
-var zlib = nw.require("zlib");
-var url = nw.require("url");
-var stringify = nw.require("json-stable-stringify");
+var http = nodeRequire("http");
+var zlib = nodeRequire("zlib");
+var url = nodeRequire("url");
+var stringify = nodeRequire("json-stable-stringify");
 import {  EventEmitter } from '@angular/core';
 
 

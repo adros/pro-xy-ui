@@ -3,11 +3,11 @@ import { SocketService } from '../../service/socket.service';
 import { ConfigListBase } from '../config-list-base';
 import { ReqRes } from '../../model/http';
 
-var path = nw.require("path");
-var url = nw.require("url");
-var fs = nw.require("fs");
-var format = nw.require('date-format');
-var escapeStringRegexp = nw.require('escape-string-regexp');
+var path = nodeRequire("path");
+var url = nodeRequire("url");
+var fs = nodeRequire("fs");
+var format = nodeRequire('date-format');
+var escapeStringRegexp = nodeRequire('escape-string-regexp');
 
 @Component({
     moduleId: module.id,
@@ -29,7 +29,8 @@ export class AutoResponder extends ConfigListBase {
         super();
         this.socketService = socketService;
 
-        this.menuItems.splice(1, 0, new nw.MenuItem({ label: "Delete with target", click: () => this.deleteItem(this._lastCtxItem, true) }));
+        //TODO: electron
+        //this.menuItems.splice(1, 0, new nw.MenuItem({ label: "Delete with target", click: () => this.deleteItem(this._lastCtxItem, true) }));
     }
 
     openFile(event, item) {
@@ -40,7 +41,8 @@ export class AutoResponder extends ConfigListBase {
         if (!fs.existsSync(path)) {
             fs.writeFileSync(path, "");
         }
-        nw.Shell.openItem(path);
+        //TODO: electron
+        //nw.Shell.openItem(path);
     }
 
     getFileLocation(target) {

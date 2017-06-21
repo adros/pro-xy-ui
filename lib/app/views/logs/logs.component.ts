@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone ,ChangeDetectionStrategy} from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-var path = nw.require("path");
-var fs = nw.require("fs");
-var readLastLines = nw.require("read-last-lines");
+var path = nodeRequire("path");
+var fs = nodeRequire("fs");
+var readLastLines = nodeRequire("read-last-lines");
 
 @Component({
     moduleId: module.id,

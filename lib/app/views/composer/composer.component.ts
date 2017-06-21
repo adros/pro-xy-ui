@@ -2,9 +2,10 @@ import { Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core'
 import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { SocketService } from '../../service/socket.service';
 import { ReqRes } from '../../model/http';
-var app = nw.require('nw.gui').App;
-var validUrl = nw.require('valid-url');
-var url = nw.require('url');
+//TODO: electron
+//var app = nodeRequire('nw.gui').App;
+var validUrl = nodeRequire('valid-url');
+var url = nodeRequire('url');
 
 var SAMPLE_REQUEST = 'POST http://jsonplaceholder.typicode.com/posts\ncontent-type: application/json\naccept: */*\n\n{"sample":1}';
 
@@ -134,12 +135,14 @@ export class ComposerComponent implements OnInit {
             method: req.method,
             body: req.body
         });
-        app.clearCache();
-        app.setProxyConfig(`http=localhost:${this.config.port},direct://;direct://`);
+        //TODO: electron
+        //app.clearCache();
+        //app.setProxyConfig(`http=localhost:${this.config.port},direct://;direct://`);
         this.http.request(req.url, options)
             .toPromise()
-            .catch(() => null) // no op
-            .then(() => app.setProxyConfig(""));
+            .catch(() => null); // no op
+            //TODO: electron
+            //.then(() => app.setProxyConfig(""));
     }
 
     loadSample() {

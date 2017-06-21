@@ -15,8 +15,8 @@ export abstract class ConfigListBase implements OnInit {
 
     constructor() {
         this.menuItems = [
-            new nw.MenuItem({ label: "Delete", click: () => this.deleteItem(this._lastCtxItem) }),
-            new nw.MenuItem({ type: "separator" })
+            //TODO: electronnew nw.MenuItem({ label: "Delete", click: () => this.deleteItem(this._lastCtxItem) }),
+            //TODO: electronnew nw.MenuItem({ type: "separator" })
         ];
     }
 
@@ -38,7 +38,7 @@ export abstract class ConfigListBase implements OnInit {
 
     openUrl($event) {
         $event.preventDefault();
-        nw.Shell.openExternal($event.target.href);
+        //TODO: electronnw.Shell.openExternal($event.target.href);
     }
 
     deleteItem(item) {

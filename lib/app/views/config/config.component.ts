@@ -7,7 +7,7 @@ import { PluginsDialog } from "./plugins.dialog";
 import defaultConfig from "../../service/config.defaultConfig";
 import { Config } from "../../model/config";
 
-var diff = nw.require("diff");
+var diff = nodeRequire("diff");
 
 @Component({
     moduleId: module.id,
