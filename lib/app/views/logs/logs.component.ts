@@ -1,8 +1,8 @@
-import { Component, OnInit, NgZone ,ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectionStrategy} from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 var path = nw.require("path");
 var fs = nw.require("fs");
-var readLastLines = nw.require("read-last-lines");
+var {exec} = nw.require("child_process");
 
 @Component({
     moduleId: module.id,
@@ -30,11 +30,13 @@ export class LogsComponent implements OnInit {
         if (!fs.existsSync(this.logLocation)) {
             this.setData(`Logs file '${this.logLocation}' not found.`);
         } else {
-            readLastLines.read(this.logLocation, this.lines)
-                .then(lines => this.setData(lines))
-                .catch(err => this.setData(`Error while loading data\r\n${err}`));
+            exec(`tail -${this.lines || 100} ${this.logLocation}`, (error, stdout, stderr) => {
+                let data = error ? `Error while loading data\r\n${error.message}\r\n${stderr}` : stdout;
+                this.setData(data)
+            });
         }
-        setTimeout(() => this.readLog(), this.interval * 1000);
+        let interval = this.interval <= 0 ? 3 : this.interval;
+        setTimeout(() => this.readLog(), interval * 1000);
     }
 
     setData(data) {
