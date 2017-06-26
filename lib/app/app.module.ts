@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MaterialModule } from '@angular/material';
+import { MdSnackBarModule, MdDialogModule } from "@angular/material";
 
 import { DndModule } from 'ng2-dnd';
 
@@ -40,7 +40,8 @@ import { ConfigService } from './service/config.service';
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        MaterialModule.forRoot(),
+        MdSnackBarModule,
+        MdDialogModule,
         DndModule.forRoot()
         // DataTableModule
     ],
