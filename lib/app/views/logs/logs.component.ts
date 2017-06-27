@@ -30,6 +30,7 @@ export class LogsComponent implements OnInit {
         if (!fs.existsSync(this.logLocation)) {
             this.setData(`Logs file '${this.logLocation}' not found.`);
         } else {
+            //TODO: windows (no tail equivalent, use IF(WIN ) & previous version of this code (3rd party module))
             exec(`tail -${this.lines || 100} ${this.logLocation}`, (error, stdout, stderr) => {
                 let data = error ? `Error while loading data\r\n${error.message}\r\n${stderr}` : stdout;
                 this.setData(data)
