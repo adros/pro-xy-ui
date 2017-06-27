@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdSnackBarModule, MdDialogModule } from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import { DndModule } from 'ng2-dnd';
 
@@ -37,6 +38,7 @@ import { ConfigService } from './service/config.service';
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
