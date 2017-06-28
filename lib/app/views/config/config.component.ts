@@ -90,6 +90,7 @@ export class ConfigComponent implements OnInit {
     }
 
     trySave(): void {
+        this.hBlur();
         if (!this.dirty || this.invalid) {
             return this.msg(this.dirty ? "Invalid JSON!" : "No changes in config!");
         }
