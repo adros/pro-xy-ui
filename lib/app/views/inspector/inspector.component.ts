@@ -20,7 +20,9 @@ export class InspectorComponent implements OnChanges {
     constructor(private cd: ChangeDetectorRef) {
         this.menuItems = [
             new nw.MenuItem({ label: "Copy URL", click: () => this.reqRes && clipboard.set(this.reqRes.url, "text") }),
-            new nw.MenuItem({ label: "Copy req & res", click: () => this.reqRes && clipboard.set(this.reqRes.toString(), "text") }),
+            new nw.MenuItem({ label: "Copy request & response", click: () => this.reqRes && clipboard.set(this.reqRes.toString(), "text") }),
+            new nw.MenuItem({ label: "Copy request payload", click: () => this.reqRes && clipboard.set(this.reqRes.reqBody, "text") }),
+            new nw.MenuItem({ label: "Copy response payload", click: () => this.reqRes && clipboard.set(this.reqRes.resBody, "text") }),
             new nw.MenuItem({ type: "separator" })
         ];
     }
@@ -30,6 +32,8 @@ export class InspectorComponent implements OnChanges {
     }
 
     selectAll(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
         var sel = window.getSelection();
         sel.removeAllRanges();
         var range = document.createRange();

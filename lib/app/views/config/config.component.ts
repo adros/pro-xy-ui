@@ -6,6 +6,7 @@ import { DiffDialog } from "./diff.dialog";
 import { PluginsDialog } from "./plugins.dialog";
 import defaultConfig from "../../service/config.defaultConfig";
 import { Config } from "../../model/config";
+import { MdSnackBar, MdSnackBarConfig } from "@angular/material";
 
 var diff = nw.require("diff");
 
@@ -19,7 +20,7 @@ var diff = nw.require("diff");
 })
 export class ConfigComponent implements OnInit {
 
-    constructor(private dialog: MdDialog, private socketService: SocketService, private cd: ChangeDetectorRef) { }
+    constructor(private dialog: MdDialog, private socketService: SocketService, private cd: ChangeDetectorRef, private snackBar: MdSnackBar) { }
 
     @Output()
     restartNeeded = new EventEmitter<any>();
@@ -88,9 +89,23 @@ export class ConfigComponent implements OnInit {
         this.preNode.nativeElement
     }
 
+    trySave(): void {
+        if (!this.dirty || this.invalid) {
+            return this.msg(this.dirty ? "Invalid JSON!" : "No changes in config!");
+        }
+        this.save();
+    }
+
     save(): void {
         var confObj = JSON.parse(this.model); //we do not allow save for invalid
         this.socketService.replaceConfig(confObj);
+        this.msg("Config was saved.");
+    }
+
+    msg(str: string) {
+        var ref = this.snackBar.open(str, null, {
+            duration: 1000,
+        } as MdSnackBarConfig);
     }
 
     hBlur() {

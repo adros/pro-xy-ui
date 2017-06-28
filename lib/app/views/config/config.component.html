@@ -1,5 +1,5 @@
 <div class="mb-2 flex-grow">
-    <pre #preNode contenteditable="true" (keyup)="model=$event.target.innerText" (blur)="hBlur()" (paste)="hPaste($event)"></pre>
+    <pre #preNode contenteditable="true" (keyup.control.s)="trySave()" (keyup)="model=$event.target.innerText" (blur)="hBlur()" (paste)="hPaste($event)"></pre>
 </div>
 <div>
     <button class="btn btn-sm btn-primary" (click)="save()" [disabled]="!dirty || invalid">Save</button>

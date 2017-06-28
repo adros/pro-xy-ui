@@ -4,6 +4,7 @@ pre {
     white-space: pre-wrap;
     font-size: 12px;
     line-height: 12px;
+    outline-width: 0;
 }
 
 hr {
