@@ -9,6 +9,7 @@
     "removeComments": false,
     "noImplicitAny": false
   },
+  "compileOnSave": true,
   "filesGlob": [
     "lib/**/*.ts",
     "typings/**/*.ts"
