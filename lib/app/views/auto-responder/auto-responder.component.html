@@ -26,8 +26,8 @@
             <tr *ngFor="let item of (configObservable|async).autoResponder.responses; let i = index" (contextmenu)="hCtxMenu(item,$event)">
                 <td class="replace-name">
                     <div class="checkbox">
-                        <label>
-                            <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)" [disabled]="(configObservable|async).autoResponder.disabled">{{item.urlPattern}}
+                        <label title="{{item.urlPattern}}">
+                            <input type="checkbox" [checked]="!item.disabled" (change)="hChange(item, i)" [disabled]="(configObservable|async).autoResponder.disabled">{{item.shortUrlPattern}}
                         </label>
                     </div>
                 </td>

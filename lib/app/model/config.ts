@@ -41,6 +41,12 @@ export class Config {
         if (!autoResponder.responses) {
             autoResponder.responses = [];
         }
+
+        autoResponder.responses.forEach(obj => {
+            let p = obj.urlPattern;
+            obj.shortUrlPattern = p.length > 80 ? `${p.substring(0, 78)}..` : p;
+        });
+
         return autoResponder;
     }
 
