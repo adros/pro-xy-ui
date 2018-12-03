@@ -28,7 +28,7 @@
     "bootstrap": "^4.0.0-alpha.6",
     "date-format": "^1.1.0",
     "diff": "^3.1.0",
-    "download": "github:adros/download",
+    "download": "github:adros/download#v503",
     "escape-string-regexp": "^1.0.5",
     "json-stable-stringify": "^1.0.1",
     "ng2-dnd": "^4.2.0",
