@@ -11,14 +11,15 @@ if (/^win/.test(process.platform)) {
 	nwBin += ".cmd";
 }
 
+var homeDir = process.env.HOME || process.env.USERPROFILE;
 var nwProcess = cp.spawn(nwBin, [
 	path.resolve(__dirname, "..")
 ], {
 	detached: true,
 	stdio: "ignore",
-	terminal:false,
+	shell: /^win/.test(process.platform),
 	env: Object.assign({
-		CHROME_LOG_FILE: path.join(process.env.HOME, "pro-xy-logs/pro-xy-ui.log")
+		CHROME_LOG_FILE: path.join(homeDir, "pro-xy-logs/pro-xy-ui.log")
 	}, process.env)
 });
 nwProcess.unref();

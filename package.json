@@ -1,6 +1,6 @@
 {
   "name": "pro-xy-ui",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "User interface for pro-xy",
   "main": "index.html",
   "scripts": {
@@ -33,7 +33,7 @@
     "json-stable-stringify": "^1.0.1",
     "ng2-dnd": "^4.2.0",
     "nw": "^0.34.5",
-    "pro-xy": "^0.1.18",
+    "pro-xy": "^0.2.0",
     "pro-xy-auto-responder": "^0.2.0",
     "pro-xy-cookie-replace": "^0.1.1",
     "pro-xy-delay": "^0.1.1",
