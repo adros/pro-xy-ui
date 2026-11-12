@@ -33,7 +33,7 @@
     "json-stable-stringify": "^1.0.1",
     "ng2-dnd": "^4.2.0",
     "nw": "^0.34.5",
-    "pro-xy": "^0.2.0",
+    "pro-xy": "^0.2.1",
     "pro-xy-auto-responder": "^0.2.0",
     "pro-xy-cookie-replace": "^0.1.1",
     "pro-xy-delay": "^0.1.1",
